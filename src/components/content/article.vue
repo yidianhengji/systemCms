@@ -15,7 +15,7 @@
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
                 </el-form-item>
                 <el-form-item class="pull-right">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onSubmit">新增</el-button>
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -161,6 +161,9 @@ export default {
         onSubmit() {
             console.log('submit!');
         },
+        onClickAdd() {
+            this.$router.push({path: '/home/contern/articleAdd'})
+        },
         toggleSelection(rows) {
             if (rows) {
             rows.forEach(row => {
@@ -194,5 +197,6 @@ export default {
     background #ffffff;
     padding 15px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    border-radius: 4px;
 }
 </style>
