@@ -45,19 +45,14 @@ export default {
                         { name: '栏目管理', path: '/home/contern/column' },
                         { name: '活动管理', path: '/home/contern/activity' },
                         { name: '任务管理', path: '/home/contern/task' },
-                        //{ name: '垃圾分类', path: '/home/contern/article' },
                         { name: '公告管理', path: '/home/contern/notice' },
                     ],
                 },
                 {
-                    parentItem: { name: '内容管理', icon: 'el-icon-location' },
+                    parentItem: { name: '社区管理', icon: 'el-icon-location' },
                     childItem: [
-                        { name: '文章管理', path: '/home/contern/article' },
-                        { name: '栏目管理', path: '/home/contern/column' },
-                        { name: '活动管理', path: '/home/contern/activity' },
-                        { name: '任务管理', path: '/home/contern/task' },
-                        { name: '垃圾分类', path: '/home/contern/article' },
-                        { name: '公告管理', path: '/home/contern/notice' },
+                        { name: '社区管理', path: '/home/community/organization' },
+                        { name: '居民管理', path: '/home/community/personnel' },
                     ],
                 }
             ]

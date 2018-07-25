@@ -17,7 +17,7 @@
 			<div class="breadcrumb-nav" v-if="$route.path!='/home/survey'">
 				<el-breadcrumb separator-class="el-icon-arrow-right">
 					<el-breadcrumb-item :to="{ path: '/home/survey' }">首页</el-breadcrumb-item>
-					<el-breadcrumb-item>文章管理</el-breadcrumb-item>
+					<el-breadcrumb-item>{{$route.name}}</el-breadcrumb-item>
 				</el-breadcrumb>
 			</div>
 			<div class="sidebarMain-contern">
@@ -53,7 +53,10 @@ export default {
 		width: 100%;
 		height: 50px;
 		background #ffffff;
-		box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+		box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+		-webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+		-moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+		z-index: 99;
 	}
 	.sidebar {
 		position: fixed;
@@ -74,6 +77,8 @@ export default {
 			.logo {
 				background-color: #20222A !important;
 				box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+				-webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+				-moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
 				position: fixed;
 				left: 0;
 				top: 0;
@@ -102,7 +107,7 @@ export default {
 		right: 0;
 		top: 50px;
 		bottom: 50px;
-		z-index: 998;
+		z-index: 98;
 		width: auto;
 		overflow: hidden;
 		overflow-y: auto;
@@ -111,7 +116,6 @@ export default {
 			width: 100%;
 			background: #fff;
 			height: 50px;
-			border-top 1px solid #f6f6f6;
 			.el-breadcrumb {
 				height: 50px;
 				line-height: 50px;
@@ -131,6 +135,10 @@ export default {
 		line-height: 50px;
 		background-color: #fff;
 		text-align center;
+		z-index 99;
+		box-shadow: 1px 1px 2px 1px rgba(0,0,0,.15);
+		-webkit-box-shadow: 1px 1px 2px 1px rgba(0,0,0,.15);
+		-moz-box-shadow: 1px 1px 2px 1px rgba(0,0,0,.15);
 	}
 	.el-menu {
 		border-right 0px;

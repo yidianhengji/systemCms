@@ -23,3 +23,8 @@ html, body {
 .pull-right {
 	float: right;
 }
+
+.el-card__header {
+	padding: 10px 15px;
+	font-size: 14px;
+}
