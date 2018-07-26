@@ -3,13 +3,13 @@
         <el-row class="tac">
             <el-col>
                 <el-menu
-                default-active="0"
                 class="el-menu-vertical-demo"
                 :default-openeds="openeds"
                 @open="handleOpen"
                 @close="handleClose"
                 :unique-opened="uniqueOpened"
                 :router="openedRouter"
+                :default-active="defaultActive"
                 background-color="#20222a"
                 text-color="#fff"
                 active-text-color="#fff">
@@ -36,12 +36,14 @@ export default {
         return {
             uniqueOpened: true,
             openedRouter: true,
+            defaultActive: this.$route.path,
             openeds: ['1'],
             sidebarMenu: [
                 {
                     parentItem: { name: '内容管理', icon: 'el-icon-location' },
                     childItem: [
                         { name: '文章管理', path: '/home/contern/article' },
+                        { name: '视频管理', path: '/home/contern/article' },
                         { name: '栏目管理', path: '/home/contern/column' },
                         { name: '活动管理', path: '/home/contern/activity' },
                         { name: '任务管理', path: '/home/contern/task' },
@@ -53,6 +55,19 @@ export default {
                     childItem: [
                         { name: '社区管理', path: '/home/community/organization' },
                         { name: '居民管理', path: '/home/community/personnel' },
+                    ],
+                },
+                {
+                    parentItem: { name: '商品管理', icon: 'el-icon-location' },
+                    childItem: [
+                        { name: '商品管理', path: '/home/goods/goodsList' },
+                    ],
+                },
+                {
+                    parentItem: { name: '权限管理', icon: 'el-icon-location' },
+                    childItem: [
+                        { name: '管理员', path: '/home/power/powerUser' },
+                        { name: '权限组', path: '/home/power/powerPowerGroup' },
                     ],
                 }
             ]

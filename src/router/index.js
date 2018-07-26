@@ -19,7 +19,12 @@ import noticeAdd from '@/components/totalManag/content/noticeAdd';//新增公告
 import organization from '@/components/totalManag/community/organization';//社区管理
 import organizationAdd from '@/components/totalManag/community/organizationAdd';//新增社区
 import personnel from '@/components/totalManag/community/personnel';//居民列表
-
+/*商品管理*/
+import goodsList from '@/components/totalManag/goods/goodsList';//商品列表
+import goodsListAdd from '@/components/totalManag/goods/goodsListAdd';//新增列表
+/*权限管理*/
+import powerUser from '@/components/totalManag/power/user';//管理员
+import powerPowerGroup from '@/components/totalManag/power/powerGroup';//权限组
 
 export default new Router({
 	routes: [
@@ -45,6 +50,12 @@ export default new Router({
 				{ path: '/home/community/organization', name: '社区管理', component: organization },
 				{ path: '/home/community/organizationAdd', name: '新增社区', component: organizationAdd },
 				{ path: '/home/community/personnel', name: '居民列表', component: personnel },
+				//商品管理
+				{ path: '/home/goods/goodsList', name: '商品管理', component: goodsList },
+				{ path: '/home/goods/goodsListAdd', name: '新增商品', component: goodsListAdd },
+				//权限管理
+				{ path: '/home/power/powerUser', name: '管理员', component: powerUser },
+				{ path: '/home/power/powerPowerGroup', name: '权限组', component: powerPowerGroup },
             ]
 		}
 	]

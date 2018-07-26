@@ -4679,6 +4679,10 @@ sax@^1.2.4, sax@~1.2.1:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
+schart.js@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/schart.js/-/schart.js-2.0.0.tgz#5a5e453619e2616227e3c07af02ad7cf16c11003"
+
 schema-utils@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.3.0.tgz#f5877222ce3e931edae039f17eb3716e7137f8cf"
@@ -5450,6 +5454,12 @@ vue-loader@^13.3.0:
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
+
+vue-schart@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vue-schart/-/vue-schart-1.0.0.tgz#b0c8b0206bfa487f16006f14e2c9ef22fc72ed8a"
+  dependencies:
+    schart.js "^2.0.0"
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.1.2"

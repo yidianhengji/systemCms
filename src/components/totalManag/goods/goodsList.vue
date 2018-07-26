@@ -1,15 +1,15 @@
 <template>
-    <div class="__organization">
+    <div class="__goodsList">
         <div class="formBox">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="社区名称：">
-                    <el-input v-model="formInline.user" placeholder="请输入社区名称"></el-input>
+                <el-form-item label="商品名称：">
+                    <el-input v-model="formInline.user" placeholder="请输入商品名称"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
                 </el-form-item>
                 <el-form-item class="pull-right">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新建社区</el-button>
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增商品</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -21,15 +21,21 @@
                 style="width: 100%"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                    type="selection">
+                    type="selection"
+                    width="55">
                 </el-table-column>
                 <el-table-column
                     prop="title"
-                    label="社区名称">
+                    label="商品名称"
+                    width="180">
+                </el-table-column>
+                <el-table-column
+                    prop="community_name"
+                    label="商品总数">
                 </el-table-column>
                 <el-table-column
                     prop="weight"
-                    label="社区积分">
+                    label="商品积分">
                 </el-table-column>
                 <el-table-column
                     prop="create_time"
@@ -83,77 +89,85 @@ export default {
             currentPage4: 4,
             tableData: [
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
                 {
-                    title: '社区名称',
+                    title: '商品名称',
                     item_name: '两型账户',
-                    community_name: '社区名称',
+                    community_name: '0',
                     create_time: '张三',
                     update_time: '2018-07-25 10:00:00',
                     weight: '0',
                 },
+                {
+                    title: '商品名称',
+                    item_name: '两型账户',
+                    community_name: '0',
+                    create_time: '张三',
+                    update_time: '2018-07-25 10:00:00',
+                    weight: '0',
+                }
             ]
         }
     },
@@ -162,7 +176,7 @@ export default {
             console.log('submit!');
         },
         onClickAdd() {
-            this.$router.push({path: '/home/community/organizationAdd'})
+            this.$router.push({path: '/home/goods/goodsListAdd'})
         },
         toggleSelection(rows) {
             if (rows) {
@@ -193,7 +207,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.__organization {
+.__goodsList {
     background #ffffff;
     padding 15px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);

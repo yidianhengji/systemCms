@@ -1,0 +1,139 @@
+<template>
+    <div class="__goodsListAdd">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>新增商品</span>
+            </div>
+            <div class="addFromListBox">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="商品名称" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品总数" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品总数"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品积分" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品积分"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品封面图">
+                        <el-upload
+                            action="https://jsonplaceholder.typicode.com/posts/"
+                            list-type="picture-card"
+                            :on-preview="handlePictureCardPreview"
+                            :on-remove="handleRemove">
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                        <el-dialog :visible.sync="dialogVisible">
+                            <img width="100%" :src="dialogImageUrl" alt="">
+                        </el-dialog>
+                    </el-form-item>
+                    <el-form-item label="商品描述">
+                        <el-input type="textarea" v-model="ruleForm.desc" placeholder="写点什么吧！"></el-input>
+                    </el-form-item>
+					<el-form-item label="商品详情">
+                        <div class="">
+							<UE :defaultMsg=defaultMsg :config=config :id=ue1 ref="ue"></UE>
+						</div>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+                        <el-button @click="resetForm('ruleForm')">重置</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-card>
+    </div>
+</template>
+
+<script>
+import UE from "@/components/common/ue";
+export default {
+  	components: { UE },
+  	data() {
+		return {
+            dialogImageUrl: '',
+            dialogVisible: false,
+			defaultMsg: '',
+            config: {
+                initialFrameWidth: null,
+                initialFrameHeight: 450
+            },
+            ue1: "ue1", // 不同编辑器必须不同的id
+			ruleForm: {
+				name: "",
+				region: "",
+				date1: "",
+				date2: "",
+				delivery: false,
+				type: [],
+				resource: "",
+				desc: ""
+			},
+			rules: {
+				name: [
+					{ required: true, message: "请输入文章内容", trigger: "blur" },
+					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
+				],
+				region: [
+					{ required: true, message: "请选择活动区域", trigger: "change" }
+				],
+			}
+		};
+	},
+	methods: {
+		submitForm(formName) {
+			this.$refs[formName].validate(valid => {
+				if (valid) {
+				alert("submit!");
+				} else {
+				console.log("error submit!!");
+				return false;
+				}
+			});
+		},
+		resetForm(formName) {
+			this.$refs[formName].resetFields();
+		},
+		getUEContent() {
+            let content = this.$refs.ue.getUEContent(); // 调用子组件方法
+            this.$notify({
+                title: '获取成功，可在控制台查看！',
+                message: content,
+                type: 'success'
+            });
+        },
+        getUEContentTxt() {
+            let content = this.$refs.ue.getUEContentTxt(); // 调用子组件方法
+            this.$notify({
+                title: '获取成功，可在控制台查看！',
+                message: content,
+                type: 'success'
+            });
+        },
+        //封面
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        }
+	}
+};
+</script>
+
+<style lang="stylus">
+.__goodsListAdd {
+	.addFromListBox {
+		width 960px;
+		.form-control {
+			width 60%;
+		}
+		.el-textarea {
+			textarea {
+				height 90px;
+			}
+		}
+	}
+}
+</style>
