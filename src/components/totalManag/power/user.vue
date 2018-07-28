@@ -9,7 +9,7 @@
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
                 </el-form-item>
                 <el-form-item class="pull-right">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增管理员</el-button>
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="dialogFormVisible = true">新增管理员</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -51,6 +51,25 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog title="收货地址" :visible.sync="dialogFormVisible" :modal-append-to-body="false" :close-on-click-modal="false">
+            <div class="modelFromListBox">
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="商品名称" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品总数" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品总数"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品积分" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入商品积分"></el-input>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="resetForm('ruleForm')">取 消</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -58,6 +77,26 @@
 export default {
     data(){
         return {
+            ruleForm: {
+				name: "",
+				region: "",
+				date1: "",
+				date2: "",
+				delivery: false,
+				type: [],
+				resource: "",
+				desc: ""
+			},
+			rules: {
+				name: [
+					{ required: true, message: "请输入文章内容", trigger: "blur" },
+					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
+				],
+				region: [
+					{ required: true, message: "请选择活动区域", trigger: "change" }
+				],
+			},
+            dialogFormVisible: false,
             formInline: {
                 user: '',
                 region: ''
@@ -112,11 +151,22 @@ export default {
         }
     },
     methods: {
+        submitForm(formName) {
+			this.$refs[formName].validate(valid => {
+				if (valid) {
+				alert("submit!");
+				} else {
+				console.log("error submit!!");
+				return false;
+				}
+			});
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+            this.dialogFormVisible = false
+		},
         onSubmit() {
             console.log('submit!');
-        },
-        onClickAdd() {
-            
         },
         toggleSelection(rows) {
             if (rows) {

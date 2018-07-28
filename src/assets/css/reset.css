@@ -28,3 +28,21 @@ html, body {
 	padding: 10px 15px;
 	font-size: 14px;
 }
+
+/*弹窗里面的表单*/
+.el-dialog .el-dialog__header {
+	padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+.el-dialog .el-dialog__header .el-dialog__title {
+	font-size: 15px;
+	line-height: normal;
+}
+
+.el-dialog .el-dialog__footer {
+	padding: 20px;
+	border-top: 1px solid #eee;
+}
+.modelFromListBox .form-control {
+	width: 60%;
+}

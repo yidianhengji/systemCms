@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router);
 
+import zhtLogin from '@/components/totalManag/login';//总后台登录界面
 import wrapper from '@/components/wrapper';
 import survey from '@/components/survey';//首页统计
 /*内容管理*/
@@ -26,15 +27,21 @@ import goodsListAdd from '@/components/totalManag/goods/goodsListAdd';//新增�
 import powerUser from '@/components/totalManag/power/user';//管理员
 import powerPowerGroup from '@/components/totalManag/power/powerGroup';//权限组
 
-export default new Router({
+
+const router = new Router({
 	routes: [
+		{
+			path: '/zhtLogin',
+			name: '登录',
+			component: zhtLogin,
+		},
 		{
 			path: '/home',
 			name: '主页',
 			component: wrapper,
 			children: [
 				{ path: '/home', redirect: 'survey' },
-				{ path: '/home/survey', name: '概况', component: survey },
+				{ path: '/home/survey', name: '首页', component: survey },
 				//内容模块
 				{ path: '/home/contern/article', name: '文章管理', component: article },
 				{ path: '/home/contern/articleAdd', name: '新增文章', component: articleAdd },
@@ -60,3 +67,13 @@ export default new Router({
 		}
 	]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.name) {
+        document.title = to.name
+    }
+    window.scrollTo(0, 0);
+    next()
+})
+
+export default router

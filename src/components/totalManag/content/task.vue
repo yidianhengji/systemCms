@@ -26,8 +26,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="title"
-                    label="任务名称"
-                    width="180">
+                    label="任务名称">
                 </el-table-column>
                 <el-table-column
                     prop="community_name"
@@ -48,7 +47,6 @@
                 <el-table-column
                     prop="tag"
                     label="标签"
-                    width="100"
                     :filters="[{ text: '未开始', value: '未开始' }, { text: '进行中', value: '进行中' },  { text: '已结束', value: '已结束' }]"
                     :filter-method="filterTag"
                     filter-placement="bottom-end">
@@ -58,7 +56,7 @@
                         disable-transitions>{{scope.row.tag}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="260">
                     <template slot-scope="scope">
                         <el-button
                         size="mini"
