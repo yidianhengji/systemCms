@@ -28,6 +28,10 @@
                     prop="phone"
                     label="手机号码">
                 </el-table-column>
+                <el-table-column
+                    prop="phone"
+                    label="角色">
+                </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button
@@ -54,13 +58,13 @@
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="商品名称" prop="name" class="form-control">
+                    <el-form-item label="姓名" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="商品总数" prop="name" class="form-control">
+                    <el-form-item label="手机号码" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入商品总数"></el-input>
                     </el-form-item>
-                    <el-form-item label="商品积分" prop="name" class="form-control">
+                    <el-form-item label="角色" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入商品积分"></el-input>
                     </el-form-item>
                 </el-form>

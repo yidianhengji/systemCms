@@ -8,6 +8,7 @@
                 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
                     <el-form-item prop="name">
                         <el-input
+                            type="text"
                             placeholder="请输入账号"
                             prefix-icon="fa fa-user-o"
                             v-model="ruleForm2.name">
@@ -15,6 +16,7 @@
                     </el-form-item>
                     <el-form-item prop="pass">
                         <el-input
+                            type="password"
                             placeholder="请输入密码"
                             prefix-icon="fa fa-key"
                             v-model="ruleForm2.pass">
@@ -30,6 +32,8 @@
 </template>
 
 <script>
+import { getCookie, setCookie } from "@/util/cookie";
+import { login } from "api/login/index";
 export default {
     data() {
         var validateName = (rule, value, callback) => {
@@ -63,23 +67,16 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate(valid => {
                 if (valid) {
-                    this.$router.push({ path: '/home/survey' });
-                    // let params = {
-                    //     userName:this.ruleForm2.name,
-                    //     passWord:this.ruleForm2.pass,
-                    // };
-                    // login(params).then(response => {
-                    //     if(response.data.status==200){
-                    //         let expireDays = 1000 * 60 * 60;
-                    //         setCookie("user_id",response.data.data.user_id,expireDays);
-                    //         this.$router.push({ path: '/home/resident' });
-                    //     }else {
-                    //         this.$alert(response.data.msg, '温馨提示', {
-                    //             confirmButtonText: '确定',
-                    //             callback: action => {}
-                    //         });
-                    //     }
-                    // })
+                    let params = {
+                        mobile:this.ruleForm2.name,
+                        password:this.ruleForm2.pass,
+                    };
+                    login(params).then(response => {
+                        if(response.data.code==200){
+                            sessionStorage.setItem("userData", JSON.stringify(response.data.data));
+                            this.$router.push({ path: '/home/survey' });
+                        }
+                    })
                 } else {
                     console.log("error submit!!");
                     return false;

@@ -26,7 +26,7 @@ html, body {
 
 .el-card__header {
 	padding: 10px 15px;
-	font-size: 14px;
+	font-size: 15px;
 }
 
 /*弹窗里面的表单*/
@@ -45,4 +45,9 @@ html, body {
 }
 .modelFromListBox .form-control {
 	width: 60%;
+}
+
+.modelFromListBox textarea {
+	height: 90px;
+	font-family: Arial
 }
