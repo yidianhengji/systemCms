@@ -16,6 +16,8 @@ import task from '@/components/totalManag/content/task';//任务管理
 import taskAdd from '@/components/totalManag/content/taskAdd';//新增任务
 import notice from '@/components/totalManag/content/notice';//公告管理
 import noticeAdd from '@/components/totalManag/content/noticeAdd';//新增公告
+import garbageType from '@/components/totalManag/content/garbageType';//垃圾分类
+import garbageTypeAdd from '@/components/totalManag/content/garbageTypeAdd';//新增垃圾分类
 /*社区管理*/
 import organization from '@/components/totalManag/community/organization';//社区管理
 import organizationAdd from '@/components/totalManag/community/organizationAdd';//新增社区
@@ -53,6 +55,8 @@ const router = new Router({
 				{ path: '/home/contern/taskAdd', name: '新增任务', component: taskAdd },
 				{ path: '/home/contern/notice', name: '公告管理', component: notice },
 				{ path: '/home/contern/noticeAdd', name: '新增管理', component: noticeAdd },
+				{ path: '/home/contern/garbageType', name: '垃圾分类', component: garbageType },
+				{ path: '/home/contern/garbageTypeAdd', name: '新增垃圾分类', component: garbageTypeAdd },
 				//社区管理
 				{ path: '/home/community/organization', name: '社区管理', component: organization },
 				{ path: '/home/community/organizationAdd', name: '新增社区', component: organizationAdd },

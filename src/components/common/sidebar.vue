@@ -47,6 +47,7 @@ export default {
                         { name: '栏目管理', path: '/home/contern/column' },
                         { name: '活动管理', path: '/home/contern/activity' },
                         { name: '任务管理', path: '/home/contern/task' },
+                        { name: '垃圾分类', path: '/home/contern/garbageType' },
                         { name: '公告管理', path: '/home/contern/notice' },
                     ],
                 },

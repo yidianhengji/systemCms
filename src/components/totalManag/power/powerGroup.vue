@@ -97,7 +97,8 @@ export default {
 				if (valid) {
                     let params = {
                         name: this.ruleForm.name,
-                        description: this.ruleForm.description
+                        description: this.ruleForm.description,
+                        status: 1
                     }
                     roleAdd(params).then(data => {
                         if(data.data.code==200){

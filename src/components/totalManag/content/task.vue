@@ -8,223 +8,166 @@
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
                 </el-form-item>
-                <el-form-item class="pull-right">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">发布任务</el-button>
-                </el-form-item>
             </el-form>
         </div>
-        <div class="tableList">
-            <el-table
-                ref="multipleTable"
-                :data="tableData"
-                tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    type="selection"
-                    width="55">
-                </el-table-column>
-                <el-table-column
-                    prop="title"
-                    label="任务名称">
-                </el-table-column>
-                <el-table-column
-                    prop="community_name"
-                    label="所属社区">
-                </el-table-column>
-                <el-table-column
-                    prop="create_time"
-                    label="发布人">
-                </el-table-column>
-                <el-table-column
-                    prop="update_time"
-                    label="更新时间">
-                </el-table-column>
-                <el-table-column
-                    prop="weight"
-                    label="报名人数">
-                </el-table-column>
-                <el-table-column
-                    prop="tag"
-                    label="标签"
-                    :filters="[{ text: '未开始', value: '未开始' }, { text: '进行中', value: '进行中' },  { text: '已结束', value: '已结束' }]"
-                    :filter-method="filterTag"
-                    filter-placement="bottom-end">
-                    <template slot-scope="scope">
-                        <el-tag
-                        :type="scope.row.tag === '未开始' ? 'info' : 'success'"
-                        disable-transitions>{{scope.row.tag}}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="260">
-                    <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                        <el-button
-                        size="mini"
-                        type="primary"
-                        @click="handleDelete(scope.$index, scope.row)">查看评论</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+        <div class="btnBox">
+            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">发布任务</el-button>
         </div>
-        <div class="block" style="margin-top: 15px; overflow: hidden;">
-            <div class="pull-right">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
-                </el-pagination>
-            </div>
+        <div class="tableList">
+            <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
         </div>
     </div>
 </template>
 
 <script>
+import MyDropDown from '@/components/common/MyDropDown'
+import table from '@/components/common/table'
+import { taskQuery, taskDel } from "api/task/index";
 export default {
+    components: {
+        vtable: table
+    },
     data(){
         return {
             formInline: {
                 user: '',
                 region: ''
             },
-            multipleSelection: [],
-            currentPage1: 5,
-            currentPage2: 5,
-            currentPage3: 5,
-            currentPage4: 4,
-            tableData: [
+            pageSize: 10,
+            pageNum: 1,
+            total: 0,
+            dataArray: [],
+            columns: [
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '进行中'
+                    prop: "name",
+                    label: "任务名称",
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '未开始'
+                    prop: "communityId",
+                    label: "所属社区",
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '已结束'
+                    prop: "createUser",
+                    label: "发布人",
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '进行中'
+                    prop: "createTime",
+                    label: "创建时间",
+                    width: ""
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '未开始'
+                    prop: "limitPeople",
+                    label: "人数上限",
+                    width: ""
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '已结束'
+                    prop: "joinPeople",
+                    label: "报名人数",
+                    width: ""
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '进行中'
+                    prop: "integral",
+                    label: "积分设置",
+                    width: ""
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '未开始'
+                    prop: "is_authentication",
+                    label: "状态",
+                    width: "",
+                    render: function(h, param) {
+                        let html = "";
+                        if(param.row.sex == 1) {
+                            html = "是";
+                        } else if(param.row.sex == 2) {
+                            html = "否";
+                        }
+                        return html;
+                    }
                 },
                 {
-                    title: '任务名称',
-                    item_name: '两型账户',
-                    community_name: '社区名称',
-                    create_time: '张三',
-                    update_time: '2018-07-25 10:00:00',
-                    weight: '0',
-                    tag: '已结束'
-                },
-            ]
+                    prop: "",
+                    label: "操作",
+                    render: (h, param) => {
+                        if(param.row.dataForm==1){
+                            var items = [
+                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
+                                { label: "删除", func: { func: "del", uuid: param.row.uuid } },
+                                { label: "查看评论", func: { func: "del", uuid: param.row.uuid } },
+                            ]
+                        }else if(param.row.dataForm==2){
+                            var items = [
+                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
+                                { label: "删除", func: { func: "del", uuid: param.row.uuid } }
+                            ]
+                        }
+                        const dropDownData = {
+                            label: "操作",
+                            items: items
+                        };
+                        // 触发MyDropDown的update和del事件
+                        return h(MyDropDown, {
+                            props: {
+                                dropDownData: dropDownData
+                            },
+                            on: {
+                                update: this.update,
+                                del: this.del
+                            }
+                        });
+                        
+                    }
+                }
+            ],
         }
     },
+    mounted(){
+        this.queryUserListPost(this.pageNum);
+    },
     methods: {
+        //查询所有管理员
+        queryUserListPost(pageNum){
+            let params = {
+                pageSize: this.pageSize,
+                pageNum: pageNum
+            }
+            taskQuery(params).then(data => {
+                if(data.data.code==200){
+                    this.dataArray = data.data.data.list
+                }
+            })
+        },
+        //搜索
         onSubmit() {
             console.log('submit!');
         },
+        //新增
         onClickAdd() {
-            this.$router.push({path: '/home/contern/taskAdd'})
+            this.$router.push({path: '/home/contern/taskAdd', query: { type: 1 } })
         },
-        toggleSelection(rows) {
-            if (rows) {
-            rows.forEach(row => {
-                this.$refs.multipleTable.toggleRowSelection(row);
+        //修改
+        update(obj) {
+            this.$router.push({path: '/home/contern/taskAdd', query: { uuid: obj, type: 2 } })
+        },
+        //删除
+        del(obj) {
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                taskDel({uuid: obj}).then(data => {
+                    if(data.data.code==200){
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.queryUserListPost(this.pageNum);
+                    }
+                })
+            }).catch(() => {
+                
             });
-            } else {
-            this.$refs.multipleTable.clearSelection();
-            }
         },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        handleEdit(index, row) {
-            console.log(index, row);
-        },
-        handleDelete(index, row) {
-            console.log(index, row);
-        },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
-        },
-        filterTag(value, row) {
-            return row.tag === value;
-        },
-        filterHandler(value, row, column) {
-            const property = column['property'];
-            return row[property] === value;
-        }
     }
 }
 </script>
@@ -235,5 +178,11 @@ export default {
     padding 15px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
     border-radius: 4px;
+    .formBox {
+        border-bottom 1px solid #eee
+    }
+    .btnBox {
+        margin 10px 0;
+    }
 }
 </style>

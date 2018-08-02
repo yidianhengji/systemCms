@@ -9,37 +9,31 @@
                     <el-form-item label="任务名称" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入任务名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="所属社区" prop="name">
-                        <el-select v-model="ruleForm.region" placeholder="请选择所属社区">
+                    <el-form-item label="所属社区" prop="communityId">
+                        <el-select v-model="ruleForm.communityId" placeholder="请选择所属社区">
                             <el-option label="西湖街道办" value="shanghai"></el-option>
                             <el-option label="八方小区" value="beijing"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="任务时间" prop="name">
+                    <el-form-item label="任务时间" prop="startTime">
                         <el-date-picker
-                            v-model="ruleForm.value5"
+                            v-model="ruleForm.startTime"
                             type="datetimerange"
-                            :picker-options="pickerOptions2"
                             range-separator="至"
                             start-placeholder="请选择任务开始日期"
                             end-placeholder="请选择任务结束日期"
+                            value-format="yyyy-MM-dd HH:mm:ss"
                             align="right">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="任务地点" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入任务地点"></el-input>
+                    <el-form-item label="任务地点" prop="location" class="form-control">
+                        <el-input v-model="ruleForm.location" placeholder="请输入任务地点"></el-input>
                     </el-form-item>
-                    <el-form-item label="人数上限" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入人数上限"></el-input>
+                    <el-form-item label="人数上限" prop="limitPeople" class="form-control">
+                        <el-input type="number" v-model="ruleForm.limitPeople" placeholder="请输入人数上限"></el-input>
                     </el-form-item>
-                    <el-form-item label="积分设置" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入任务积分"></el-input>
-                    </el-form-item>
-                    <el-form-item label="任务负责人" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入任务负责人（积分按照个人设置，总积分不能大于10000）"></el-input>
-                    </el-form-item>
-                    <el-form-item label="负责人手机号" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入负责人手机号"></el-input>
+                    <el-form-item label="积分设置" prop="integral" class="form-control">
+                        <el-input type="number" v-model="ruleForm.integral" placeholder="请输入积分设置"></el-input>
                     </el-form-item>
                     <el-form-item label="任务封面图">
                         <el-upload
@@ -53,8 +47,8 @@
                             <img width="100%" :src="dialogImageUrl" alt="">
                         </el-dialog>
                     </el-form-item>
-                    <el-form-item label="任务介绍" prop="desc">
-                        <el-input type="textarea" v-model="ruleForm.desc" placeholder="写点什么吧！"></el-input>
+                    <el-form-item label="任务介绍">
+                        <el-input type="textarea" v-model="ruleForm.description" placeholder="写点什么吧！"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -67,92 +61,82 @@
 </template>
 
 <script>
+import { taskAdd } from "api/task/index";
 export default {
   	data() {
 		return {
             dialogImageUrl: '',
             dialogVisible: false,
-            pickerOptions2: {
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近一个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: '最近三个月',
-                    onClick(picker) {
-                    const end = new Date();
-                    const start = new Date();
-                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                    picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            
 			ruleForm: {
 				name: "",
-				region: "",
-				date1: "",
-				date2: "",
-				delivery: false,
-				type: [],
-				resource: "",
-                desc: "",
-                value5: '',
-                value6: '',
-			},
+				communityId: "",
+				startTime: "",
+				endTime: "",
+				location: "",
+				limitPeople: "",
+				integral: "",
+                dataForm: "1",
+                coverpic: '',
+                description: '',
+            },
 			rules: {
 				name: [
-					{ required: true, message: "请输入文章内容", trigger: "blur" },
-					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
+					{ required: true, message: "请输入任务名称", trigger: "blur" },
+					{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
 				],
-				region: [
-					{ required: true, message: "请选择活动区域", trigger: "change" }
-				],
+				communityId: [
+					{ required: true, message: "请选择所属社区", trigger: "change" }
+                ],
+                startTime: [
+                    { required: true, message: "请选择任务时间", trigger: "blur" },
+                ],
+                location: [
+                    { required: true, message: "请输入任务地点", trigger: "blur" },
+                ],
+                limitPeople: [
+                    { required: true, message: '请输入人数上限' },
+                    { pattern: /^[0-9]*$/, message: '请输入整数' },
+                ],
+                integral: [
+                    { required: true, message: "请输入积分设置", trigger: "blur" },
+                    { pattern: /^[0-9]*$/, message: '请输入整数' },
+                ]
 			}
 		};
 	},
 	methods: {
+        //提交按钮
 		submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-				alert("submit!");
+                    let params = {
+                        name: this.ruleForm.name,
+                        communityId: this.ruleForm.communityId,
+                        startTime: this.ruleForm.startTime[0],
+                        endTime: this.ruleForm.startTime[1],
+                        location: this.ruleForm.location,
+                        limitPeople: this.ruleForm.limitPeople,
+                        integral: this.ruleForm.integral,
+                        dataForm: this.ruleForm.dataForm,
+                        coverpic: this.ruleForm.coverpic,
+                        description: this.ruleForm.description,
+                    };
+                    taskAdd(params).then(data => {
+                        if(data.data.code==200){
+                            this.$alert("提交成功！", '温馨提示',
+                                { confirmButtonText: '确定', callback: action => { }
+                            });
+                        }
+                    })
 				} else {
-				console.log("error submit!!");
-				return false;
+				    return false;
 				}
 			});
-		},
+        },
+        //重置按钮
 		resetForm(formName) {
 			this.$refs[formName].resetFields();
 		},
-		getUEContent() {
-            let content = this.$refs.ue.getUEContent(); // 调用子组件方法
-            this.$notify({
-                title: '获取成功，可在控制台查看！',
-                message: content,
-                type: 'success'
-            });
-        },
-        getUEContentTxt() {
-            let content = this.$refs.ue.getUEContentTxt(); // 调用子组件方法
-            this.$notify({
-                title: '获取成功，可在控制台查看！',
-                message: content,
-                type: 'success'
-            });
-        },
         //封面
         handleRemove(file, fileList) {
             console.log(file, fileList);
