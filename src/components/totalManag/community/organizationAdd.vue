@@ -9,8 +9,8 @@
                     <el-form-item label="社区名称" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入社区名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="发放积分" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入积分"></el-input>
+                    <el-form-item label="总积分" prop="totalIntegral" class="form-control">
+                        <el-input v-model="ruleForm.totalIntegral" placeholder="请输入总积分"></el-input>
                     </el-form-item>
 					<el-form-item label="社区负责人" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入社区负责人"></el-input>
@@ -19,11 +19,10 @@
                         <el-input v-model="ruleForm.name" placeholder="请输入负责人电话"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="ruleForm.desc" placeholder="写点什么吧！"></el-input>
+                        <el-input type="textarea" v-model="ruleForm.remark" placeholder="写点什么吧！"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -32,43 +31,48 @@
 </template>
 
 <script>
+import { communityAdd } from "api/community/index";
 export default {
   	data() {
 		return {
 			ruleForm: {
 				name: "",
-				region: "",
-				date1: "",
-				date2: "",
-				delivery: false,
-				type: [],
-				resource: "",
-				desc: ""
+				totalIntegral: "",
+				remark: ""
 			},
 			rules: {
 				name: [
-					{ required: true, message: "请输入文章内容", trigger: "blur" },
-					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
+					{ required: true, message: "请输入社区名称", trigger: "blur" },
+					{ min: 2, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
 				],
-				region: [
-					{ required: true, message: "请选择活动区域", trigger: "change" }
+				totalIntegral: [
+					{ required: true, message: "请输入总积分", trigger: "blur" },
+					{ pattern: /^[0-9]*$/, message: '请输入整数' },
 				],
 			}
 		};
 	},
 	methods: {
+		//新增
 		submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-				alert("submit!");
+					let params = {
+                        name: this.ruleForm.name,
+                        totalIntegral: this.ruleForm.totalIntegral,
+                        remark: this.ruleForm.remark,
+                    };
+                    communityAdd(params).then(data => {
+                        if(data.data.code==200){
+                            this.$alert("提交成功！", '温馨提示',
+                                { confirmButtonText: '确定', callback: action => { }
+                            });
+                        }
+                    })
 				} else {
-				console.log("error submit!!");
-				return false;
+					return false;
 				}
 			});
-		},
-		resetForm(formName) {
-			this.$refs[formName].resetFields();
 		},
 	}
 };

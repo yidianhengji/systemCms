@@ -42,13 +42,13 @@ export default {
                 {
                     parentItem: { name: '内容管理', icon: 'el-icon-location' },
                     childItem: [
-                        { name: '文章管理', path: '/home/contern/article' },
-                        { name: '视频管理', path: '/home/contern/article' },
-                        { name: '栏目管理', path: '/home/contern/column' },
+                        // { name: '文章管理', path: '/home/contern/article' },
+                        // { name: '视频管理', path: '/home/contern/article' },
+                        // { name: '栏目管理', path: '/home/contern/column' },
                         { name: '活动管理', path: '/home/contern/activity' },
                         { name: '任务管理', path: '/home/contern/task' },
                         { name: '垃圾分类', path: '/home/contern/garbageType' },
-                        { name: '公告管理', path: '/home/contern/notice' },
+                        // { name: '公告管理', path: '/home/contern/notice' },
                     ],
                 },
                 {
@@ -81,6 +81,28 @@ export default {
         handleClose(key, keyPath) {
             
         },
+    },
+    mounted() {
+        //活动
+        if(this.$route.path=='/home/contern/taskAdd'){
+            this.defaultActive = '/home/contern/task'
+        }
+        //任务
+        if(this.$route.path=='/home/contern/activityAdd'){
+            this.defaultActive = '/home/contern/activity'
+        }
+        //垃圾分类
+        if(this.$route.path=='/home/contern/garbageTypeAdd'){
+            this.defaultActive = '/home/contern/garbageType'
+        }
+        //社区管理
+        if(this.$route.path=='/home/community/organizationAdd'){
+            this.defaultActive = '/home/community/organization'
+        }
+        //居民管理
+        if(this.$route.path=='/home/community/personnel'){
+            this.defaultActive = '/home/community/organization'
+        }
     },
 }
 </script>

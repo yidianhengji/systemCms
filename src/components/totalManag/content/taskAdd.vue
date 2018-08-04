@@ -37,10 +37,11 @@
                     </el-form-item>
                     <el-form-item label="任务封面图">
                         <el-upload
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            :action="serverUrl"
                             list-type="picture-card"
-                            :on-preview="handlePictureCardPreview"
-                            :on-remove="handleRemove">
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                            >
                             <i class="el-icon-plus"></i>
                         </el-upload>
                         <el-dialog :visible.sync="dialogVisible">
@@ -61,11 +62,15 @@
 </template>
 
 <script>
+import { uploadPath } from '@/path/path'
 import { taskAdd } from "api/task/index";
+import { uploadFile } from "api/upload/index";
 export default {
   	data() {
 		return {
+            serverUrl: uploadPath,
             dialogImageUrl: '',
+            pictureList: [],
             dialogVisible: false,
 			ruleForm: {
 				name: "",
@@ -80,27 +85,27 @@ export default {
                 description: '',
             },
 			rules: {
-				name: [
-					{ required: true, message: "请输入任务名称", trigger: "blur" },
-					{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
-				],
-				communityId: [
-					{ required: true, message: "请选择所属社区", trigger: "change" }
-                ],
-                startTime: [
-                    { required: true, message: "请选择任务时间", trigger: "blur" },
-                ],
-                location: [
-                    { required: true, message: "请输入任务地点", trigger: "blur" },
-                ],
-                limitPeople: [
-                    { required: true, message: '请输入人数上限' },
-                    { pattern: /^[0-9]*$/, message: '请输入整数' },
-                ],
-                integral: [
-                    { required: true, message: "请输入积分设置", trigger: "blur" },
-                    { pattern: /^[0-9]*$/, message: '请输入整数' },
-                ]
+				// name: [
+				// 	{ required: true, message: "请输入任务名称", trigger: "blur" },
+				// 	{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
+				// ],
+				// communityId: [
+				// 	{ required: true, message: "请选择所属社区", trigger: "change" }
+                // ],
+                // startTime: [
+                //     { required: true, message: "请选择任务时间", trigger: "blur" },
+                // ],
+                // location: [
+                //     { required: true, message: "请输入任务地点", trigger: "blur" },
+                // ],
+                // limitPeople: [
+                //     { required: true, message: '请输入人数上限' },
+                //     { pattern: /^[0-9]*$/, message: '请输入整数' },
+                // ],
+                // integral: [
+                //     { required: true, message: "请输入积分设置", trigger: "blur" },
+                //     { pattern: /^[0-9]*$/, message: '请输入整数' },
+                // ]
 			}
 		};
 	},
@@ -109,25 +114,35 @@ export default {
 		submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-                    let params = {
-                        name: this.ruleForm.name,
-                        communityId: this.ruleForm.communityId,
-                        startTime: this.ruleForm.startTime[0],
-                        endTime: this.ruleForm.startTime[1],
-                        location: this.ruleForm.location,
-                        limitPeople: this.ruleForm.limitPeople,
-                        integral: this.ruleForm.integral,
-                        dataForm: this.ruleForm.dataForm,
-                        coverpic: this.ruleForm.coverpic,
-                        description: this.ruleForm.description,
-                    };
-                    taskAdd(params).then(data => {
-                        if(data.data.code==200){
-                            this.$alert("提交成功！", '温馨提示',
-                                { confirmButtonText: '确定', callback: action => { }
-                            });
-                        }
-                    })
+
+
+
+
+
+
+
+
+
+
+                    // let params = {
+                    //     name: this.ruleForm.name,
+                    //     communityId: this.ruleForm.communityId,
+                    //     startTime: this.ruleForm.startTime[0],
+                    //     endTime: this.ruleForm.startTime[1],
+                    //     location: this.ruleForm.location,
+                    //     limitPeople: this.ruleForm.limitPeople,
+                    //     integral: this.ruleForm.integral,
+                    //     dataForm: this.ruleForm.dataForm,
+                    //     coverpic: this.ruleForm.coverpic,
+                    //     description: this.ruleForm.description,
+                    // };
+                    // taskAdd(params).then(data => {
+                    //     if(data.data.code==200){
+                    //         this.$alert("提交成功！", '温馨提示',
+                    //             { confirmButtonText: '确定', callback: action => { }
+                    //         });
+                    //     }
+                    // })
 				} else {
 				    return false;
 				}
@@ -136,15 +151,19 @@ export default {
         //重置按钮
 		resetForm(formName) {
 			this.$refs[formName].resetFields();
-		},
-        //封面
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
         },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        }
+        //上传图片成功
+        handleAvatarSuccess(res, file) {
+            this.pictureList.push(res.data);
+        },
+        // 上传图片前
+        beforeAvatarUpload(file) {
+            const isLt2M = file.size / 1024 / 1024 < 10;
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 10MB!');
+            }
+            return isLt2M;
+        },
 	}
 };
 </script>

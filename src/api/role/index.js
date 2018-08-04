@@ -40,3 +40,13 @@ export function allocationRole(params) {
         })
     })
 }
+
+
+/*查询所有管理员*/
+export function userQueryAll(params) {
+    return new Promise((resolve, reject) => {
+        axiosToken.post(backen + 'permiss/user/queryAll', params).then(data => {
+            resolve(data)
+        })
+    })
+}

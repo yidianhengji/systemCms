@@ -14,6 +14,10 @@
             </el-form>
         </div>
         <div class="tableList">
+            <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
+        </div>
+
+        <!-- <div class="tableList">
             <el-table
                 ref="multipleTable"
                 :data="tableData"
@@ -41,20 +45,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
-        <div class="block" style="margin-top: 15px; overflow: hidden;">
-            <div class="pull-right">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
-                </el-pagination>
-            </div>
-        </div>
+        </div> -->
         <el-dialog title="收货地址" :visible.sync="dialogFormVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -78,7 +69,13 @@
 </template>
 
 <script>
+import MyDropDown from '@/components/common/MyDropDown';
+import table from '@/components/common/table';
+import { userQueryAll } from "api/role/index";
 export default {
+    components: {
+        vtable: table
+    },
     data(){
         return {
             ruleForm: {
@@ -105,56 +102,48 @@ export default {
                 user: '',
                 region: ''
             },
-            multipleSelection: [],
-            currentPage1: 5,
-            currentPage2: 5,
-            currentPage3: 5,
-            currentPage4: 4,
-            tableData: [
+            pageSize: 10,
+            pageNum: 1,
+            total: 0,
+            dataArray: [],
+            columns: [
                 {
-                    name: 'admin',
-                    phone: '12345678902',
+                    prop: "name",
+                    label: "任务名称",
                 },
                 {
-                    name: 'admin',
-                    phone: '12345678902',
+                    prop: "totalIntegral",
+                    label: "社区总积分",
                 },
                 {
-                    name: 'admin',
-                    phone: '12345678902',
+                    prop: "integral",
+                    label: "剩余积分",
                 },
                 {
-                    name: 'admin',
-                    phone: '12345678902',
+                    prop: "createTime",
+                    label: "创建时间",
+                    width: ""
                 },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-                {
-                    name: 'admin',
-                    phone: '12345678902',
-                },
-            ]
+            ],
         }
     },
+    mounted(){
+        this.queryUserListPost(this.pageNum);
+    },
     methods: {
+        //查询所有管理员
+        queryUserListPost(pageNum, name){
+            let params = {
+                pageSize: this.pageSize,
+                pageNum: pageNum,
+                name: name
+            }
+            userQueryAll(params).then(data => {
+                if(data.data.code==200){
+                    this.dataArray = data.data.data.list
+                }
+            })
+        },
         submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
@@ -206,5 +195,11 @@ export default {
     padding 15px;
     box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
     border-radius: 4px;
+    .formBox {
+        border-bottom 1px solid #eee
+    }
+    .btnBox {
+        margin 10px 0;
+    }
 }
 </style>

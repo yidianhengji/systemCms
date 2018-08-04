@@ -28,9 +28,6 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="btnBox">
-            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增居民</el-button>
-        </div>
         <div class="tableList">
             <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
         </div>
@@ -57,39 +54,39 @@ export default {
             dataArray: [],
             columns: [
                 {
-                    prop: "name",
-                    label: "任务名称",
+                    prop: "nickname",
+                    label: "姓名",
                 },
                 {
                     prop: "communityId",
-                    label: "所属社区",
+                    label: "性别",
                 },
                 {
-                    prop: "createUser",
-                    label: "发布人",
+                    prop: "mobile",
+                    label: "手机号码",
                 },
                 {
-                    prop: "createTime",
-                    label: "创建时间",
-                    width: ""
-                },
-                {
-                    prop: "limitPeople",
-                    label: "人数上限",
-                    width: ""
-                },
-                {
-                    prop: "joinPeople",
-                    label: "报名人数",
+                    prop: "idCard",
+                    label: "身份证号",
                     width: ""
                 },
                 {
                     prop: "integral",
-                    label: "积分设置",
+                    label: "现有积分",
                     width: ""
                 },
                 {
-                    prop: "is_authentication",
+                    prop: "identityFlag",
+                    label: "身份",
+                    width: ""
+                },
+                {
+                    prop: "isRealName",
+                    label: "实名",
+                    width: ""
+                },
+                {
+                    prop: "status",
                     label: "状态",
                     width: "",
                     render: function(h, param) {
@@ -102,39 +99,6 @@ export default {
                         return html;
                     }
                 },
-                {
-                    prop: "",
-                    label: "操作",
-                    render: (h, param) => {
-                        if(param.row.dataForm==1){
-                            var items = [
-                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
-                                { label: "删除", func: { func: "del", uuid: param.row.uuid } },
-                                { label: "查看评论", func: { func: "del", uuid: param.row.uuid } },
-                            ]
-                        }else if(param.row.dataForm==2){
-                            var items = [
-                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
-                                { label: "删除", func: { func: "del", uuid: param.row.uuid } }
-                            ]
-                        }
-                        const dropDownData = {
-                            label: "操作",
-                            items: items
-                        };
-                        // 触发MyDropDown的update和del事件
-                        return h(MyDropDown, {
-                            props: {
-                                dropDownData: dropDownData
-                            },
-                            on: {
-                                update: this.update,
-                                del: this.del
-                            }
-                        });
-                        
-                    }
-                }
             ],
         }
     },
@@ -157,34 +121,6 @@ export default {
         //搜索
         onSubmit() {
             console.log('submit!');
-        },
-        //新增
-        onClickAdd() {
-            this.$router.push({path: '/home/contern/taskAdd', query: { type: 1 } })
-        },
-        //修改
-        update(obj) {
-            this.$router.push({path: '/home/contern/taskAdd', query: { uuid: obj, type: 2 } })
-        },
-        //删除
-        del(obj) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                taskDel({uuid: obj}).then(data => {
-                    if(data.data.code==200){
-                        this.$message({
-                            message: '删除成功',
-                            type: 'success'
-                        });
-                        this.queryUserListPost(this.pageNum);
-                    }
-                })
-            }).catch(() => {
-                
-            });
         },
     }
 }

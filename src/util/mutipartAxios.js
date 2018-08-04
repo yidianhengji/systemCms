@@ -4,7 +4,6 @@ import { getCookie, setCookie } from '@/util/cookie'
 
 let options = {
   headers: {
-    'user_id': getCookie('user_id'),
     'Content-Type': 'multipart/form-data'
   },
 }
