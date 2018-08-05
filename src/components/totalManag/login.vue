@@ -7,19 +7,11 @@
             <div class="main-contern">
                 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
                     <el-form-item prop="name">
-                        <el-input
-                            type="text"
-                            placeholder="请输入账号"
-                            prefix-icon="fa fa-user-o"
-                            v-model="ruleForm2.name">
+                        <el-input type="text" placeholder="请输入账号" prefix-icon="fa fa-user-o" v-model="ruleForm2.name">
                         </el-input>
                     </el-form-item>
                     <el-form-item prop="pass">
-                        <el-input
-                            type="password"
-                            placeholder="请输入密码"
-                            prefix-icon="fa fa-key"
-                            v-model="ruleForm2.pass">
+                        <el-input type="password" placeholder="请输入密码" prefix-icon="fa fa-key" v-model="ruleForm2.pass" @keyup.enter.native="submitForm('ruleForm2')">
                         </el-input>
                     </el-form-item>
                     <el-form-item>
@@ -68,13 +60,22 @@ export default {
             this.$refs[formName].validate(valid => {
                 if (valid) {
                     let params = {
-                        mobile:this.ruleForm2.name,
-                        password:this.ruleForm2.pass,
+                        mobile: this.ruleForm2.name,
+                        password: this.ruleForm2.pass,
                     };
                     login(params).then(response => {
-                        if(response.data.code==200){
-                            sessionStorage.setItem("userData", JSON.stringify(response.data.data));
-                            this.$router.push({ path: '/home/survey' });
+                        if (response.data.code == 200) {
+                            const loading = this.$loading({
+                                lock: true,
+                                text: '正在登陆系统中，请等候。',
+                                spinner: 'el-icon-loading',
+                                background: 'rgba(0, 0, 0, 0.7)'
+                            });
+                            setTimeout(() => {
+                                loading.close();
+                                sessionStorage.setItem("userData", JSON.stringify(response.data.data));
+                                this.$router.push({ path: '/home/survey' });
+                            }, 1000);
                         }
                     })
                 } else {

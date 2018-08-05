@@ -1,62 +1,35 @@
 <template>
     <div class="__userList">
+
         <div class="formBox">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="姓名：">
-                    <el-input v-model="formInline.user" placeholder="请输入姓名"></el-input>
+                    <el-input v-model="formInline.truename" placeholder="请输入姓名"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
                 </el-form-item>
-                <el-form-item class="pull-right">
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="dialogFormVisible = true">新增管理员</el-button>
-                </el-form-item>
             </el-form>
+        </div>
+        <div class="btnBox">
+            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增管理员</el-button>
         </div>
         <div class="tableList">
             <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
         </div>
-
-        <!-- <div class="tableList">
-            <el-table
-                ref="multipleTable"
-                :data="tableData"
-                tooltip-effect="dark"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-                <el-table-column
-                    prop="name"
-                    label="姓名">
-                </el-table-column>
-                <el-table-column
-                    prop="phone"
-                    label="手机号码">
-                </el-table-column>
-                <el-table-column
-                    prop="phone"
-                    label="角色">
-                </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div> -->
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible" :modal-append-to-body="false" :close-on-click-modal="false">
+        <el-dialog :title="modelTypeName" :visible.sync="dialogFormVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item label="姓名" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入商品名称"></el-input>
+                        <el-input v-model="ruleForm.name" placeholder="请输入姓名"></el-input>
                     </el-form-item>
-                    <el-form-item label="手机号码" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入商品总数"></el-input>
+                    <el-form-item v-if="modelType==1" label="手机号码" prop="mobile" class="form-control">
+                        <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码"></el-input>
                     </el-form-item>
-                    <el-form-item label="角色" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入商品积分"></el-input>
+                    <el-form-item label="角色" prop="roleId" class="form-control">
+                        <el-select v-model="ruleForm.roleId" placeholder="请选择角色">
+                            <el-option v-for="(item,index) in roleQueryData" :key="index" :label="item.name" :value="item.uuid"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
             </div>
@@ -71,119 +44,232 @@
 <script>
 import MyDropDown from '@/components/common/MyDropDown';
 import table from '@/components/common/table';
-import { userQueryAll } from "api/role/index";
+import { userQueryAll } from "api/role/index";//分页查询管理员列表
+import { userQueryRegister } from "api/role/index";//新增管理员
+import { userQueryQueryOne } from "api/role/index";//查询单个管理员
+import { userQueryUpdate } from "api/role/index";//修改管理员
+import { roleQuery } from "api/role/index";//查询权限组
 export default {
     components: {
         vtable: table
     },
     data(){
         return {
-            ruleForm: {
-				name: "",
-				region: "",
-				date1: "",
-				date2: "",
-				delivery: false,
-				type: [],
-				resource: "",
-				desc: ""
-			},
-			rules: {
-				name: [
-					{ required: true, message: "请输入文章内容", trigger: "blur" },
-					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
-				],
-				region: [
-					{ required: true, message: "请选择活动区域", trigger: "change" }
-				],
-			},
-            dialogFormVisible: false,
+            roleQueryData: [],//查询所有的权限组
             formInline: {
-                user: '',
-                region: ''
+                truename: '',
             },
+            dialogFormVisible: false,//弹窗
+            modelType: '1',//弹窗判断变量
+            modelTypeName: '新增管理员',//弹窗判断名称
+            ruleForm: {
+                uuid: "",
+				name: "",
+				mobile: "",
+				roleId: "",
+            },
+            rules: {
+				name: [
+					{ required: true, message: "请输入姓名", trigger: "blur" },
+					{ min: 2, max: 10, message: "长度在 2 到 10 个字符", trigger: "blur" }
+				],
+				mobile: [
+                    { required: true, message: "请输入手机号码", trigger: "blur" },
+                    { pattern: /^[0-9]*$/, message: '请输入整数' },
+					{ min: 11, max: 11, message: "请输入长度为11位数的手机号", trigger: "blur" }
+                ],
+                roleId: [
+                    { required: true, message: "请选择角色", trigger: "change" },
+                ]
+			},
             pageSize: 10,
             pageNum: 1,
             total: 0,
             dataArray: [],
             columns: [
                 {
-                    prop: "name",
-                    label: "任务名称",
+                    prop: "truename",
+                    label: "姓名",
                 },
                 {
-                    prop: "totalIntegral",
-                    label: "社区总积分",
+                    prop: "mobile",
+                    label: "手机号码",
                 },
                 {
-                    prop: "integral",
-                    label: "剩余积分",
+                    prop: "roleName",
+                    label: "角色",
                 },
                 {
                     prop: "createTime",
                     label: "创建时间",
-                    width: ""
                 },
+                {
+                    prop: "",
+                    label: "操作",
+                    render: (h, param) => {
+                        var items = [
+                            { label: "修改", func: { func: "update", uuid: param.row.uuid, uuid2: param.row.roleId } },
+                            { label: "删除", func: { func: "del", uuid: param.row.uuid } }
+                        ]
+                        const dropDownData = {
+                            label: "操作",
+                            items: items
+                        };
+                        return h(MyDropDown, {
+                            props: {
+                                dropDownData: dropDownData
+                            },
+                            on: {
+                                update: this.update,
+                                del: this.del
+                            }
+                        });
+                        
+                    }
+                }
             ],
         }
     },
     mounted(){
         this.queryUserListPost(this.pageNum);
+        this.roleQueryPost();
     },
     methods: {
-        //查询所有管理员
-        queryUserListPost(pageNum, name){
+        //查询所有权限组
+        roleQueryPost(){
+            let params = {
+                pageSize: 100,
+                pageNum: 1,
+            }
+            roleQuery(params).then(data => {
+                if(data.data.code==200){
+                    this.roleQueryData = data.data.data.list
+                }
+            })
+        },
+        //分页查询管理员列表
+        queryUserListPost(pageNum, truename){
             let params = {
                 pageSize: this.pageSize,
                 pageNum: pageNum,
-                name: name
+                truename: truename
             }
             userQueryAll(params).then(data => {
                 if(data.data.code==200){
                     this.dataArray = data.data.data.list
+                    this.total = data.data.data.total
                 }
             })
         },
+        //新增弹出按钮
         submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-				alert("submit!");
+                    if(this.modelType==1){
+                        var params = {
+                            user: {
+                                truename: this.ruleForm.name,
+                                mobile: this.ruleForm.mobile,
+                                roleId: this.ruleForm.roleId
+                            },
+                        }
+                        userQueryRegister(params).then(data => {
+                            if(data.data.code==200){
+                                this.dialogFormVisible = false
+                                this.$message({
+                                    message: '新增成功！',
+                                    type: 'success',
+                                    duration: '500',
+                                    onClose: function(){
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+                        })
+                    }else if(this.modelType==2){
+                        var params = {
+                            user: {
+                                truename: this.ruleForm.name,
+                                uuid: this.ruleForm.uuid,
+                                roleId: this.ruleForm.roleId
+                            },
+                        }
+                        userQueryUpdate(params).then(data => {
+                            if(data.data.code==200){
+                                this.dialogFormVisible = false
+                                this.$message({
+                                    message: '修改成功！',
+                                    type: 'success',
+                                    duration: '500',
+                                    onClose: function(){
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+                        })
+                    }
 				} else {
-				console.log("error submit!!");
-				return false;
+				    return false;
 				}
 			});
         },
+        //取消弹出按钮
         resetForm(formName) {
             this.$refs[formName].resetFields();
             this.dialogFormVisible = false
-		},
+        },
+        //搜索
         onSubmit() {
-            console.log('submit!');
+            this.queryUserListPost(this.pageNum, this.formInline.truename);
         },
-        toggleSelection(rows) {
-            if (rows) {
-            rows.forEach(row => {
-                this.$refs.multipleTable.toggleRowSelection(row);
+        //新增
+        onClickAdd(){
+            this.dialogFormVisible = true
+            this.modelType = 1
+            this.modelTypeName = '新增管理员'
+        },
+        //修改
+        update(uuid, roleId){
+            this.dialogFormVisible = true
+            this.modelType = 2
+            this.modelTypeName = '修改管理员'
+            userQueryQueryOne({uuid: uuid}).then(data => {
+                if(data.data.code==200){
+                    this.ruleForm.uuid = uuid
+                    this.ruleForm.name = data.data.data.truename
+                    this.ruleForm.mobile = data.data.data.mobile
+                    this.ruleForm.roleId = ''+roleId+''
+                }
+            })
+        },
+        //删除
+        del(uuid){
+            this.$confirm('是否删除该条记录?', '温馨提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                var params = {
+                    user: {
+                        uuid: uuid,
+                        status: 2,
+                    },
+                }
+                userQueryUpdate(params).then(data => {
+                    if(data.data.code==200){
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!',
+                            duration: '500',
+                            onClose: function(){
+                                window.location.reload();
+                            }
+                        });
+                    }
+                })
+            }).catch(() => {
+                
             });
-            } else {
-            this.$refs.multipleTable.clearSelection();
-            }
-        },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
-        handleEdit(index, row) {
-            console.log(index, row);
-        },
-        handleDelete(index, row) {
-            console.log(index, row);
-        },
-        handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-        },
-        handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
         }
     }
 }

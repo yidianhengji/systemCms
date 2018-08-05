@@ -42,6 +42,14 @@ export default {
                     label: "任务名称",
                 },
                 {
+                    prop: "leaderName",
+                    label: "社区负责人",
+                },
+                {
+                    prop: "leaderMobile",
+                    label: "负责人电话",
+                },
+                {
                     prop: "totalIntegral",
                     label: "社区总积分",
                 },

@@ -1,24 +1,26 @@
 <template>
     <el-dropdown trigger="click" @command="handleCommand">
         <el-button size="small">
-            <span v-text="dropDownData.label" class="el-dropdown-link"></span><i class="el-icon-arrow-down el-icon--right"></i>
+            <span v-text="dropDownData.label" class="el-dropdown-link"></span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
-        <el-dropdown-menu slot="dropdown" >
-            <el-dropdown-item :command="item.func"  v-text="item.label" v-for="(item,index) in dropDownData.items" :key="index"></el-dropdown-item>
+        <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item :command="item.func" v-text="item.label" v-for="(item,index) in dropDownData.items" :key="index"></el-dropdown-item>
         </el-dropdown-menu>
     </el-dropdown>
 </template>
 
 <script>
 export default {
-  props: ["dropDownData"],
-  methods: {
-    handleCommand(command) {
-      this.$emit(command.func, command.uuid);
+    props: ["dropDownData"],
+    methods: {
+        handleCommand(command) {
+            this.$emit(command.func, command.uuid, command.uuid2);
+        }
     }
-  }
 };
 </script>
 
 <style>
+
 </style>

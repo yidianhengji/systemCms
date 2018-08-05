@@ -38,6 +38,7 @@
                     <el-form-item label="任务封面图">
                         <el-upload
                             :action="serverUrl"
+                            :show-file-list="false"
                             list-type="picture-card"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload"

@@ -47,7 +47,7 @@ export default {
                     label: "所属社区",
                 },
                 {
-                    prop: "createUser",
+                    prop: "createName",
                     label: "发布人",
                 },
                 {

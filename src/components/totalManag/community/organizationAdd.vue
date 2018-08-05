@@ -12,11 +12,11 @@
                     <el-form-item label="总积分" prop="totalIntegral" class="form-control">
                         <el-input v-model="ruleForm.totalIntegral" placeholder="请输入总积分"></el-input>
                     </el-form-item>
-					<el-form-item label="社区负责人" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入社区负责人"></el-input>
+					<el-form-item label="社区负责人" prop="communityLeader" class="form-control">
+                        <el-input v-model="ruleForm.communityLeader" placeholder="请输入社区负责人"></el-input>
                     </el-form-item>
-                    <el-form-item label="负责人电话" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入负责人电话"></el-input>
+                    <el-form-item label="负责人电话" prop="mobile" class="form-control">
+                        <el-input v-model="ruleForm.mobile" placeholder="请输入负责人电话"></el-input>
                     </el-form-item>
                     <el-form-item label="备注">
                         <el-input type="textarea" v-model="ruleForm.remark" placeholder="写点什么吧！"></el-input>
@@ -38,7 +38,9 @@ export default {
 			ruleForm: {
 				name: "",
 				totalIntegral: "",
-				remark: ""
+				remark: "",
+				communityLeader: "",
+				mobile: ""
 			},
 			rules: {
 				name: [
@@ -49,6 +51,15 @@ export default {
 					{ required: true, message: "请输入总积分", trigger: "blur" },
 					{ pattern: /^[0-9]*$/, message: '请输入整数' },
 				],
+				mobile: [
+					{ required: true, message: "请输入手机号", trigger: "blur" },
+					{ pattern: /^[0-9]*$/, message: '请输入整数' },
+					{ min: 11, max: 11, message: "请输入长度为11位数的手机号", trigger: "blur" }
+				],
+				communityLeader: [
+					{ required: true, message: "请输入负责人姓名", trigger: "blur" },
+					{ min: 2, max: 10, message: "长度在 3 到 10 个字符", trigger: "blur" }
+				]
 			}
 		};
 	},
@@ -60,7 +71,9 @@ export default {
 					let params = {
                         name: this.ruleForm.name,
                         totalIntegral: this.ruleForm.totalIntegral,
-                        remark: this.ruleForm.remark,
+						remark: this.ruleForm.remark,
+						communityLeader: this.ruleForm.communityLeader,
+						mobile: this.ruleForm.mobile,
                     };
                     communityAdd(params).then(data => {
                         if(data.data.code==200){

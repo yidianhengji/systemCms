@@ -10,3 +10,13 @@ export function login(params) {
         })
     })
 }
+
+
+/*退出*/
+export function signOut(params) {
+    return new Promise((resolve, reject) => {
+        axiosToken.post(backen + 'user/signOut', params).then(data => {
+            resolve(data)
+        })
+    })
+}

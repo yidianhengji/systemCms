@@ -17,7 +17,7 @@
 		</el-table>
 
 		<div class="block" style="margin-top: 15px; overflow: hidden;">
-			<el-pagination :size-change="pageSize" :current-change="pageNum" @current-change="getArticle" :page-size="100" layout="total, prev, pager, next, jumper" :total="total">
+			<el-pagination :size-change="pageSize" :current-change="pageNum" @current-change="getArticle" :page-size="10" layout="total, prev, pager, next, jumper" :total="total">
 			</el-pagination>
 		</div>
 	</div>
