@@ -2,8 +2,15 @@
     <div class="__task">
         <div class="formBox">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="任务名称：">
-                    <el-input v-model="formInline.user" placeholder="请输入任务名称"></el-input>
+                <el-form-item label="名称：">
+                    <el-input v-model="formInline.name" placeholder="请输入任务名称"></el-input>
+                </el-form-item>
+                <el-form-item label="状态：">
+                    <el-select v-model="formInline.flag" placeholder="请选择状态">
+                        <el-option label="未开始" value="1"></el-option>
+                        <el-option label="进行中" value="2"></el-option>
+                        <el-option label="已结束" value="3"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -30,8 +37,8 @@ export default {
     data(){
         return {
             formInline: {
-                user: '',
-                region: ''
+                name: '',
+                flag: ''
             },
             pageSize: 10,
             pageNum: 1,
@@ -51,11 +58,6 @@ export default {
                     label: "发布人",
                 },
                 {
-                    prop: "createTime",
-                    label: "创建时间",
-                    width: ""
-                },
-                {
                     prop: "limitPeople",
                     label: "人数上限",
                     width: ""
@@ -71,50 +73,88 @@ export default {
                     width: ""
                 },
                 {
-                    prop: "is_authentication",
+                    prop: "updateTime",
+                    label: "更新时间",
+                    width: ""
+                },
+                {
+                    prop: "flag",
                     label: "状态",
                     width: "",
-                    render: function(h, param) {
-                        let html = "";
-                        if(param.row.sex == 1) {
-                            html = "是";
-                        } else if(param.row.sex == 2) {
-                            html = "否";
+                    render: function(createElement) {
+                        if(this.row.flag==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '未开始',
+                                    className: 'text-info'
+                                }
+                            })
+                        }else if(this.row.flag==2){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '进行中',
+                                    className: 'text-warning'
+                                }
+                            })
+                        }else if(this.row.flag==3){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '已结束',
+                                    className: 'text-success'
+                                }
+                            })
                         }
-                        return html;
-                    }
+                    },
                 },
                 {
                     prop: "",
                     label: "操作",
                     render: (h, param) => {
                         if(param.row.dataForm==1){
-                            var items = [
-                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
-                                { label: "删除", func: { func: "del", uuid: param.row.uuid } },
-                                { label: "查看评论", func: { func: "del", uuid: param.row.uuid } },
-                            ]
-                        }else if(param.row.dataForm==2){
-                            var items = [
-                                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
-                                { label: "删除", func: { func: "del", uuid: param.row.uuid } }
-                            ]
-                        }
-                        const dropDownData = {
-                            label: "操作",
-                            items: items
-                        };
-                        // 触发MyDropDown的update和del事件
-                        return h(MyDropDown, {
-                            props: {
-                                dropDownData: dropDownData
-                            },
-                            on: {
-                                update: this.update,
-                                del: this.del
+                            if(param.row.flag==1){
+                                var items = [
+                                    { label: "修改", func: { func: "update", uuid: param.row.uuid } },
+                                    { label: "删除", func: { func: "del", uuid: param.row.uuid } },
+                                ]
+                            }else if(param.row.flag==2){
+                                var items = []
+                            }else if(param.row.flag==3){
+                                var items = [
+                                    { label: "删除", func: { func: "del", uuid: param.row.uuid } },
+                                    { label: "查看评论", func: { func: "view", uuid: param.row.uuid } },
+                                ]
                             }
-                        });
-                        
+                        }else if(param.row.dataForm==2){
+                            if(param.row.flag==1){
+                                var items = [
+                                    { label: "修改", func: { func: "update", uuid: param.row.uuid } },
+                                    { label: "删除", func: { func: "del", uuid: param.row.uuid } }
+                                ]
+                            }else if(param.row.flag==2){
+                                var items = []
+                            }else if(param.row.flag==3){
+                                var items = [
+                                    { label: "删除", func: { func: "del", uuid: param.row.uuid } },
+                                ]
+                            }
+                        }
+                        if(items.length>0){
+                            const dropDownData = {
+                                label: "操作",
+                                items: items
+                            };
+                            // 触发MyDropDown的update和del事件
+                            return h(MyDropDown, {
+                                props: {
+                                    dropDownData: dropDownData
+                                },
+                                on: {
+                                    update: this.update,
+                                    del: this.del,
+                                    view: this.view
+                                }
+                            });
+                        }
                     }
                 }
             ],
@@ -124,11 +164,13 @@ export default {
         this.queryUserListPost(this.pageNum);
     },
     methods: {
-        //查询所有管理员
-        queryUserListPost(pageNum){
+        //查询所有任务
+        queryUserListPost(pageNum, name, flag){
             let params = {
                 pageSize: this.pageSize,
-                pageNum: pageNum
+                pageNum: pageNum,
+                name: name,
+                flag: flag
             }
             taskQuery(params).then(data => {
                 if(data.data.code==200){
@@ -138,7 +180,7 @@ export default {
         },
         //搜索
         onSubmit() {
-            console.log('submit!');
+            this.queryUserListPost(this.pageNum, this.formInline.name, this.formInline.flag);
         },
         //新增
         onClickAdd() {
@@ -150,7 +192,7 @@ export default {
         },
         //删除
         del(obj) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            this.$confirm('是否删除该条记录?', '温馨提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -159,14 +201,20 @@ export default {
                     if(data.data.code==200){
                         this.$message({
                             message: '删除成功',
-                            type: 'success'
+                            type: 'success',
+                            duration: '500',
+                            onClose: function(){
+                                window.location.reload();
+                            }
                         });
-                        this.queryUserListPost(this.pageNum);
                     }
                 })
             }).catch(() => {
                 
             });
+        },
+        view(obj){
+
         },
     }
 }

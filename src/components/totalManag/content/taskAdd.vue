@@ -2,7 +2,8 @@
     <div class="__articleAdd">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>新增任务</span>
+                <span v-if="$route.query.type==1">新增任务</span>
+                <span v-else>修改任务</span>
             </div>
             <div class="addFromListBox">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -11,8 +12,7 @@
                     </el-form-item>
                     <el-form-item label="所属社区" prop="communityId">
                         <el-select v-model="ruleForm.communityId" placeholder="请选择所属社区">
-                            <el-option label="西湖街道办" value="shanghai"></el-option>
-                            <el-option label="八方小区" value="beijing"></el-option>
+                            <el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="任务时间" prop="startTime">
@@ -37,24 +37,20 @@
                     </el-form-item>
                     <el-form-item label="任务封面图">
                         <el-upload
+                            class="avatar-uploader"
                             :action="serverUrl"
                             :show-file-list="false"
-                            list-type="picture-card"
                             :on-success="handleAvatarSuccess"
-                            :before-upload="beforeAvatarUpload"
-                            >
-                            <i class="el-icon-plus"></i>
+                            :before-upload="beforeAvatarUpload">
+                            <img v-if="ruleForm.coverpic" :src="ruleForm.coverpic" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
-                        <el-dialog :visible.sync="dialogVisible">
-                            <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
                     </el-form-item>
                     <el-form-item label="任务介绍">
                         <el-input type="textarea" v-model="ruleForm.description" placeholder="写点什么吧！"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -63,14 +59,16 @@
 </template>
 
 <script>
-import { uploadPath } from '@/path/path'
-import { taskAdd } from "api/task/index";
-import { uploadFile } from "api/upload/index";
+import { uploadPath } from '@/path/path';//上传接口地址
+import { taskAdd } from "api/task/index";//新增
+import { taskUpdate } from "api/task/index";//修改
+import { taskQueryOne } from "api/task/index";//查询单个
+import { communityQuery } from "api/community/index";//所属社区
 export default {
   	data() {
 		return {
+            communityQueryDataList: [],//所属社区
             serverUrl: uploadPath,
-            dialogImageUrl: '',
             pictureList: [],
             dialogVisible: false,
 			ruleForm: {
@@ -86,76 +84,131 @@ export default {
                 description: '',
             },
 			rules: {
-				// name: [
-				// 	{ required: true, message: "请输入任务名称", trigger: "blur" },
-				// 	{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
-				// ],
-				// communityId: [
-				// 	{ required: true, message: "请选择所属社区", trigger: "change" }
-                // ],
-                // startTime: [
-                //     { required: true, message: "请选择任务时间", trigger: "blur" },
-                // ],
-                // location: [
-                //     { required: true, message: "请输入任务地点", trigger: "blur" },
-                // ],
-                // limitPeople: [
-                //     { required: true, message: '请输入人数上限' },
-                //     { pattern: /^[0-9]*$/, message: '请输入整数' },
-                // ],
-                // integral: [
-                //     { required: true, message: "请输入积分设置", trigger: "blur" },
-                //     { pattern: /^[0-9]*$/, message: '请输入整数' },
-                // ]
+				name: [
+					{ required: true, message: "请输入任务名称", trigger: "blur" },
+					{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
+				],
+				communityId: [
+					{ required: true, message: "请选择所属社区", trigger: "change" }
+                ],
+                startTime: [
+                    { required: true, message: "请选择任务时间", trigger: "blur" },
+                ],
+                location: [
+                    { required: true, message: "请输入任务地点", trigger: "blur" },
+                ],
+                limitPeople: [
+                    { required: true, message: '请输入人数上限' },
+                    { pattern: /^[0-9]*$/, message: '请输入整数' },
+                ],
+                integral: [
+                    { required: true, message: "请输入积分设置", trigger: "blur" },
+                    { pattern: /^[0-9]*$/, message: '请输入整数' },
+                ]
 			}
 		};
-	},
+    },
+    mounted(){
+        this.communityQueryPost();
+        if(this.$route.query.type==2){
+            this.taskQueryOnePost();
+        }
+    },
 	methods: {
+        //查询所有社区
+        communityQueryPost(){
+            let params = {
+                pageSize: 1000,
+                pageNum: 1,
+            }
+            communityQuery(params).then(data => {
+                if(data.data.code==200){
+                    this.communityQueryDataList = data.data.data.list
+                }
+            })
+        },
+        //查询单个
+        taskQueryOnePost(){
+            taskQueryOne({uuid: this.$route.query.uuid}).then(data => {
+                if(data.data.code==200){
+                    this.ruleForm.name = data.data.data.name;
+                    this.ruleForm.communityId = ''+data.data.data.communityId+''
+                    this.ruleForm.startTime = [data.data.data.startTime, data.data.data.endTime]
+                    this.ruleForm.location = data.data.data.location
+                    this.ruleForm.location = data.data.data.location
+                    this.ruleForm.limitPeople = data.data.data.limitPeople
+                    this.ruleForm.integral = data.data.data.integral
+                    this.ruleForm.coverpic = data.data.data.coverpic
+                    this.ruleForm.description = data.data.data.description
+                }
+            })
+        },
         //提交按钮
 		submitForm(formName) {
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-
-
-
-
-
-
-
-
-
-
-                    // let params = {
-                    //     name: this.ruleForm.name,
-                    //     communityId: this.ruleForm.communityId,
-                    //     startTime: this.ruleForm.startTime[0],
-                    //     endTime: this.ruleForm.startTime[1],
-                    //     location: this.ruleForm.location,
-                    //     limitPeople: this.ruleForm.limitPeople,
-                    //     integral: this.ruleForm.integral,
-                    //     dataForm: this.ruleForm.dataForm,
-                    //     coverpic: this.ruleForm.coverpic,
-                    //     description: this.ruleForm.description,
-                    // };
-                    // taskAdd(params).then(data => {
-                    //     if(data.data.code==200){
-                    //         this.$alert("提交成功！", '温馨提示',
-                    //             { confirmButtonText: '确定', callback: action => { }
-                    //         });
-                    //     }
-                    // })
+                    if(this.$route.query.type==1){
+                        let params = {
+                            name: this.ruleForm.name,
+                            communityId: this.ruleForm.communityId,
+                            startTime: this.ruleForm.startTime[0],
+                            endTime: this.ruleForm.startTime[1],
+                            location: this.ruleForm.location,
+                            limitPeople: this.ruleForm.limitPeople,
+                            integral: this.ruleForm.integral,
+                            dataForm: this.ruleForm.dataForm,
+                            coverpic: this.ruleForm.coverpic,
+                            description: this.ruleForm.description,
+                        };
+                        taskAdd(params).then(data => {
+                            var _this = this;
+                            if(data.data.code==200){
+                                this.$message({
+                                    message: '新增成功！',
+                                    type: 'success',
+                                    duration: '500',
+                                    onClose: function(){
+                                        _this.$router.push({path: '/home/contern/task'})
+                                    }
+                                });
+                            }
+                        })
+                    }else if(this.$route.query.type==2){
+                        let params = {
+                            uuid: this.$route.query.uuid,
+                            name: this.ruleForm.name,
+                            communityId: this.ruleForm.communityId,
+                            startTime: this.ruleForm.startTime[0],
+                            endTime: this.ruleForm.startTime[1],
+                            location: this.ruleForm.location,
+                            limitPeople: this.ruleForm.limitPeople,
+                            integral: this.ruleForm.integral,
+                            dataForm: this.ruleForm.dataForm,
+                            coverpic: this.ruleForm.coverpic,
+                            description: this.ruleForm.description,
+                        };
+                        taskUpdate(params).then(data => {
+                            var _this = this;
+                            if(data.data.code==200){
+                                this.$message({
+                                    message: '修改成功！',
+                                    type: 'success',
+                                    duration: '500',
+                                    onClose: function(){
+                                        _this.$router.push({path: '/home/contern/task'})
+                                    }
+                                });
+                            }
+                        })
+                    }
 				} else {
 				    return false;
 				}
 			});
         },
-        //重置按钮
-		resetForm(formName) {
-			this.$refs[formName].resetFields();
-        },
         //上传图片成功
         handleAvatarSuccess(res, file) {
-            this.pictureList.push(res.data);
+            this.ruleForm.coverpic = res.data
         },
         // 上传图片前
         beforeAvatarUpload(file) {
@@ -182,5 +235,28 @@ export default {
 			}
 		}
 	}
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
 }
 </style>

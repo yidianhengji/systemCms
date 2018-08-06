@@ -1,8 +1,8 @@
 <template>
-    <div class="__login">
+    <div class="__sqLogin">
         <div class="main">
             <div class="main-header">
-                <h2>后台管理系统</h2>
+                <h2>社区后台管理系统</h2>
             </div>
             <div class="main-contern">
                 <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
@@ -74,12 +74,12 @@ export default {
                             setTimeout(() => {
                                 loading.close();
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
-                                this.$router.push({ path: '/home/survey' });
+                                sessionStorage.setItem("systemType", 'shequ');
+                                this.$router.push({ path: '/home/sqSurvey' });
                             }, 1000);
                         }
                     })
                 } else {
-                    console.log("error submit!!");
                     return false;
                 }
             });
@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.__login {
+.__sqLogin {
     padding: 110px 0;
     .main {
         width: 375px;

@@ -13,9 +13,8 @@
                 background-color="#20222a"
                 text-color="#fff"
                 active-text-color="#fff">
-                    <el-submenu v-for="(item,index) in sidebarMenu" :key="index" :index="''+(index+1)">
+                    <el-submenu v-for="(item,index) in sidebarMenu2" :key="index" :index="''+(index+1)">
                         <template slot="title">
-                            <i :class="item.parentItem.icon"></i>
                             <span>{{item.parentItem.name}}</span>
                         </template>
                         <el-menu-item-group v-if="item.childItem">
@@ -34,38 +33,58 @@
 export default {
     data(){
         return {
+            systemType: '',
             uniqueOpened: true,
             openedRouter: true,
             defaultActive: this.$route.path,
             openeds: ['1'],
-            sidebarMenu: [
+            sidebarMenu1: [
                 {
-                    parentItem: { name: '内容管理', icon: 'el-icon-location' },
+                    parentItem: { name: '内容管理' },
                     childItem: [
-                        // { name: '文章管理', path: '/home/contern/article' },
-                        // { name: '视频管理', path: '/home/contern/article' },
-                        // { name: '栏目管理', path: '/home/contern/column' },
                         { name: '活动管理', path: '/home/contern/activity' },
                         { name: '任务管理', path: '/home/contern/task' },
                         { name: '垃圾分类', path: '/home/contern/garbageType' },
-                        // { name: '公告管理', path: '/home/contern/notice' },
                     ],
                 },
                 {
-                    parentItem: { name: '社区管理', icon: 'el-icon-location' },
+                    parentItem: { name: '社区管理' },
                     childItem: [
                         { name: '社区管理', path: '/home/community/organization' },
                         { name: '居民管理', path: '/home/community/personnel' },
                     ],
                 },
                 {
-                    parentItem: { name: '商品管理', icon: 'el-icon-location' },
+                    parentItem: { name: '商品管理' },
                     childItem: [
                         { name: '商品管理', path: '/home/goods/goodsList' },
                     ],
                 },
                 {
-                    parentItem: { name: '权限管理', icon: 'el-icon-location' },
+                    parentItem: { name: '权限管理' },
+                    childItem: [
+                        { name: '管理员', path: '/home/power/powerUser' },
+                        { name: '权限组', path: '/home/power/powerPowerGroup' },
+                    ],
+                }
+            ],
+            sidebarMenu2: [
+                {
+                    parentItem: { name: '内容管理' },
+                    childItem: [
+                        { name: '活动管理', path: '/home/contern/activity' },
+                        { name: '任务管理', path: '/home/contern/task' },
+                    ],
+                },
+                {
+                    parentItem: { name: '用户管理' },
+                    childItem: [
+                        { name: '居民管理', path: '/home/community/organization' },
+                        { name: '志愿队管理', path: '/home/community/personnel' },
+                    ],
+                },
+                {
+                    parentItem: { name: '权限管理' },
                     childItem: [
                         { name: '管理员', path: '/home/power/powerUser' },
                         { name: '权限组', path: '/home/power/powerPowerGroup' },
@@ -83,6 +102,12 @@ export default {
         },
     },
     mounted() {
+        if(sessionStorage.getItem("systemType")=='zonghoutai'){
+            this.systemType = 1
+        }else if(sessionStorage.getItem("systemType")=='shequ'){
+            this.systemType = 2
+        }
+
         //活动
         if(this.$route.path=='/home/contern/taskAdd'){
             this.defaultActive = '/home/contern/task'

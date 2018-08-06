@@ -29,6 +29,19 @@ html, body {
 	font-size: 15px;
 }
 
+.text-info {
+	color: #909399 !important;
+}
+.text-success {
+	color: #67C23A !important;
+}
+.text-warning {
+	color: #E6A23C !important;
+}
+.text-danger {
+	color: #F56C6C !important;
+}
+
 /*弹窗里面的表单*/
 .el-dialog .el-dialog__header {
 	padding: 20px;

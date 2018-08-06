@@ -58,8 +58,27 @@ export default {
                     label: "姓名",
                 },
                 {
-                    prop: "communityId",
+                    prop: "sex",
                     label: "性别",
+                    render: function(createElement) {
+                        if(this.row.sex==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '男',
+                                }
+                            })
+                        }else if(this.row.sex==2){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '女',
+                                }
+                            })
+                        }
+                    },
+                },
+                {
+                    prop: "communityId",
+                    label: "所属社区"
                 },
                 {
                     prop: "mobile",
@@ -68,36 +87,60 @@ export default {
                 {
                     prop: "idCard",
                     label: "身份证号",
-                    width: ""
                 },
                 {
                     prop: "integral",
                     label: "现有积分",
-                    width: ""
                 },
                 {
                     prop: "identityFlag",
                     label: "身份",
-                    width: ""
+                    render: function(createElement) {
+                        if(this.row.identityFlag==0){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '居民',
+                                }
+                            })
+                        }else if(this.row.identityFlag==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '志愿者',
+                                }
+                            })
+                        }else if(this.row.identityFlag==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '社工',
+                                }
+                            })
+                        }else if(this.row.identityFlag==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '星级志愿者',
+                                }
+                            })
+                        }
+                    },
                 },
                 {
                     prop: "isRealName",
                     label: "实名",
-                    width: ""
-                },
-                {
-                    prop: "status",
-                    label: "状态",
-                    width: "",
-                    render: function(h, param) {
-                        let html = "";
-                        if(param.row.sex == 1) {
-                            html = "是";
-                        } else if(param.row.sex == 2) {
-                            html = "否";
+                    render: function(createElement) {
+                        if(this.row.identityFlag==1){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '实名',
+                                }
+                            })
+                        }else if(this.row.identityFlag==2){
+                            return createElement('span', {
+                                domProps: {
+                                    innerHTML: '未实名',
+                                }
+                            })
                         }
-                        return html;
-                    }
+                    },
                 },
             ],
         }

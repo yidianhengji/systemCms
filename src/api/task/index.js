@@ -26,6 +26,28 @@ export function taskAdd(params) {
 
 
 
+/*修改任务*/
+export function taskUpdate(params) {
+    return new Promise((resolve, reject) => {
+        axiosToken.post(backen + 'task/update', params).then(data => {
+            resolve(data)
+        })
+    })
+}
+
+
+
+/*查询单个任务*/
+export function taskQueryOne(params) {
+    return new Promise((resolve, reject) => {
+        axiosTokenGet.get(backen + 'task/queryOne', { params: params }).then(data => {
+            resolve(data)
+        })
+    })
+}
+
+
+
 /*删除任务*/
 export function taskDel(params) {
     return new Promise((resolve, reject) => {
@@ -52,6 +74,28 @@ export function activityQuery(params) {
 export function activityAdd(params) {
     return new Promise((resolve, reject) => {
         axiosToken.post(backen + 'activity/add', params).then(data => {
+            resolve(data)
+        })
+    })
+}
+
+
+
+/*修改任务*/
+export function activityUpdate(params) {
+    return new Promise((resolve, reject) => {
+        axiosToken.post(backen + 'activity/update', params).then(data => {
+            resolve(data)
+        })
+    })
+}
+
+
+
+/*查询单个任务*/
+export function activityQueryOne(params) {
+    return new Promise((resolve, reject) => {
+        axiosTokenGet.get(backen + 'activity/queryOne', { params: params }).then(data => {
             resolve(data)
         })
     })
