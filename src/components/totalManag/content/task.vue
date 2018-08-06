@@ -184,11 +184,11 @@ export default {
         },
         //新增
         onClickAdd() {
-            this.$router.push({path: '/home/contern/taskAdd', query: { type: 1 } })
+            this.$router.push({path: '/home/zhtContern/taskAdd', query: { type: 1 } })
         },
         //修改
         update(obj) {
-            this.$router.push({path: '/home/contern/taskAdd', query: { uuid: obj, type: 2 } })
+            this.$router.push({path: '/home/zhtContern/taskAdd', query: { uuid: obj, type: 2 } })
         },
         //删除
         del(obj) {

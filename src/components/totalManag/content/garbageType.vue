@@ -86,7 +86,7 @@ export default {
     },
     methods: {
         onClickAdd() {
-            this.$router.push({path: '/home/contern/garbageTypeAdd', query: { type: 1 } })
+            this.$router.push({path: '/home/zhtContern/garbageTypeAdd', query: { type: 1 } })
         },
     }
 }

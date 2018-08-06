@@ -13,7 +13,7 @@
                 background-color="#20222a"
                 text-color="#fff"
                 active-text-color="#fff">
-                    <el-submenu v-for="(item,index) in sidebarMenu2" :key="index" :index="''+(index+1)">
+                    <el-submenu v-for="(item,index) in sidebarMenu1" :key="index" :index="''+(index+1)">
                         <template slot="title">
                             <span>{{item.parentItem.name}}</span>
                         </template>
@@ -42,29 +42,29 @@ export default {
                 {
                     parentItem: { name: '内容管理' },
                     childItem: [
-                        { name: '活动管理', path: '/home/contern/activity' },
-                        { name: '任务管理', path: '/home/contern/task' },
-                        { name: '垃圾分类', path: '/home/contern/garbageType' },
+                        { name: '活动管理', path: '/home/zhtContern/activity' },
+                        { name: '任务管理', path: '/home/zhtContern/task' },
+                        { name: '垃圾分类', path: '/home/zhtContern/garbageType' },
                     ],
                 },
                 {
                     parentItem: { name: '社区管理' },
                     childItem: [
-                        { name: '社区管理', path: '/home/community/organization' },
-                        { name: '居民管理', path: '/home/community/personnel' },
+                        { name: '社区管理', path: '/home/zhtCommunity/organization' },
+                        { name: '居民管理', path: '/home/zhtCommunity/personnel' },
                     ],
                 },
                 {
                     parentItem: { name: '商品管理' },
                     childItem: [
-                        { name: '商品管理', path: '/home/goods/goodsList' },
+                        { name: '商品管理', path: '/home/zhtGoods/goodsList' },
                     ],
                 },
                 {
                     parentItem: { name: '权限管理' },
                     childItem: [
-                        { name: '管理员', path: '/home/power/powerUser' },
-                        { name: '权限组', path: '/home/power/powerPowerGroup' },
+                        { name: '管理员', path: '/home/zhtPower/powerUser' },
+                        { name: '权限组', path: '/home/zhtPower/powerPowerGroup' },
                     ],
                 }
             ],
@@ -72,22 +72,22 @@ export default {
                 {
                     parentItem: { name: '内容管理' },
                     childItem: [
-                        { name: '活动管理', path: '/home/contern/activity' },
-                        { name: '任务管理', path: '/home/contern/task' },
+                        { name: '活动管理', path: '/home/sqContern/activity' },
+                        { name: '任务管理', path: '/home/sqContern/task' },
                     ],
                 },
                 {
                     parentItem: { name: '用户管理' },
                     childItem: [
-                        { name: '居民管理', path: '/home/community/organization' },
-                        { name: '志愿队管理', path: '/home/community/personnel' },
+                        { name: '居民管理', path: '/home/sqCommunity/organization' },
+                        { name: '志愿队管理', path: '/home/sqCommunity/personnel' },
                     ],
                 },
                 {
                     parentItem: { name: '权限管理' },
                     childItem: [
-                        { name: '管理员', path: '/home/power/powerUser' },
-                        { name: '权限组', path: '/home/power/powerPowerGroup' },
+                        { name: '管理员', path: '/home/sqPower/powerUser' },
+                        { name: '权限组', path: '/home/sqPower/powerPowerGroup' },
                     ],
                 }
             ]

@@ -76,10 +76,16 @@ export default {
 						mobile: this.ruleForm.mobile,
                     };
                     communityAdd(params).then(data => {
+						var _this = this;
                         if(data.data.code==200){
-                            this.$alert("提交成功！", '温馨提示',
-                                { confirmButtonText: '确定', callback: action => { }
-                            });
+                            this.$message({
+								message: '新增成功！',
+								type: 'success',
+								duration: '500',
+								onClose: function(){
+									_this.$router.push({path: '/home/community/organization'})
+								}
+							});
                         }
                     })
 				} else {

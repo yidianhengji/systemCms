@@ -176,7 +176,7 @@ export default {
             console.log('submit!');
         },
         onClickAdd() {
-            this.$router.push({path: '/home/goods/goodsListAdd'})
+            this.$router.push({path: '/home/zhtGoods/goodsListAdd'})
         },
         toggleSelection(rows) {
             if (rows) {

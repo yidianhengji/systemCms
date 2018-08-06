@@ -187,7 +187,7 @@ export default {
                                     type: 'success',
                                     duration: '500',
                                     onClose: function(){
-                                        _this.$router.push({path: '/home/contern/activity'})
+                                        _this.$router.push({path: '/home/zhtContern/activity'})
                                     }
                                 });
                             }
@@ -216,7 +216,7 @@ export default {
                                     type: 'success',
                                     duration: '500',
                                     onClose: function(){
-                                        _this.$router.push({path: '/home/contern/activity'})
+                                        _this.$router.push({path: '/home/zhtContern/activity'})
                                     }
                                 });
                             }

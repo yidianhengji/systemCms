@@ -168,7 +168,7 @@ export default {
                                     type: 'success',
                                     duration: '500',
                                     onClose: function(){
-                                        _this.$router.push({path: '/home/contern/task'})
+                                        _this.$router.push({path: '/home/zhtContern/task'})
                                     }
                                 });
                             }
@@ -195,7 +195,7 @@ export default {
                                     type: 'success',
                                     duration: '500',
                                     onClose: function(){
-                                        _this.$router.push({path: '/home/contern/task'})
+                                        _this.$router.push({path: '/home/zhtContern/task'})
                                     }
                                 });
                             }
