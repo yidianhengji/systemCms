@@ -5,16 +5,44 @@
                 <span>新增垃圾分类</span>
             </div>
             <div class="addFromListBox">
-                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="标签" prop="name" class="form-control">
-                        <el-input v-model="ruleForm.name" placeholder="请输入标签"></el-input>
+                <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+                    <el-form-item label="名称" prop="name" class="form-control">
+                        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="所属社区" prop="name">
-                        <el-select v-model="ruleForm.region" placeholder="请选择所属社区">
-                            <el-option label="西湖街道办" value="shanghai"></el-option>
-                            <el-option label="八方小区" value="beijing"></el-option>
-                        </el-select>
-                    </el-form-item>
+					<el-form-item
+						label="可回收垃圾"
+						prop="domains1"
+					>
+						<div v-for="(domain, index) in dynamicValidateForm.domains1" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button @click.prevent="removeDomain(domain,1)">删除</el-button>
+						</div>
+						<el-button @click="addDomain(1)">新增一项</el-button>
+					</el-form-item>
+					<el-form-item
+						label="不可回收垃圾"
+						prop="domains2"
+					>
+						<div v-for="(domain, index) in dynamicValidateForm.domains2" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button @click.prevent="removeDomain(domain,2)">删除</el-button>
+						</div>
+						<el-button @click="addDomain(2)">新增一项</el-button>
+					</el-form-item>
+					<el-form-item
+						label="厨余垃圾"
+						prop="domains3"
+					>
+						<div v-for="(domain, index) in dynamicValidateForm.domains3" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button @click.prevent="removeDomain(domain,3)">删除</el-button>
+						</div>
+						<el-button @click="addDomain(3)">新增一项</el-button>
+					</el-form-item>
+
 					<el-form-item label="规则描述">
                         <el-input type="textarea" v-model="ruleForm.desc" placeholder="写点什么吧！"></el-input>
                     </el-form-item>
@@ -32,23 +60,32 @@
 export default {
   	data() {
 		return {
+			dynamicValidateForm: {
+				domains1: [{
+					value: '',
+					value1: '',
+				}],
+				domains2: [{
+					value: '',
+					value1: '',
+				}],
+				domains3: [{
+					value: '',
+					value1: '',
+				}],
+			},
 			ruleForm: {
 				name: "",
-				region: "",
-				date1: "",
-				date2: "",
-				delivery: false,
-				type: [],
-				resource: "",
+				community_id: '',
 				desc: ""
 			},
 			rules: {
 				name: [
-					{ required: true, message: "请输入文章内容", trigger: "blur" },
+					{ required: true, message: "请输入名称", trigger: "blur" },
 					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
 				],
-				region: [
-					{ required: true, message: "请选择活动区域", trigger: "change" }
+				community_id: [
+					{ required: true, message: "请选择所属社区", trigger: "change" }
 				],
 			}
 		};
@@ -67,6 +104,25 @@ export default {
 		resetForm(formName) {
 			this.$refs[formName].resetFields();
 		},
+		removeDomain(item) {
+			var index = this.dynamicValidateForm.domains.indexOf(item)
+			if (index !== -1) {
+			this.dynamicValidateForm.domains.splice(index, 1)
+			}
+		},
+		addDomain(obj) {
+			if(this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value==''||this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value1==''){
+				this.$message({
+					message: '请完善上面的资料',
+					type: 'warning',
+				});
+			}else {
+				this.dynamicValidateForm['domains'+obj].push({
+					value: '',
+					value1: '',
+				});
+			}
+		}
 	}
 };
 </script>

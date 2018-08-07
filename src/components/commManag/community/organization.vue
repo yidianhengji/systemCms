@@ -2,8 +2,8 @@
     <div class="__organization">
         <div class="formBox">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="社区名称：">
-                    <el-input v-model="formInline.name" placeholder="请输入社区名称"></el-input>
+                <el-form-item label="志愿者名称：">
+                    <el-input v-model="formInline.name" placeholder="请输入志愿者名称"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -11,7 +11,7 @@
             </el-form>
         </div>
         <div class="btnBox">
-            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新建社区</el-button>
+            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新建志愿者</el-button>
         </div>
         <div class="tableList">
             <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
@@ -88,7 +88,7 @@ export default {
         },
         //新增
         onClickAdd() {
-            this.$router.push({path: '/home/zhtCommunity/organizationAdd'})
+            this.$router.push({path: '/home/sqCommunity/organizationAdd'})
         },
     }
 }

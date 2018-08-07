@@ -13,7 +13,7 @@
                 background-color="#20222a"
                 text-color="#fff"
                 active-text-color="#fff">
-                    <el-submenu v-for="(item,index) in sidebarMenu1" :key="index" :index="''+(index+1)">
+                    <el-submenu v-for="(item,index) in sidebarMenu2" :key="index" :index="''+(index+1)">
                         <template slot="title">
                             <span>{{item.parentItem.name}}</span>
                         </template>
@@ -79,8 +79,8 @@ export default {
                 {
                     parentItem: { name: '用户管理' },
                     childItem: [
-                        { name: '居民管理', path: '/home/sqCommunity/organization' },
-                        { name: '志愿队管理', path: '/home/sqCommunity/personnel' },
+                        { name: '居民管理', path: '/home/sqCommunity/personnel' },
+                        { name: '志愿者管理', path: '/home/sqCommunity/organization' },
                     ],
                 },
                 {

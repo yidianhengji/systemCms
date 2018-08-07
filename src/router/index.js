@@ -32,6 +32,15 @@ import powerPowerGroup from '@/components/totalManag/power/powerGroup'; //权限
  */
 import sqLogin from '@/components/commManag/sqLogin'; //总后台登录界面
 import sqSurvey from '@/components/commManag/sqSurvey'; //首页统计
+import sqActivity from '@/components/commManag/content/activity'; //活动管理
+import sqActivityAdd from '@/components/commManag/content/activityAdd'; //新增活动
+import sqTask from '@/components/commManag/content/task'; //任务管理
+import sqTaskAdd from '@/components/commManag/content/taskAdd'; //新增任务
+import sqOrganization from '@/components/commManag/community/organization'; //社区管理
+import sqOrganizationAdd from '@/components/commManag/community/organizationAdd'; //新增社区
+import sqPersonnel from '@/components/commManag/community/personnel'; //居民列表
+import sqPowerUser from '@/components/commManag/power/user'; //管理员
+import sqPowerPowerGroup from '@/components/commManag/power/powerGroup'; //权限组
 const router = new Router({
     routes: [{
             path: '/zhtLogin',
@@ -76,6 +85,15 @@ const router = new Router({
                  * 社区
                  */
                 { path: '/home/sqSurvey', name: '首页', component: sqSurvey },
+                { path: '/home/sqContern/activity', name: '活动管理', component: sqActivity },
+                { path: '/home/sqContern/activityAdd', name: '新增活动', component: sqActivityAdd },
+                { path: '/home/sqContern/task', name: '任务管理', component: sqTask },
+                { path: '/home/sqContern/taskAdd', name: '新增任务', component: sqTaskAdd },
+                { path: '/home/sqCommunity/organization', name: '志愿者管理', component: sqOrganization },
+                { path: '/home/sqCommunity/organizationAdd', name: '新增志愿者', component: sqOrganizationAdd },
+                { path: '/home/sqCommunity/personnel', name: '居民列表', component: sqPersonnel },
+                { path: '/home/sqPower/powerUser', name: '管理员', component: sqPowerUser },
+                { path: '/home/sqPower/powerPowerGroup', name: '权限组', component: sqPowerPowerGroup },
             ]
         },
     ]
