@@ -74,6 +74,7 @@ export default {
 						remark: this.ruleForm.remark,
 						communityLeader: this.ruleForm.communityLeader,
 						mobile: this.ruleForm.mobile,
+						integral: this.ruleForm.totalIntegral,
                     };
                     communityAdd(params).then(data => {
 						var _this = this;
@@ -83,7 +84,7 @@ export default {
 								type: 'success',
 								duration: '500',
 								onClose: function(){
-									_this.$router.push({path: '/home/community/organization'})
+									_this.$router.push({path: '/home/zhtCommunity/organization'})
 								}
 							});
                         }

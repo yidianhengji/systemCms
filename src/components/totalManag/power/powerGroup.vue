@@ -27,7 +27,12 @@
         <el-dialog title="权限设置" :visible.sync="dialogRoleVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
                 <el-checkbox-group v-model="checkedCities">
-                    <el-checkbox v-for="(item, index) in roleDataList" :label="item.uuid" :key="index">{{item.meunName}}</el-checkbox>
+                    <el-checkbox v-for="(item, index) in roleDataList" :label="item.uuid" :key="index">{{item.name}}
+                        <div>
+                        <el-checkbox v-for="(items, indexs) in item.powers" :label="items.uuid" :key="indexs">{{items.meunName}}</el-checkbox>
+                    </div>
+                    </el-checkbox>
+                    
                 </el-checkbox-group>
             </div>
             <div slot="footer" class="dialog-footer">

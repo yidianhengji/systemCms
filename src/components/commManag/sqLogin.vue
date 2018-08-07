@@ -62,6 +62,7 @@ export default {
                     let params = {
                         mobile: this.ruleForm2.name,
                         password: this.ruleForm2.pass,
+                        loginType: '2',
                     };
                     login(params).then(response => {
                         if (response.data.code == 200) {
@@ -74,7 +75,8 @@ export default {
                             setTimeout(() => {
                                 loading.close();
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
-                                sessionStorage.setItem("systemType", 'shequ');
+                                sessionStorage.setItem("systemType", '2');
+                                sessionStorage.setItem("communityId", response.data.data.communityId);
                                 this.$router.push({ path: '/home/sqSurvey' });
                             }, 1000);
                         }

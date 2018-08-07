@@ -62,6 +62,7 @@ export default {
                     let params = {
                         mobile: this.ruleForm2.name,
                         password: this.ruleForm2.pass,
+                        loginType: '1',
                     };
                     login(params).then(response => {
                         if (response.data.code == 200) {
@@ -74,7 +75,8 @@ export default {
                             setTimeout(() => {
                                 loading.close();
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
-                                sessionStorage.setItem("systemType", 'zonghoutai');
+                                sessionStorage.setItem("communityId", response.data.data.communityId);
+                                sessionStorage.setItem("systemType", '1');
                                 this.$router.push({ path: '/home/zhtSurvey' });
                             }, 1000);
                         }

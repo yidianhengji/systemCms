@@ -20,3 +20,13 @@ export function signOut(params) {
         })
     })
 }
+
+
+/*退出*/
+export function queryAll(params) {
+    return new Promise((resolve, reject) => {
+        axiosToken.post(backen + 'user/menus/queryAll', params).then(data => {
+            resolve(data)
+        })
+    })
+}

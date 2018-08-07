@@ -13,13 +13,24 @@
                 background-color="#20222a"
                 text-color="#fff"
                 active-text-color="#fff">
-                    <el-submenu v-for="(item,index) in sidebarMenu2" :key="index" :index="''+(index+1)">
+                    <!-- <el-submenu v-for="(item,index) in sidebarMenu2" :key="index" :index="''+(index+1)">
                         <template slot="title">
                             <span>{{item.parentItem.name}}</span>
                         </template>
                         <el-menu-item-group v-if="item.childItem">
                             <el-menu-item v-for="(itemList,indexList) in item.childItem" :key="indexList" :index="''+itemList.path">
                                 {{itemList.name}}
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu> -->
+
+                    <el-submenu v-for="(item,index) in sidebarMenu" :key="index" :index="''+(index+1)">
+                        <template slot="title">
+                            <span>{{item.name}}</span>
+                        </template>
+                        <el-menu-item-group v-if="item.powers">
+                            <el-menu-item v-for="(itemList,indexList) in item.powers" :key="indexList" :index="''+itemList.frontPath">
+                                {{itemList.meunName}}
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
@@ -30,6 +41,7 @@
 </template>
 
 <script>
+import { queryAll } from "api/login/index";
 export default {
     data(){
         return {
@@ -38,6 +50,7 @@ export default {
             openedRouter: true,
             defaultActive: this.$route.path,
             openeds: ['1'],
+            sidebarMenu: [],
             sidebarMenu1: [
                 {
                     parentItem: { name: '内容管理' },
@@ -100,13 +113,24 @@ export default {
         handleClose(key, keyPath) {
             
         },
+        //根据用户查询菜单权限
+        queryAllPost(){
+            var userData = JSON.parse(sessionStorage.getItem("userData"));
+            queryAll({uuid: userData.roleId}).then(data => {
+                if(data.data.code==200){
+                    this.sidebarMenu = data.data.data
+                }
+            })
+        }
     },
     mounted() {
-        if(sessionStorage.getItem("systemType")=='zonghoutai'){
+        if(sessionStorage.getItem("systemType")=='1'){
             this.systemType = 1
-        }else if(sessionStorage.getItem("systemType")=='shequ'){
+        }else if(sessionStorage.getItem("systemType")=='2'){
             this.systemType = 2
         }
+        
+        this.queryAllPost();
 
         //活动
         if(this.$route.path=='/home/contern/taskAdd'){

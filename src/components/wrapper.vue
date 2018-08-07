@@ -6,7 +6,7 @@
 		<div class="sidebar">
 			<div class="sidebar-scroll">
 				<div class="logo">
-					<span>两型绿色账户后台</span>
+					<span>{{sysName}}</span>
 				</div>
 				<div class="sidebar-nav-tree">
 					<sidebarMenu></sidebarMenu>
@@ -40,8 +40,18 @@ export default {
 		sidebarMenu,
 		footerData
 	},
+	data(){
+		return {
+			sysName: ''
+		}
+	},
 	mounted() {
-		
+		var userData = JSON.parse(sessionStorage.getItem("userData"));
+		if(sessionStorage.getItem("systemType")=='1'){
+			this.sysName = userData.sysName
+        }else if(sessionStorage.getItem("systemType")=='2'){
+			this.sysName = userData.communityName
+        }
 	}
 };
 

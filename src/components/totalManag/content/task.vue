@@ -50,7 +50,7 @@ export default {
                     label: "任务名称",
                 },
                 {
-                    prop: "communityId",
+                    prop: "communityName",
                     label: "所属社区",
                 },
                 {

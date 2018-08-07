@@ -55,7 +55,7 @@ export function roleDel(params) {
 /*查询所有的菜单*/
 export function queryAll(params) {
     return new Promise((resolve, reject) => {
-        axiosToken.get(backen + 'permiss/menus/queryAll', params).then(data => {
+        axiosToken.post(backen + 'permiss/menus/queryAllHasMenus', params).then(data => {
             resolve(data)
         })
     })

@@ -54,9 +54,9 @@ export default {
                         });
                         setTimeout(() => {
                             loading.close();
-                            if(sessionStorage.getItem("systemType")=='zonghoutai'){
+                            if(sessionStorage.getItem("systemType")=='1'){
                                 this.$router.push({ path: '/zhtLogin' });
-                            }else if(sessionStorage.getItem("systemType")=='shequ'){
+                            }else if(sessionStorage.getItem("systemType")=='2'){
                                 this.$router.push({ path: '/sqLogin' });
                             }
                         }, 500);

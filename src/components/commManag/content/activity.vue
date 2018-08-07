@@ -50,10 +50,6 @@ export default {
                     label: "活动名称",
                 },
                 {
-                    prop: "communityId",
-                    label: "所属社区",
-                },
-                {
                     prop: "createName",
                     label: "发布人",
                 },

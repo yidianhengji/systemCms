@@ -10,11 +10,6 @@
                     <el-form-item label="任务名称" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入任务名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="所属社区" prop="communityId">
-                        <el-select v-model="ruleForm.communityId" placeholder="请选择所属社区">
-                            <el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="任务时间" prop="startTime">
                         <el-date-picker
                             v-model="ruleForm.startTime"
@@ -63,17 +58,15 @@ import { uploadPath } from '@/path/path';//上传接口地址
 import { taskAdd } from "api/task/index";//新增
 import { taskUpdate } from "api/task/index";//修改
 import { taskQueryOne } from "api/task/index";//查询单个
-import { communityQuery } from "api/community/index";//所属社区
 export default {
   	data() {
 		return {
-            communityQueryDataList: [],//所属社区
             serverUrl: uploadPath,
             pictureList: [],
             dialogVisible: false,
 			ruleForm: {
 				name: "",
-				communityId: "",
+				communityId: sessionStorage.getItem("communityId"),
 				startTime: "",
 				endTime: "",
 				location: "",
@@ -109,24 +102,11 @@ export default {
 		};
     },
     mounted(){
-        this.communityQueryPost();
         if(this.$route.query.type==2){
             this.taskQueryOnePost();
         }
     },
 	methods: {
-        //查询所有社区
-        communityQueryPost(){
-            let params = {
-                pageSize: 1000,
-                pageNum: 1,
-            }
-            communityQuery(params).then(data => {
-                if(data.data.code==200){
-                    this.communityQueryDataList = data.data.data.list
-                }
-            })
-        },
         //查询单个
         taskQueryOnePost(){
             taskQueryOne({uuid: this.$route.query.uuid}).then(data => {

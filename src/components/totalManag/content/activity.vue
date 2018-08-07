@@ -50,7 +50,7 @@ export default {
                     label: "活动名称",
                 },
                 {
-                    prop: "communityId",
+                    prop: "communityName",
                     label: "所属社区",
                 },
                 {
