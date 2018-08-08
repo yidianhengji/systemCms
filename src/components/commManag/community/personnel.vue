@@ -178,7 +178,7 @@ export default {
         queryByExport(){
             queryByExport().then(data => {
                 if(data.data.code==200){
-                    debugger
+                    window.location.href = data.data.data
                 }
             })
         },
