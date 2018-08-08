@@ -26,14 +26,20 @@
 
         <el-dialog title="权限设置" :visible.sync="dialogRoleVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
-                <el-checkbox-group v-model="checkedCities">
+                <!-- <el-checkbox-group v-model="checkedCities">
                     <el-checkbox v-for="(item, index) in roleDataList" :label="item.uuid" :key="index">{{item.name}}
                         <div>
                         <el-checkbox v-for="(items, indexs) in item.powers" :label="items.uuid" :key="indexs">{{items.meunName}}</el-checkbox>
                     </div>
                     </el-checkbox>
-                    
-                </el-checkbox-group>
+                </el-checkbox-group> -->
+                <el-tree
+                    :data="roleDataList"
+                    show-checkbox
+                    node-key="uuid"
+					:default-expand-all="true"
+                    :props="defaultProps">
+                </el-tree>
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="resetRole()">取 消</el-button>
@@ -54,12 +60,21 @@ import { roleDel } from "api/role/index";//删除权限组
 import { queryAll } from "api/role/index";//查询所有菜单
 import { queryByRoleId } from "api/role/index";//根据权限组id查询已有的菜单
 import { givePermiss } from "api/role/index";//给权限组赋权限
+
+
 export default {
     components: {
         vtable: table
     },
     data(){
         return {
+            checkedCities: [],
+			defaultProps: {
+				children: 'powers',
+				label: 'name'
+			},
+
+
             pageSize: 10,
             pageNum: 1,
             total: 0,
@@ -121,8 +136,6 @@ export default {
             },
             dialogRoleVisible: false,//菜单权限弹窗
             roleDataList: [],//所有菜单集合
-            checkedCities: [],
-            selectedIndex: ''
         }
     },
     mounted(){
@@ -130,6 +143,23 @@ export default {
         this.queryAllPost();
     },
     methods: {
+
+        handleCheckAllChange(val) {
+            console.log(val)
+            this.checkedCities = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            console.log(value)
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
+
+
+
+
+        
         //分页查询权限组
         queryUserListPost(pageNum){
             let params = {
@@ -245,12 +275,13 @@ export default {
         //菜单权限设置
         role(uuid){
             this.dialogRoleVisible = true
-            this.selectedIndex = uuid
+			this.selectedIndex = uuid
+			var _this = this;
             queryByRoleId({uuid: uuid}).then(data => {
                 if(data.data.code==200){
-                    var result = data.data.data;
+					var result = data.data.data;
                     for(var i=0;i<result.length;i++){
-                        this.checkedCities.push(result[i].uuid)
+						_this.checkedCities.push(result[i].uuid)
                     }
                 }
             })
