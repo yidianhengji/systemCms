@@ -26,17 +26,12 @@
 
         <el-dialog title="权限设置" :visible.sync="dialogRoleVisible" :modal-append-to-body="false" :close-on-click-modal="false">
             <div class="modelFromListBox">
-                <!-- <el-checkbox-group v-model="checkedCities">
-                    <el-checkbox v-for="(item, index) in roleDataList" :label="item.uuid" :key="index">{{item.name}}
-                        <div>
-                        <el-checkbox v-for="(items, indexs) in item.powers" :label="items.uuid" :key="indexs">{{items.meunName}}</el-checkbox>
-                    </div>
-                    </el-checkbox>
-                </el-checkbox-group> -->
                 <el-tree
                     :data="roleDataList"
                     show-checkbox
+                    ref="tree"
                     node-key="uuid"
+                    :default-checked-keys=["c3d436685e1c493fa2554c87a21dec89"]
 					:default-expand-all="true"
                     :props="defaultProps">
                 </el-tree>
@@ -71,8 +66,9 @@ export default {
             checkedCities: [],
 			defaultProps: {
 				children: 'powers',
-				label: 'name'
-			},
+				label: 'meunName'
+            },
+            defaultExpandedKeys: [2, 3],
 
 
             pageSize: 10,
@@ -143,20 +139,6 @@ export default {
         this.queryAllPost();
     },
     methods: {
-
-        handleCheckAllChange(val) {
-            console.log(val)
-            this.checkedCities = val ? cityOptions : [];
-            this.isIndeterminate = false;
-        },
-        handleCheckedCitiesChange(value) {
-            console.log(value)
-            let checkedCount = value.length;
-            this.checkAll = checkedCount === this.cities.length;
-            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-        },
-
-
 
 
         

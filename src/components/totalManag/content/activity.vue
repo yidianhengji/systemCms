@@ -138,23 +138,21 @@ export default {
                                 ]
                             }
                         }
-                        if(items.length>0){
-                            const dropDownData = {
-                                label: "操作",
-                                items: items
-                            };
-                            // 触发MyDropDown的update和del事件
-                            return h(MyDropDown, {
-                                props: {
-                                    dropDownData: dropDownData
-                                },
-                                on: {
-                                    update: this.update,
-                                    del: this.del,
-                                    view: this.view
-                                }
-                            });
-                        }
+                        const dropDownData = {
+                            label: "操作",
+                            items: items
+                        };
+                        // 触发MyDropDown的update和del事件
+                        return h(MyDropDown, {
+                            props: {
+                                dropDownData: dropDownData
+                            },
+                            on: {
+                                update: this.update,
+                                del: this.del,
+                                view: this.view
+                            }
+                        });
                     }
                 }
             ],

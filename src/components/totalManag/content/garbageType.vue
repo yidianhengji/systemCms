@@ -13,10 +13,10 @@
 						label="可回收垃圾"
 						prop="domains1"
 					>
-						<div v-for="(domain, index) in dynamicValidateForm.domains1" :key="index" style="margin-bottom: 10px;">
-							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
-							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
-							<el-button @click.prevent="removeDomain(domain,1)">删除</el-button>
+						<div v-for="(item, index) in dynamicValidateForm.domains1" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="item.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="item.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button v-if="index>0" @click.prevent="removeDomain(index,1)">删除</el-button>
 						</div>
 						<el-button @click="addDomain(1)">新增一项</el-button>
 					</el-form-item>
@@ -24,10 +24,10 @@
 						label="不可回收垃圾"
 						prop="domains2"
 					>
-						<div v-for="(domain, index) in dynamicValidateForm.domains2" :key="index" style="margin-bottom: 10px;">
-							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
-							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
-							<el-button @click.prevent="removeDomain(domain,2)">删除</el-button>
+						<div v-for="(item, index) in dynamicValidateForm.domains2" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="item.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="item.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button v-if="index>0" @click.prevent="removeDomain(index,2)">删除</el-button>
 						</div>
 						<el-button @click="addDomain(2)">新增一项</el-button>
 					</el-form-item>
@@ -35,20 +35,19 @@
 						label="厨余垃圾"
 						prop="domains3"
 					>
-						<div v-for="(domain, index) in dynamicValidateForm.domains3" :key="index" style="margin-bottom: 10px;">
-							<el-input v-model="domain.value" style="width: 218px;" placeholder="请输入重量"></el-input>
-							<el-input v-model="domain.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
-							<el-button @click.prevent="removeDomain(domain,3)">删除</el-button>
+						<div v-for="(item, index) in dynamicValidateForm.domains3" :key="index" style="margin-bottom: 10px;">
+							<el-input v-model="item.value" style="width: 218px;" placeholder="请输入重量"></el-input>
+							<el-input v-model="item.value1" style="width: 218px; margin: 0px 10px;" placeholder="请输入积分"></el-input>
+							<el-button v-if="index>0" @click.prevent="removeDomain(index,3)">删除</el-button>
 						</div>
 						<el-button @click="addDomain(3)">新增一项</el-button>
 					</el-form-item>
 
-					<el-form-item label="规则描述">
-                        <el-input type="textarea" v-model="ruleForm.desc" placeholder="写点什么吧！"></el-input>
+					<el-form-item label="规则描述" prop="description">
+                        <el-input type="textarea" v-model="ruleForm.description" placeholder="写点什么吧！"></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm')">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -57,9 +56,13 @@
 </template>
 
 <script>
+import { add } from "api/garbage/index";//新增
+import { update } from "api/garbage/index";//修改
+import { queryOne } from "api/garbage/index";//查询单个
 export default {
   	data() {
 		return {
+			isData: [],
 			dynamicValidateForm: {
 				domains1: [{
 					value: '',
@@ -76,53 +79,86 @@ export default {
 			},
 			ruleForm: {
 				name: "",
-				community_id: '',
-				desc: ""
+				description: ""
 			},
 			rules: {
 				name: [
 					{ required: true, message: "请输入名称", trigger: "blur" },
 					{ min: 2, max: 64, message: "长度在 3 到 5 个字符", trigger: "blur" }
 				],
-				community_id: [
-					{ required: true, message: "请选择所属社区", trigger: "change" }
+				description: [
+					{ required: true, message: "请输入规则描述", trigger: "blur" }
 				],
 			}
 		};
 	},
+	mounted(){
+        this.queryOnePost();
+    },
 	methods: {
+		//查询单个
+		queryOnePost(){
+            queryOne().then(data => {
+                if(data.data.code==200){
+					this.isData = data.data.data
+                }
+            })
+        },
 		submitForm(formName) {
+			var that = this;
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-				alert("submit!");
+					if(this.isData!='null' || this.isData!='' || this.isData!=undefined){
+						debugger
+						let params = {
+							name: this.ruleForm.name,
+							description: this.ruleForm.description,
+							content: JSON.stringify(this.dynamicValidateForm)
+						};
+						add(params).then(data => {
+							var _this = this;
+							if(data.data.code==200){
+								this.$message({
+									message: '新增成功！',
+									type: 'success',
+									duration: '500',
+									onClose: function(){
+										window.location.reload();
+									}
+								});
+							}
+						})
+					}
 				} else {
-				console.log("error submit!!");
-				return false;
+					console.log("error submit!!");
+					return false;
 				}
 			});
 		},
-		resetForm(formName) {
-			this.$refs[formName].resetFields();
-		},
-		removeDomain(item) {
-			var index = this.dynamicValidateForm.domains.indexOf(item)
-			if (index !== -1) {
-			this.dynamicValidateForm.domains.splice(index, 1)
-			}
+		removeDomain(index, nub) {
+			this.dynamicValidateForm['domains'+nub].splice(index, 1);
 		},
 		addDomain(obj) {
-			if(this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value==''||this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value1==''){
+			var value1 = this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value;
+			var value2 = this.dynamicValidateForm['domains'+obj][this.dynamicValidateForm['domains'+obj].length-1].value1;
+			var reg = /^[0-9]*$/
+			if( value1=='' || value2=='' ){
 				this.$message({
 					message: '请完善上面的资料',
 					type: 'warning',
 				});
-			}else {
+			} else if(!reg.test(value1) || !reg.test(value2) ){
+				this.$message({
+					message: '请输入数字',
+					type: 'warning',
+				});
+			} else {
 				this.dynamicValidateForm['domains'+obj].push({
 					value: '',
 					value1: '',
 				});
 			}
-		}
+		},
 	}
 };
 </script>
