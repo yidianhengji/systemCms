@@ -158,6 +158,7 @@ export default {
             query(params).then(data => {
                 if(data.data.code==200){
                     this.dataArray = data.data.data.list
+                    this.total = data.data.data.total
                 }
             })
         },

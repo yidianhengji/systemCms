@@ -31,7 +31,6 @@
                     show-checkbox
                     ref="tree"
                     node-key="uuid"
-                    :default-checked-keys=["c3d436685e1c493fa2554c87a21dec89"]
 					:default-expand-all="true"
                     :props="defaultProps">
                 </el-tree>
@@ -68,7 +67,6 @@ export default {
 				children: 'powers',
 				label: 'meunName'
             },
-            defaultExpandedKeys: [2, 3],
 
 
             pageSize: 10,
@@ -139,9 +137,6 @@ export default {
         this.queryAllPost();
     },
     methods: {
-
-
-        
         //分页查询权限组
         queryUserListPost(pageNum){
             let params = {
@@ -263,17 +258,19 @@ export default {
                 if(data.data.code==200){
 					var result = data.data.data;
                     for(var i=0;i<result.length;i++){
-						_this.checkedCities.push(result[i].uuid)
+                        _this.checkedCities.push(result[i].uuid)
                     }
+                    _this.$refs.tree.setCheckedKeys(_this.checkedCities);
                 }
             })
         },
         //菜单权限新增
         submitRole(){
-            if(this.checkedCities.length>0){
+            var dataList = this.$refs.tree.getCheckedKeys();
+            if(dataList.length>0){
                 let arr = []
-                for(var i=0;i<this.checkedCities.length;i++){
-                    arr.push(this.checkedCities[i])
+                for(var i=0;i<dataList.length;i++){
+                    arr.push(dataList[i])
                 }
                 let params = {
                     roleId: this.selectedIndex,
@@ -298,7 +295,10 @@ export default {
         },
         //菜单权限取消
         resetRole(){
-            this.dialogRoleVisible = false
+            this.dialogRoleVisible = false;
+            this.selectedIndex = '';
+            this.checkedCities = [];
+
         },
         //查询所有的菜单
         queryAllPost(){
