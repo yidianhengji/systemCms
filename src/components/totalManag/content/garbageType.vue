@@ -78,6 +78,7 @@ export default {
 				}],
 			},
 			ruleForm: {
+				uuid: "",
 				name: "",
 				description: ""
 			},
@@ -101,6 +102,12 @@ export default {
             queryOne().then(data => {
                 if(data.data.code==200){
 					this.isData = data.data.data
+					if(data.data.data!=null){
+						this.ruleForm.uuid = data.data.data.uuid
+						this.ruleForm.name = data.data.data.name
+						this.ruleForm.description = data.data.data.description
+						this.dynamicValidateForm = JSON.parse(data.data.data.content)
+					}
                 }
             })
         },
@@ -108,8 +115,7 @@ export default {
 			var that = this;
 			this.$refs[formName].validate(valid => {
 				if (valid) {
-					if(this.isData!='null' || this.isData!='' || this.isData!=undefined){
-						debugger
+					if(this.isData == null){
 						let params = {
 							name: this.ruleForm.name,
 							description: this.ruleForm.description,
@@ -120,6 +126,26 @@ export default {
 							if(data.data.code==200){
 								this.$message({
 									message: '新增成功！',
+									type: 'success',
+									duration: '500',
+									onClose: function(){
+										window.location.reload();
+									}
+								});
+							}
+						})
+					}else {
+						let params = {
+							uuid: this.ruleForm.uuid,
+							name: this.ruleForm.name,
+							description: this.ruleForm.description,
+							content: JSON.stringify(this.dynamicValidateForm)
+						};
+						update(params).then(data => {
+							var _this = this;
+							if(data.data.code==200){
+								this.$message({
+									message: '修改成功！',
 									type: 'success',
 									duration: '500',
 									onClose: function(){

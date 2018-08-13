@@ -43,15 +43,18 @@ export default {
 		axiosToken.interceptors.response.use((respone) => {
 			var _this = this;
 			let source = respone.data;
-			// if(source.code==2004){
-			// 	this.$alert(source.msg, '温馨提示',
-			// 		{ confirmButtonText: '确定', callback: action => {
-			// 			_this.$router.push({path: '/zhtLogin'})
-			// 		}
-			// 	});
-			// 	return false;
-			// }else
-			if(source.code!=200){
+			if(source.code==2004){
+				this.$alert(source.msg, '温馨提示',
+					{ confirmButtonText: '确定', callback: action => {
+						if(sessionStorage.getItem("systemType")=='1'){
+							_this.$router.push({ path: '/zhtLogin' });
+						}else if(sessionStorage.getItem("systemType")=='2'){
+							_this.$router.push({ path: '/sqLogin' });
+						}
+					}
+				});
+				return false;
+			}else if(source.code!=200){
 				this.$alert(source.msg, '温馨提示',
 					{ confirmButtonText: '确定', callback: action => { }
 				});
@@ -61,7 +64,29 @@ export default {
 				
 		})
 		//get方法校验
-
+		axiosTokenGet.interceptors.response.use((respone) => {
+			var _this = this;
+			let source = respone.data;
+			if(source.code==2004){
+				this.$alert(source.msg, '温馨提示',
+					{ confirmButtonText: '确定', callback: action => {
+						if(sessionStorage.getItem("systemType")=='1'){
+							_this.$router.push({ path: '/zhtLogin' });
+						}else if(sessionStorage.getItem("systemType")=='2'){
+							_this.$router.push({ path: '/sqLogin' });
+						}
+					}
+				});
+				return false;
+			}else if(source.code!=200){
+				this.$alert(source.msg, '温馨提示',
+					{ confirmButtonText: '确定', callback: action => { }
+				});
+			}
+			return respone
+		}, err => {
+				
+		})
 		//上传校验
 		mutipartAxios.interceptors.response.use((respone) => {
 			let source = respone.data;

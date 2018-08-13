@@ -135,7 +135,6 @@ export default {
                     this.ruleForm.communityId = ''+data.data.data.communityId+''
                     this.ruleForm.startTime = [data.data.data.startTime, data.data.data.endTime]
                     this.ruleForm.location = data.data.data.location
-                    this.ruleForm.location = data.data.data.location
                     this.ruleForm.limitPeople = data.data.data.limitPeople
                     this.ruleForm.integral = data.data.data.integral
                     this.ruleForm.coverpic = data.data.data.coverpic
