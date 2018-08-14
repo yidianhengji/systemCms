@@ -36,8 +36,8 @@ import sqActivity from '@/components/commManag/content/activity'; //活动管理
 import sqActivityAdd from '@/components/commManag/content/activityAdd'; //新增活动
 import sqTask from '@/components/commManag/content/task'; //任务管理
 import sqTaskAdd from '@/components/commManag/content/taskAdd'; //新增任务
-import sqOrganization from '@/components/commManag/community/organization'; //社区管理
-import sqOrganizationAdd from '@/components/commManag/community/organizationAdd'; //新增社区
+import sqOrganization from '@/components/commManag/community/volunteer'; //社区管理
+import sqOrganizationAdd from '@/components/commManag/community/volunteerAdd'; //新增社区
 import sqPersonnel from '@/components/commManag/community/personnel'; //居民列表
 import sqPowerUser from '@/components/commManag/power/user'; //管理员
 import sqPowerPowerGroup from '@/components/commManag/power/powerGroup'; //权限组

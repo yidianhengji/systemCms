@@ -12,12 +12,6 @@
                         <el-option label="女" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属社区：">
-                    <el-select v-model="formInline.communityId" placeholder="请选择所属社区">
-                        <el-option label="全部" value=""></el-option>
-                        <el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>
-                    </el-select>
-                </el-form-item>
                 <el-form-item label="是否实名：">
                     <el-select v-model="formInline.isRealName" placeholder="请选择是否实名">
                         <el-option label="全部" value=""></el-option>
@@ -52,11 +46,9 @@ export default {
     },
     data(){
         return {
-            communityQueryDataList: [],//所属社区
             formInline: {
                 nickname: '',
                 sex: '',
-                communityId: '',
                 isRealName: ''
             },
             pageSize: 10,
@@ -142,29 +134,15 @@ export default {
     },
     mounted(){
         this.queryUserListPost(this.pageNum);
-        this.communityQueryPost();
     },
     methods: {
-        //查询所有社区
-        communityQueryPost(){
-            let params = {
-                pageSize: 1000,
-                pageNum: 1,
-            }
-            communityQuery(params).then(data => {
-                if(data.data.code==200){
-                    this.communityQueryDataList = data.data.data.list
-                }
-            })
-        },
         //查询所有管理员
-        queryUserListPost(pageNum, nickname, sex, communityId, isRealName){
+        queryUserListPost(pageNum, nickname, sex, isRealName){
             let params = {
                 pageSize: this.pageSize,
                 pageNum: pageNum,
                 nickname: nickname,
                 sex: sex,
-                communityId: communityId,
                 isRealName: isRealName
             }
             query(params).then(data => {
@@ -176,7 +154,7 @@ export default {
         },
         //搜索
         onSubmit() {
-            this.queryUserListPost(this.pageNum, this.formInline.nickname, this.formInline.sex, this.formInline.communityId, this.formInline.isRealName);
+            this.queryUserListPost(this.pageNum, this.formInline.nickname, this.formInline.sex, this.formInline.isRealName);
         },
         //新增
         onClickAdd(){

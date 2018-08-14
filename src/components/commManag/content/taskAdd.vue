@@ -81,9 +81,6 @@ export default {
 					{ required: true, message: "请输入任务名称", trigger: "blur" },
 					{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
 				],
-				communityId: [
-					{ required: true, message: "请选择所属社区", trigger: "change" }
-                ],
                 startTime: [
                     { required: true, message: "请选择任务时间", trigger: "blur" },
                 ],

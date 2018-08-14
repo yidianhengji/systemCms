@@ -10,11 +10,6 @@
                     <el-form-item label="活动名称" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入活动名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="所属社区" prop="communityId">
-                        <el-select v-model="ruleForm.communityId" placeholder="请选择所属社区">
-                            <el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>
-                        </el-select>
-                    </el-form-item>
                     <el-form-item label="活动时间" prop="startTime">
                         <el-date-picker
                             v-model="ruleForm.startTime"
@@ -74,17 +69,15 @@ import { uploadPath } from '@/path/path';//上传接口地址
 import { activityAdd } from "api/task/index";//新增
 import { activityUpdate } from "api/task/index";//修改
 import { activityQueryOne } from "api/task/index";//查询单个
-import { communityQuery } from "api/community/index";//所属社区
 export default {
   	data() {
 		return {
-            communityQueryDataList: [],//所属社区
             serverUrl: uploadPath,
             pictureList: [],
             dialogVisible: false,
 			ruleForm: {
-				name: "",
-				communityId: "",
+                name: "",
+                communityId: sessionStorage.getItem("communityId"),
 				startTime: "",
                 endTime: "",
                 joinStartTime: '',
@@ -101,9 +94,6 @@ export default {
 					{ required: true, message: "请输入活动名称", trigger: "blur" },
 					{ min: 1, max: 64, message: "长度在 1 到 64 个字符", trigger: "blur" }
 				],
-				communityId: [
-					{ required: true, message: "请选择所属社区", trigger: "change" }
-                ],
                 startTime: [
                     { required: true, message: "请选择活动时间", trigger: "blur" },
                 ],
@@ -125,30 +115,16 @@ export default {
 		};
     },
     mounted(){
-        this.communityQueryPost();
         if(this.$route.query.type==2){
             this.taskQueryOnePost();
         }
     },
 	methods: {
-        //查询所有社区
-        communityQueryPost(){
-            let params = {
-                pageSize: 1000,
-                pageNum: 1,
-            }
-            communityQuery(params).then(data => {
-                if(data.data.code==200){
-                    this.communityQueryDataList = data.data.data.list
-                }
-            })
-        },
         //查询单个
         taskQueryOnePost(){
             activityQueryOne({uuid: this.$route.query.uuid}).then(data => {
                 if(data.data.code==200){
                     this.ruleForm.name = data.data.data.name;
-                    this.ruleForm.communityId = ''+data.data.data.communityId+''
                     this.ruleForm.startTime = [data.data.data.startTime, data.data.data.endTime]
                     this.ruleForm.joinStartTime = [data.data.data.joinStartTime, data.data.data.joinEndTime]
                     this.ruleForm.location = data.data.data.location

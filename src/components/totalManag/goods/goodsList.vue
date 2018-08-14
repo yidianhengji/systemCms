@@ -29,6 +29,7 @@
 import MyDropDown from '@/components/common/MyDropDown';
 import table from '@/components/common/table';
 import { queryList } from "api/shop/index";
+import { update } from "api/shop/index";//修改
 import { communityQuery } from "api/community/index";//所属社区
 export default {
     components: {
@@ -141,9 +142,31 @@ export default {
             this.$router.push({path: '/home/zhtGoods/goodsListAdd', query: { type: 2, uuid: obj }})
         },
         del(obj){
-
+            this.$confirm('是否删除该条记录?', '温馨提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                let params = {
+                    uuid: obj,
+                    status: 2,
+                }
+                update(params).then(data => {
+                    if(data.data.code==200){
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success',
+                            duration: '500',
+                            onClose: function(){
+                                window.location.reload();
+                            }
+                        });
+                    }
+                })
+            }).catch(() => {
+                
+            });
         }
-        
     }
 }
 </script>
