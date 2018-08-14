@@ -64,7 +64,7 @@ export default {
             queryOne({uuid: this.$route.query.uuid}).then(data => {
                 if(data.data.code==200){
                     this.ruleForm.mobile = data.data.data.mobile;
-                    this.ruleForm.type = JSON.parse(data.data.data.role)
+                    this.ruleForm.type = JSON.parse(data.data.data.identityFlag)
                     this.ruleForm.description = data.data.data.description
                 }
             })
@@ -76,7 +76,7 @@ export default {
 					if(this.$route.query.type==1){
 						let params = {
 							mobile: this.ruleForm.mobile,
-							role: JSON.stringify(this.ruleForm.type),
+							identityFlag: JSON.stringify(this.ruleForm.type),
 							description: this.ruleForm.description,
 						};
 						add(params).then(data => {
@@ -96,7 +96,7 @@ export default {
 						let params = {
 							uuid: this.$route.query.uuid,
 							mobile: this.ruleForm.mobile,
-							role: JSON.stringify(this.ruleForm.type),
+							identityFlag: JSON.stringify(this.ruleForm.type),
 							description: this.ruleForm.description,
 						};
 						update(params).then(data => {

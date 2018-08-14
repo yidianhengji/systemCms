@@ -95,13 +95,13 @@ export default {
                     prop: "role",
                     label: "身份",
                     render: function(createElement) {
-                        if(this.row.role==0){
+                        if(this.row.role==1){
                             return createElement('span', {
                                 domProps: {
                                     innerHTML: '居民',
                                 }
                             })
-                        }else if(this.row.role==1){
+                        }else if(this.row.role==2){
                             return createElement('span', {
                                 domProps: {
                                     innerHTML: '志愿者',

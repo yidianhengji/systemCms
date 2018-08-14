@@ -46,10 +46,10 @@ export default {
                     label: "手机号码",
                 },
                 {
-                    prop: "role",
+                    prop: "identityFlag",
                     label: "负责权限",
                     render: function(createElement) {
-                        var role = JSON.parse(this.row.role);
+                        var role = JSON.parse(this.row.identityFlag);
                         var text = '';
                         for(var i=0;i<role.length;i++){
                             if(role[i]==1){
