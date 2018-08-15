@@ -38,7 +38,8 @@ import sqTask from '@/components/commManag/content/task'; //任务管理
 import sqTaskAdd from '@/components/commManag/content/taskAdd'; //新增任务
 import sqOrganization from '@/components/commManag/community/volunteer'; //社区管理
 import sqOrganizationAdd from '@/components/commManag/community/volunteerAdd'; //新增社区
-import sqPersonnel from '@/components/commManag/community/personnel'; //居民列表
+import sqPersonnel from '@/components/commManag/community/sqPersonnel'; //居民列表
+import sqPersonnelAdd from '@/components/commManag/community/sqPersonnelAdd'; //居民列表
 import sqPowerUser from '@/components/commManag/power/user'; //管理员
 import sqPowerPowerGroup from '@/components/commManag/power/powerGroup'; //权限组
 const router = new Router({
@@ -92,6 +93,7 @@ const router = new Router({
                 { path: '/home/sqCommunity/volunteer', name: '志愿者管理', component: sqOrganization },
                 { path: '/home/sqCommunity/volunteerAdd', name: '新增志愿者', component: sqOrganizationAdd },
                 { path: '/home/sqCommunity/personnel', name: '居民列表', component: sqPersonnel },
+                { path: '/home/sqCommunity/personnelAdd', name: '新增居民', component: sqPersonnelAdd },
                 { path: '/home/sqPower/powerUser', name: '管理员', component: sqPowerUser },
                 { path: '/home/sqPower/powerPowerGroup', name: '权限组', component: sqPowerPowerGroup },
             ]

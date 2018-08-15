@@ -3,7 +3,7 @@
         <div class="formBox">
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="姓名：">
-                    <el-input v-model="formInline.nickname" placeholder="请输入姓名"></el-input>
+                    <el-input v-model="formInline.truename" placeholder="请输入姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="性别：">
                     <el-select v-model="formInline.sex" placeholder="请选择性别">
@@ -32,10 +32,32 @@
         <div class="tableList">
             <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
         </div>
+
+        <el-dialog title="权限设置" :visible.sync="dialogRoleVisible" :modal-append-to-body="false" :close-on-click-modal="false">
+            <div class="modelFromListBox">
+                <el-upload
+                    class="upload-demo"
+                    ref="upload"
+                    :action="action"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :file-list="fileList"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                </el-upload>
+            </div>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="resetRole()">取 消</el-button>
+                <el-button type="primary" @click="submitRole()">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import { uploadXls } from '@/path/path';//上传接口地址
 import MyDropDown from '@/components/common/MyDropDown';
 import table from '@/components/common/table';
 import { query, queryByExport } from "api/people/index";
@@ -46,8 +68,11 @@ export default {
     },
     data(){
         return {
+            dialogRoleVisible: false,//菜单权限弹窗
+            fileList: [],
+            action: uploadXls,
             formInline: {
-                nickname: '',
+                truename: '',
                 sex: '',
                 isRealName: ''
             },
@@ -57,7 +82,7 @@ export default {
             dataArray: [],
             columns: [
                 {
-                    prop: "nickname",
+                    prop: "truename",
                     label: "姓名",
                 },
                 {
@@ -137,11 +162,11 @@ export default {
     },
     methods: {
         //查询所有管理员
-        queryUserListPost(pageNum, nickname, sex, isRealName){
+        queryUserListPost(pageNum, truename, sex, isRealName){
             let params = {
                 pageSize: this.pageSize,
                 pageNum: pageNum,
-                nickname: nickname,
+                truename: truename,
                 sex: sex,
                 isRealName: isRealName
             }
@@ -154,7 +179,7 @@ export default {
         },
         //搜索
         onSubmit() {
-            this.queryUserListPost(this.pageNum, this.formInline.nickname, this.formInline.sex, this.formInline.isRealName);
+            this.queryUserListPost(this.pageNum, this.formInline.truename, this.formInline.sex, this.formInline.isRealName);
         },
         //新增
         onClickAdd(){
@@ -170,8 +195,52 @@ export default {
         },
         //导入
         addByImport(){
+            this.dialogRoleVisible = true
+        },
+        //取消弹窗
+        resetRole(){
+            this.dialogRoleVisible = false
+        },
+        //新增弹窗
+        submitRole(){
+            this.$refs.upload.submit();
+        },
+        submitUpload() {
+            this.$refs.upload.submit();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+        // 上传图片前
+        beforeAvatarUpload(file) {
+            const isLt2M = file.size / 1024 / 1024 < 10;
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 10MB!');
+            }
+            return isLt2M;
+        },
+        handleAvatarSuccess(res, file) {
+            if(res.code==200){
+                this.$message({
+                    message: '上传成功！',
+                    type: 'success',
+                    duration: '500',
+                    onClose: function(){
+                        window.location.reload();
+                    }
+                });
+            }else {
+                this.$alert(res.msg, '温馨提示',
+					{ confirmButtonText: '确定', callback: action => {
+                        window.location.reload();
+                    }
+				});
+            }
             
-        }
+        },
     }
 }
 </script>
