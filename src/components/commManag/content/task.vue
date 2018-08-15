@@ -117,7 +117,7 @@ export default {
                             }else if(param.row.flag==3){
                                 var items = [
                                     { label: "删除", func: { func: "del", uuid: param.row.uuid } },
-                                    { label: "查看评论", func: { func: "view", uuid: param.row.uuid } },
+                                    //{ label: "查看评论", func: { func: "view", uuid: param.row.uuid } },
                                 ]
                             }
                         }else if(param.row.dataForm==2){

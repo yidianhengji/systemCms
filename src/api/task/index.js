@@ -95,7 +95,7 @@ export function activityUpdate(params) {
 /*查询单个任务*/
 export function activityQueryOne(params) {
     return new Promise((resolve, reject) => {
-        axiosTokenGet.get(backen + 'activity/queryOne', { params: params }).then(data => {
+        axiosToken.post(backen + 'activity/queryOne', params).then(data => {
             resolve(data)
         })
     })

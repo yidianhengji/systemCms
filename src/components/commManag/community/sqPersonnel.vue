@@ -166,6 +166,7 @@ export default {
             let params = {
                 pageSize: this.pageSize,
                 pageNum: pageNum,
+                communityId: sessionStorage.getItem("systemType"),
                 truename: truename,
                 sex: sex,
                 isRealName: isRealName

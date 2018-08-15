@@ -7,9 +7,9 @@
                 </el-form-item>
                 <el-form-item label="状态：">
                     <el-select v-model="formInline.flag" placeholder="请选择状态">
-                        <el-option label="未开始" value="1"></el-option>
-                        <el-option label="进行中" value="2"></el-option>
-                        <el-option label="已结束" value="3"></el-option>
+                        <el-option label="未开始" value="3"></el-option>
+                        <el-option label="进行中" value="4"></el-option>
+                        <el-option label="已结束" value="5"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -82,21 +82,21 @@ export default {
                     label: "状态",
                     width: "",
                     render: function(createElement) {
-                        if(this.row.flag==1){
+                        if(this.row.flag==1 || this.row.flag==2 || this.row.flag==3){
                             return createElement('span', {
                                 domProps: {
                                     innerHTML: '未开始',
                                     className: 'text-info'
                                 }
                             })
-                        }else if(this.row.flag==2){
+                        }else if(this.row.flag==4){
                             return createElement('span', {
                                 domProps: {
                                     innerHTML: '进行中',
                                     className: 'text-warning'
                                 }
                             })
-                        }else if(this.row.flag==3){
+                        }else if(this.row.flag==5){
                             return createElement('span', {
                                 domProps: {
                                     innerHTML: '已结束',
@@ -111,28 +111,28 @@ export default {
                     label: "操作",
                     render: (h, param) => {
                         if(param.row.dataForm==1){
-                            if(param.row.flag==1){
+                            if(param.row.flag==3 || param.row.flag==1 || param.row.flag==2){
                                 var items = [
                                     { label: "修改", func: { func: "update", uuid: param.row.uuid } },
                                     { label: "删除", func: { func: "del", uuid: param.row.uuid } },
                                 ]
-                            }else if(param.row.flag==2){
+                            }else if(param.row.flag==4){
                                 var items = []
-                            }else if(param.row.flag==3){
+                            }else if(param.row.flag==5){
                                 var items = [
                                     { label: "删除", func: { func: "del", uuid: param.row.uuid } },
-                                    { label: "查看评论", func: { func: "view", uuid: param.row.uuid } },
+                                    //{ label: "查看评论", func: { func: "view", uuid: param.row.uuid } },
                                 ]
                             }
                         }else if(param.row.dataForm==2){
-                            if(param.row.flag==1){
+                            if(param.row.flag==3){
                                 var items = [
                                     { label: "修改", func: { func: "update", uuid: param.row.uuid } },
                                     { label: "删除", func: { func: "del", uuid: param.row.uuid } }
                                 ]
-                            }else if(param.row.flag==2){
+                            }else if(param.row.flag==4){
                                 var items = []
-                            }else if(param.row.flag==3){
+                            }else if(param.row.flag==5){
                                 var items = [
                                     { label: "删除", func: { func: "del", uuid: param.row.uuid } },
                                 ]
