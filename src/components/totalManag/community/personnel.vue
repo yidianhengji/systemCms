@@ -60,7 +60,7 @@ export default {
             dataArray: [],
             columns: [
                 {
-                    prop: "nickname",
+                    prop: "truename",
                     label: "姓名",
                 },
                 {
