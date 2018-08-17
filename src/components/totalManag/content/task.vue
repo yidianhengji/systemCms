@@ -35,6 +35,7 @@ export default {
         vtable: table
     },
     data(){
+      let $this = this;
         return {
             formInline: {
                 name: '',
@@ -60,17 +61,62 @@ export default {
                 {
                     prop: "limitPeople",
                     label: "人数上限",
-                    width: ""
+                    width: "",
+                    render: function (createElement) {
+                      if($this.$isEmpty(this.row.limitPeople)) {
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: '0人',
+                          }
+                        })
+                      }else{
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: this.row.limitPeople +'人',
+                          }
+                        })
+                      }
+                    }
                 },
                 {
                     prop: "joinPeople",
                     label: "报名人数",
-                    width: ""
+                    width: "",
+                    render: function (createElement) {
+                      if($this.$isEmpty(this.row.joinPeople)) {
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: '0人',
+                          }
+                        })
+                      }else{
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: this.row.joinPeople +'人',
+                          }
+                        })
+                      }
+                    }
                 },
                 {
                     prop: "integral",
                     label: "积分设置",
-                    width: ""
+                    width: "",
+                    render: function (createElement) {
+                      if($this.$isEmpty(this.row.integral)) {
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: '0分',
+                          }
+                        })
+                      }else{
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: this.row.integral +'分',
+                          }
+                        })
+                      }
+                    }
                 },
                 {
                     prop: "updateTime",

@@ -26,7 +26,7 @@ export function update(params) {
 /*查询*/
 export function queryOne(params) {
     return new Promise((resolve, reject) => {
-        axiosToken.post(backen + 'garbage/queryOne', params).then(data => {
+        axiosToken.get(backen + 'garbage/queryOne', {params: params}).then(data => {
             resolve(data)
         })
     })

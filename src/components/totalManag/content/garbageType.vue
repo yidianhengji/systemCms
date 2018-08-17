@@ -99,7 +99,7 @@ export default {
 	methods: {
 		//查询单个
 		queryOnePost(){
-            queryOne().then(data => {
+            queryOne({sysType: JSON.parse(sessionStorage.getItem("userData")).sysType}).then(data => {
                 if(data.data.code==200){
 					this.isData = data.data.data
 					if(data.data.data!=null){
@@ -119,7 +119,8 @@ export default {
 						let params = {
 							name: this.ruleForm.name,
 							description: this.ruleForm.description,
-							content: JSON.stringify(this.dynamicValidateForm)
+							content: JSON.stringify(this.dynamicValidateForm),
+              sysType: JSON.parse(sessionStorage.getItem("userData")).sysType
 						};
 						add(params).then(data => {
 							var _this = this;
@@ -139,7 +140,8 @@ export default {
 							uuid: this.ruleForm.uuid,
 							name: this.ruleForm.name,
 							description: this.ruleForm.description,
-							content: JSON.stringify(this.dynamicValidateForm)
+							content: JSON.stringify(this.dynamicValidateForm),
+              sysType: JSON.parse(sessionStorage.getItem("userData")).sysType
 						};
 						update(params).then(data => {
 							var _this = this;

@@ -28,6 +28,7 @@ export default {
         vtable: table
     },
     data(){
+      let $this = this;
         return {
             formInline: {
                 name: '',
@@ -52,10 +53,40 @@ export default {
                 {
                     prop: "totalIntegral",
                     label: "社区总积分",
+                  render: function (createElement) {
+                    if($this.$isEmpty(this.row.totalIntegral)) {
+                      return createElement('span', {
+                        domProps: {
+                          innerHTML: '0分',
+                        }
+                      })
+                    }else{
+                      return createElement('span', {
+                        domProps: {
+                          innerHTML: this.row.totalIntegral +'分',
+                        }
+                      })
+                    }
+                  }
                 },
                 {
                     prop: "integral",
                     label: "剩余积分",
+                  render: function (createElement) {
+                    if($this.$isEmpty(this.row.integral)) {
+                      return createElement('span', {
+                        domProps: {
+                          innerHTML: '0分',
+                        }
+                      })
+                    }else{
+                      return createElement('span', {
+                        domProps: {
+                          innerHTML: this.row.integral +'分',
+                        }
+                      })
+                    }
+                  }
                 },
                 {
                     prop: "createTime",

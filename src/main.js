@@ -13,6 +13,13 @@ import '../static/UE/ueditor.all.js'
 import '../static/UE/lang/zh-cn/zh-cn.js'
 import '../static/UE/ueditor.parse.min.js'
 
+Vue.prototype.$isEmpty = function(str) {
+  if(str == null || str == '' || str == undefined || typeof str == 'undefined') {
+    return true;
+  }else{
+    return false;
+  }
+}
 
 Vue.config.productionTip = false
 

@@ -46,6 +46,7 @@ export default {
         vtable: table
     },
     data(){
+      let $this = this;
         return {
             communityQueryDataList: [],//所属社区
             formInline: {
@@ -79,6 +80,12 @@ export default {
                                     innerHTML: '女',
                                 }
                             })
+                        }else{
+                          return createElement('span', {
+                            domProps: {
+                              innerHTML: '保密',
+                            }
+                          })
                         }
                     },
                 },
@@ -97,6 +104,21 @@ export default {
                 {
                     prop: "integral",
                     label: "现有积分",
+                    render: function (createElement) {
+                      if($this.$isEmpty(this.row.integral)) {
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: '0分',
+                          }
+                        })
+                      }else{
+                        return createElement('span', {
+                          domProps: {
+                            innerHTML: this.row.integral +'分',
+                          }
+                        })
+                      }
+                    }
                 },
                 {
                     prop: "role",
