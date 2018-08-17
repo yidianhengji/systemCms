@@ -39,7 +39,7 @@ import sqTaskAdd from '@/components/commManag/content/taskAdd'; //新增任务
 import sqOrganization from '@/components/commManag/community/volunteer'; //社区管理
 import sqOrganizationAdd from '@/components/commManag/community/volunteerAdd'; //新增社区
 import sqPersonnel from '@/components/commManag/community/sqPersonnel'; //居民列表
-import sqPersonnelAdd from '@/components/commManag/community/sqPersonnelAdd'; //居民列表
+import sqPersonnelAdd from '@/components/commManag/community/sqPersonnelAdd'; //居民新增修改
 import sqPowerUser from '@/components/commManag/power/user'; //管理员
 import sqPowerPowerGroup from '@/components/commManag/power/powerGroup'; //权限组
 const router = new Router({

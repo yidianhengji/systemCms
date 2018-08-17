@@ -35,6 +35,7 @@ export default {
         vtable: table
     },
     data(){
+      let $this = this;
         return {
             formInline: {
                 name: '',
@@ -234,7 +235,7 @@ export default {
                     }
                 })
             }).catch(() => {
-                
+
             });
         },
         view(obj){

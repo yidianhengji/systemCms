@@ -14,7 +14,6 @@ export function uploadFile(params) {
             }
         }
         axiosToken.post(backen + 'file/upload', param).then(data => {
-            debugger
             resolve(data)
         })
     })

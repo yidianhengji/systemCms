@@ -2,7 +2,7 @@
     <div class="__volunteerAdd">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>新增志愿者</span>
+                <span>新增居民</span>
             </div>
             <div class="addFromListBox">
                 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
