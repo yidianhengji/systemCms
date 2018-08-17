@@ -51,59 +51,6 @@ export default {
             defaultActive: this.$route.path,
             openeds: ['1'],
             sidebarMenu: [],
-            sidebarMenu1: [
-                {
-                    parentItem: { name: '内容管理' },
-                    childItem: [
-                        { name: '活动管理', path: '/home/zhtContern/activity' },
-                        { name: '任务管理', path: '/home/zhtContern/task' },
-                        { name: '垃圾分类', path: '/home/zhtContern/garbageType' },
-                    ],
-                },
-                {
-                    parentItem: { name: '社区管理' },
-                    childItem: [
-                        { name: '社区管理', path: '/home/zhtCommunity/organization' },
-                        { name: '居民管理', path: '/home/zhtCommunity/personnel' },
-                    ],
-                },
-                {
-                    parentItem: { name: '商品管理' },
-                    childItem: [
-                        { name: '商品管理', path: '/home/zhtGoods/goodsList' },
-                    ],
-                },
-                {
-                    parentItem: { name: '权限管理' },
-                    childItem: [
-                        { name: '管理员', path: '/home/zhtPower/powerUser' },
-                        { name: '权限组', path: '/home/zhtPower/powerPowerGroup' },
-                    ],
-                }
-            ],
-            sidebarMenu2: [
-                {
-                    parentItem: { name: '内容管理' },
-                    childItem: [
-                        { name: '活动管理', path: '/home/sqContern/activity' },
-                        { name: '任务管理', path: '/home/sqContern/task' },
-                    ],
-                },
-                {
-                    parentItem: { name: '用户管理' },
-                    childItem: [
-                        { name: '居民管理', path: '/home/sqCommunity/personnel' },
-                        { name: '志愿者管理', path: '/home/sqCommunity/organization' },
-                    ],
-                },
-                {
-                    parentItem: { name: '权限管理' },
-                    childItem: [
-                        { name: '管理员', path: '/home/sqPower/powerUser' },
-                        { name: '权限组', path: '/home/sqPower/powerPowerGroup' },
-                    ],
-                }
-            ]
         }
     },
     methods: {
@@ -113,44 +60,52 @@ export default {
         handleClose(key, keyPath) {
             
         },
-        //根据用户查询菜单权限
-        queryAllPost(){
-            var userData = JSON.parse(sessionStorage.getItem("userData"));
-            queryAll({uuid: userData.roleId}).then(data => {
-                if(data.data.code==200){
-                    this.sidebarMenu = data.data.data
-                }
-            })
-        }
     },
     mounted() {
         if(sessionStorage.getItem("systemType")=='1'){
             this.systemType = 1
+            this.sidebarMenu = JSON.parse(sessionStorage.getItem("sidebarMenu1"))
         }else if(sessionStorage.getItem("systemType")=='2'){
             this.systemType = 2
+            this.sidebarMenu = JSON.parse(sessionStorage.getItem("sidebarMenu2"))
         }
-        
-        this.queryAllPost();
-
-        //活动
-        if(this.$route.path=='/home/contern/taskAdd'){
-            this.defaultActive = '/home/contern/task'
-        }
+        /*
+        * 总后台
+        */
         //任务
-        if(this.$route.path=='/home/contern/activityAdd'){
-            this.defaultActive = '/home/contern/activity'
+        if(this.$route.path=='/home/zhtContern/taskAdd'){
+            this.defaultActive = '/home/zhtContern/task'
         }
-        //垃圾分类
-        if(this.$route.path=='/home/contern/garbageTypeAdd'){
-            this.defaultActive = '/home/contern/garbageType'
+        //活动
+        if(this.$route.path=='/home/zhtContern/activityAdd'){
+            this.defaultActive = '/home/zhtContern/activity'
         }
         //社区管理
-        if(this.$route.path=='/home/community/organizationAdd'){
-            this.defaultActive = '/home/community/organization'
+        if(this.$route.path=='/home/zhtCommunity/organizationAdd'){
+            this.defaultActive = '/home/zhtCommunity/organization'
         }
-        //居民管理
-        if(this.$route.path=='/home/community/personnel'){
-            this.defaultActive = '/home/community/organization'
+        //商品管理
+        if(this.$route.path=='/home/zhtGoods/goodsListAdd'){
+            this.defaultActive = '/home/zhtGoods/goodsList'
+        }
+        /*
+        * 社区
+        */
+        //任务
+        if(this.$route.path=='/home/sqContern/taskAdd'){
+            this.defaultActive = '/home/sqContern/task'
+        }
+        //活动
+        if(this.$route.path=='/home/sqContern/taskAdd'){
+            this.defaultActive = '/home/sqContern/task'
+        }
+        //居民
+        if(this.$route.path=='/home/sqCommunity/personnelAdd'){
+            this.defaultActive = '/home/sqCommunity/personnel'
+        }
+        //居民
+        if(this.$route.path=='/home/sqCommunity/volunteerAdd'){
+            this.defaultActive = '/home/sqCommunity/volunteer'
         }
     },
 }
