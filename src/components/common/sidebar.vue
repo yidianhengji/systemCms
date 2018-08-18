@@ -60,15 +60,23 @@ export default {
         handleClose(key, keyPath) {
             
         },
+        //根据用户查询菜单权限
+        queryAllPost(){
+            var userData = JSON.parse(sessionStorage.getItem("userData"));
+            queryAll({uuid: userData.roleId}).then(data => {
+                if(data.data.code==200){
+                    this.sidebarMenu = data.data.data
+                }
+            })
+        }
     },
     mounted() {
         if(sessionStorage.getItem("systemType")=='1'){
             this.systemType = 1
-            this.sidebarMenu = JSON.parse(sessionStorage.getItem("sidebarMenu1"))
         }else if(sessionStorage.getItem("systemType")=='2'){
             this.systemType = 2
-            this.sidebarMenu = JSON.parse(sessionStorage.getItem("sidebarMenu2"))
         }
+        this.queryAllPost();
         /*
         * 总后台
         */
@@ -103,7 +111,7 @@ export default {
         if(this.$route.path=='/home/sqCommunity/personnelAdd'){
             this.defaultActive = '/home/sqCommunity/personnel'
         }
-        //居民
+        //志愿者
         if(this.$route.path=='/home/sqCommunity/volunteerAdd'){
             this.defaultActive = '/home/sqCommunity/volunteer'
         }

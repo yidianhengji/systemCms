@@ -26,7 +26,6 @@
 <script>
 import { getCookie, setCookie } from "@/util/cookie";
 import { login } from "api/login/index";
-import { queryAll } from "api/login/index";
 export default {
     data() {
         var validateName = (rule, value, callback) => {
@@ -57,15 +56,6 @@ export default {
         };
     },
     methods: {
-        //根据用户查询菜单权限
-        queryAllPost(roleId){
-            queryAll({uuid: roleId}).then(data => {
-                if(data.data.code==200){
-                    sessionStorage.setItem("sidebarMenu1", JSON.stringify(data.data.data));
-                    this.$router.push({ path: '/home/zhtSurvey' });
-                }
-            })
-        },
         submitForm(formName) {
             this.$refs[formName].validate(valid => {
                 if (valid) {
@@ -87,7 +77,7 @@ export default {
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
                                 sessionStorage.setItem("communityId", response.data.data.communityId);
                                 sessionStorage.setItem("systemType", '1');
-                                this.queryAllPost(response.data.data.roleId);
+                                this.$router.push({ path: '/home/zhtSurvey' });
                             }, 1000);
                         }
                     })
