@@ -115,16 +115,17 @@ export default {
                             label: "操作",
                             items: items
                         };
-                        return h(MyDropDown, {
-                            props: {
-                                dropDownData: dropDownData
-                            },
-                            on: {
-                                update: this.update,
-                                del: this.del
-                            }
-                        });
-                        
+                        if(param.row.roleId!='9393b172278e449585d192ff72a02f88'){
+                            return h(MyDropDown, {
+                                props: {
+                                    dropDownData: dropDownData
+                                },
+                                on: {
+                                    update: this.update,
+                                    del: this.del
+                                }
+                            });
+                        }
                     }
                 }
             ],
