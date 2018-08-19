@@ -37,13 +37,12 @@ export default {
         thisFile(id) {
             var file = document.getElementById(id);
             if (file.multiple == false) {
-                formData = new FormData(file.files[0]);
-                uploadFile(formData).then(data => {
+                var from = file.files[0];
+                uploadFile(from).then(data => {
                     if(data.data.code==200){
-                        this.dataListdouble = data.data.data.list
+                        this.dataListsingle = data.data.data
                     }
                 })
-                this.dataListsingle = obj
             } else {
                 if(this.upload.leng==''){
                     if (file.files.length > 0) {

@@ -33,3 +33,26 @@ export function queryByExport(params) {
         })
     })
 }
+
+/**
+ * 查询单个
+ */
+export function queryOne(params) {
+  return new Promise((resolve, reject) => {
+    axiosTokenGet.get(backen + 'people/queryOne', {params: params}).then(data => {
+      resolve(data)
+    })
+  })
+}
+
+
+/**
+ * 修改
+ */
+export function update(params) {
+  return new Promise((resolve, reject) => {
+    axiosToken.post(backen + 'people/update', params).then(data => {
+      resolve(data)
+    })
+  })
+}

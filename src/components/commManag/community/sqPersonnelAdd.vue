@@ -6,16 +6,23 @@
       </div>
       <div class="addFromListBox">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="负责人电话" prop="mobile" class="form-control">
-            <el-input v-model="ruleForm.mobile" placeholder="请输入负责人电话（必须是实名认证的）"></el-input>
+          <el-form-item label="手机号码" prop="mobile" class="form-control">
+            <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码"></el-input>
           </el-form-item>
-          <el-form-item label="负责权限" prop="type" class="form-control">
-            <el-checkbox-group v-model="ruleForm.type">
-              <el-checkbox label="1" key="1" name="type">活动</el-checkbox>
-              <el-checkbox label="2" key="2" name="type">任务</el-checkbox>
-              <el-checkbox label="3" key="3" name="type">垃圾分类</el-checkbox>
-            </el-checkbox-group>
+
+          <el-form-item label="真实姓名" prop="truename" class="form-control">
+            <el-input v-model="ruleForm.truename" placeholder="请输入真实姓名"></el-input>
           </el-form-item>
+
+          <el-form-item label="头像">
+            <upload ref="upload" :upload=upload2></upload>
+          </el-form-item>
+
+          <el-form-item label="性别" prop="sex" class="form-control">
+              <el-radio v-model="ruleForm.sex" label="1">男</el-radio>
+              <el-radio v-model="ruleForm.sex" label="2">女</el-radio>
+          </el-form-item>
+
           <el-form-item label="备注">
             <el-input type="textarea" v-model="ruleForm.description" placeholder="写点什么吧！"></el-input>
           </el-form-item>
@@ -30,16 +37,22 @@
 
 <script>
   import {uploadPath} from '@/path/path';//上传接口地址
-  import {add} from "api/volunteer/index";//新增
-  import {update} from "api/volunteer/index";//修改
-  import {queryOne} from "api/volunteer/index";//查询单个
+  import {add} from "api/people/index";//新增
+  import {update} from "api/people/index";//修改
+  import {queryOne} from "api/people/index";//查询单个
+  import upload from 'src/components/common/upload'
+
   export default {
+    components: {
+      upload
+    },
     data() {
       return {
+        upload2: {"id": "test2" },
         ruleForm: {
           mobile: "",
-          type: [],
           description: "",
+          sex: '1'
         },
         rules: {
           mobile: [
@@ -47,8 +60,11 @@
             {pattern: /^[0-9]*$/, message: '请输入整数'},
             {min: 11, max: 11, message: "请输入长度为11位数的手机号", trigger: "blur"}
           ],
-          type: [
-            {type: 'array', required: true, message: '请至少选择一个权限', trigger: 'change'}
+          truename: [
+            {required: true, message: "请输入真实姓名", trigger: "blur"},
+          ],
+          sex: [
+            { required: true, message: '请选择性别', trigger: 'change' }
           ],
         }
       };
@@ -61,11 +77,19 @@
     methods: {
       //查询单个
       taskQueryOnePost() {
-        queryOne({uuid: this.$route.query.uuid}).then(data => {
+        queryOne({peopleId: this.$route.query.uuid}).then(data => {
           if (data.data.code == 200) {
             this.ruleForm.mobile = data.data.data.mobile;
-            this.ruleForm.type = JSON.parse(data.data.data.identityFlag)
+            this.ruleForm.truename = data.data.data.truename;
+            this.ruleForm.sex = ''+data.data.data.sex+'';
             this.ruleForm.description = data.data.data.description
+            var headPic = '';
+            if(data.data.data.headPic==''){
+              headPic = 'static/upload/upload-120-120.png'
+            }else {
+              headPic = data.data.data.headPic
+            }
+            this.$refs.upload.dataListsingle = headPic
           }
         })
       },
@@ -74,10 +98,21 @@
         this.$refs[formName].validate(valid => {
           if (valid) {
             if (this.$route.query.type == 1) {
+              var headPic = '';
+              if(this.$refs.upload.dataListsingle=='static/upload/upload-120-120.png'){
+                headPic = '';
+              }else{
+                headPic = this.$refs.upload.dataListsingle;
+              }
               let params = {
                 mobile: this.ruleForm.mobile,
-                identityFlag: JSON.stringify(this.ruleForm.type),
+                truename: this.ruleForm.truename,
+                sex: this.ruleForm.sex,
                 description: this.ruleForm.description,
+                role: 1,
+                identityFlag: 0,
+                communityId: JSON.parse(sessionStorage.getItem("userData")).communityId,
+                headPic: headPic
               };
               add(params).then(data => {
                 var _this = this;
@@ -87,17 +122,25 @@
                     type: 'success',
                     duration: '500',
                     onClose: function () {
-                      _this.$router.push({path: '/home/sqCommunity/volunteer'})
+                      _this.$router.push({path: '/home/sqCommunity/personnel'})
                     }
                   });
                 }
               })
             } else if (this.$route.query.type == 2) {
+              var headPic = '';
+              if(this.$refs.upload.dataListsingle=='static/upload/upload-120-120.png'){
+                headPic = '';
+              }else{
+                headPic = this.$refs.upload.dataListsingle;
+              }
               let params = {
                 uuid: this.$route.query.uuid,
                 mobile: this.ruleForm.mobile,
-                identityFlag: JSON.stringify(this.ruleForm.type),
+                sex: this.ruleForm.sex,
+                truename: this.ruleForm.truename,
                 description: this.ruleForm.description,
+                headPic: headPic
               };
               update(params).then(data => {
                 var _this = this;
@@ -107,7 +150,7 @@
                     type: 'success',
                     duration: '500',
                     onClose: function () {
-                      _this.$router.push({path: '/home/sqCommunity/volunteer'})
+                      _this.$router.push({path: '/home/sqCommunity/personnel'})
                     }
                   });
                 }

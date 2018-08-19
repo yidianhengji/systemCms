@@ -23,6 +23,7 @@
 import MyDropDown from '@/components/common/MyDropDown';
 import table from '@/components/common/table';
 import { queryList } from "api/volunteer/index";//新增
+import { update } from "api/volunteer/index";//修改
 export default {
     components: {
         vtable: table
@@ -124,7 +125,26 @@ export default {
             this.$router.push({path: '/home/sqCommunity/volunteerAdd', query: { type: 2, uuid: obj }})
         },
         del(obj){
+          this.$confirm('是否删除该条记录?', '温馨提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            update({uuid: obj, role: 1, identityFlag: ''}).then(data => {
+              if(data.data.code==200){
+                this.$message({
+                  message: '删除成功',
+                  type: 'success',
+                  duration: '500',
+                  onClose: function(){
+                    window.location.reload();
+                  }
+                });
+              }
+            })
+          }).catch(() => {
 
+          });
         }
     }
 }
