@@ -112,7 +112,8 @@
                 role: 1,
                 identityFlag: 0,
                 communityId: JSON.parse(sessionStorage.getItem("userData")).communityId,
-                headPic: headPic
+                headPic: headPic,
+                sysType: JSON.parse(sessionStorage.getItem("userData")).sysType
               };
               add(params).then(data => {
                 var _this = this;
