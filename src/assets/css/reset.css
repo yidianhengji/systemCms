@@ -64,3 +64,7 @@ html, body {
 	height: 90px;
 	font-family: Arial
 }
+
+body .el-table th.gutter{
+  display: table-cell!important;
+}

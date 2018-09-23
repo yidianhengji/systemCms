@@ -14,7 +14,7 @@ module.exports = {
             '/backen/': {
                 //target: 'http://localhost:8090/',
                 target: 'http://192.168.199.231:8090/',
-               //target: 'http://120.79.177.219:8090/',
+                //target: 'http://120.79.177.219:8090/',
                 changeOrigin: true
             },
         },

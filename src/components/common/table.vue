@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<el-table ref="multipleTable" :data="dataArray" tooltip-effect="dark" border style="width: 100%">
+		<el-table size="mini" fit="false" ref="multipleTable" :data="dataArray" tooltip-effect="dark" border style="width: 100%" :header-cell-style="{background:'#f5f7fa'}">
 			<!-- 判断是否显示复选框  isSelection true flase -->
 			<div v-if="isSelection == true">
 				<el-table-column type="selection" width="50"></el-table-column>
 			</div>
 
-			<el-table-column v-for="(column, index) in columns" :label="column.label" :prop="column.prop" :key="index" :width="column.width">
+			<el-table-column show-overflow-tooltip v-for="(column, index) in columns" :label="column.label" :prop="column.prop" :key="index" :width="column.width">
 				<template slot-scope="scope">
 					<my-render v-if="column.render" :row="scope.row" :render="column.render"></my-render>
 					<span v-else>

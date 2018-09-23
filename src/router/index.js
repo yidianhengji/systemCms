@@ -32,6 +32,8 @@ import powerPowerGroup from '@/components/totalManag/power/powerGroup'; //权限
  */
 import sqLogin from '@/components/commManag/sqLogin'; //总后台登录界面
 import sqSurvey from '@/components/commManag/sqSurvey'; //首页统计
+import sqNotice from '@/components/commManag/content/sqNotice'; //公告管理
+import sqNoticeAdd from '@/components/commManag/content/sqNoticeAdd'; //新增公告
 import sqActivity from '@/components/commManag/content/activity'; //活动管理
 import sqActivityAdd from '@/components/commManag/content/activityAdd'; //新增活动
 import sqTask from '@/components/commManag/content/task'; //任务管理
@@ -42,6 +44,21 @@ import sqPersonnel from '@/components/commManag/community/sqPersonnel'; //居民
 import sqPersonnelAdd from '@/components/commManag/community/sqPersonnelAdd'; //居民新增修改
 import sqPowerUser from '@/components/commManag/power/user'; //管理员
 import sqPowerPowerGroup from '@/components/commManag/power/powerGroup'; //权限组
+
+
+import circleManage from '@/components/commManag/circle/circleManage'; //圈子管理
+import circleManageAdd from '@/components/commManag/circle/circleManageAdd'; //新增圈子
+import postManage from '@/components/commManag/circle/postManage'; //帖子管理
+import circleNotice from '@/components/commManag/circle/circleNotice'; //圈子公告
+import circleNoticeAdd from '@/components/commManag/circle/circleNoticeAdd'; //新增公告
+import circleComment from '@/components/commManag/circle/circleComment'; //评论管理
+
+
+//建议投诉
+import complaintManage from '@/components/commManag/complaint/complaintManage'; //圈子管理
+
+
+
 const router = new Router({
     routes: [{
             path: '/zhtLogin',
@@ -86,6 +103,8 @@ const router = new Router({
                  * 社区
                  */
                 { path: '/home/sqSurvey', name: '首页', component: sqSurvey },
+                { path: '/home/sqContern/notice', name: '公告管理', component: sqNotice },
+                { path: '/home/sqContern/noticeAdd', name: '新增公告', component: sqNoticeAdd },
                 { path: '/home/sqContern/activity', name: '活动管理', component: sqActivity },
                 { path: '/home/sqContern/activityAdd', name: '新增活动', component: sqActivityAdd },
                 { path: '/home/sqContern/task', name: '任务管理', component: sqTask },
@@ -96,6 +115,19 @@ const router = new Router({
                 { path: '/home/sqCommunity/personnelAdd', name: '新增居民', component: sqPersonnelAdd },
                 { path: '/home/sqPower/powerUser', name: '管理员', component: sqPowerUser },
                 { path: '/home/sqPower/powerPowerGroup', name: '权限组', component: sqPowerPowerGroup },
+
+              { path: '/home/sqCircle/circleManage', name: '圈子管理', component: circleManage },
+              { path: '/home/sqCircle/circleManageAdd', name: '新增圈子', component: circleManageAdd },
+              { path: '/home/sqCircle/postManage', name: '帖子管理', component: postManage },
+              { path: '/home/sqCircle/circleNotice', name: '圈子公告', component: circleNotice },
+              { path: '/home/sqCircle/circleNoticeAdd', name: '新增公告', component: circleNoticeAdd },
+              { path: '/home/sqCircle/circleComment', name: '评论管理', component: circleComment },
+
+              { path: '/home/sqComplaint/complaintManage', name: '建议投诉', component: complaintManage },
+
+
+
+
             ]
         },
     ]
