@@ -1,6 +1,6 @@
 <template>
     <el-dropdown trigger="click" @command="handleCommand">
-        <el-button size="small">
+        <el-button size="mini">
             <span v-text="dropDownData.label" class="el-dropdown-link"></span>
             <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
