@@ -211,9 +211,15 @@ export default {
 
 <style lang="stylus">
 .__article {
-    background #ffffff;
-    padding 15px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
-    border-radius: 4px;
+  background #ffffff;
+  padding 15px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  .formBox {
+    border-bottom 1px solid #eee
+  }
+  .btnBox {
+    margin 10px 0;
+  }
 }
 </style>

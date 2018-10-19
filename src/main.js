@@ -6,6 +6,7 @@ import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/reset.css';
+import api from './util/api';
 Vue.use(ElementUI);
 
 import '../static/UE/ueditor.config.js'
@@ -20,6 +21,8 @@ Vue.prototype.$isEmpty = function(str) {
     return false;
   }
 }
+
+Vue.prototype.$api = api;
 
 Vue.config.productionTip = false
 

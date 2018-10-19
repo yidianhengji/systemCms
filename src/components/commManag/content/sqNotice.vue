@@ -20,17 +20,17 @@
 </template>
 
 <script>
-  import MyDropDown from '@/components/common/MyDropDown'
-  import table from '@/components/common/table'
-  import { query, update } from "@/api/notice/index";
+import MyDropDown from "@/components/common/MyDropDown";
+import table from "@/components/common/table";
+import { query, update } from "src/api/notice/index";
 export default {
   components: {
     vtable: table
   },
-  data(){
+  data() {
     return {
       formInline: {
-        name: '',
+        name: ""
       },
       pageSize: 10,
       pageNum: 1,
@@ -39,15 +39,15 @@ export default {
       columns: [
         {
           prop: "title",
-          label: "活动名称",
+          label: "活动名称"
         },
         {
           prop: "createTime",
-          label: "创建时间",
+          label: "创建时间"
         },
         {
           prop: "updateTime",
-          label: "更新时间",
+          label: "更新时间"
         },
         {
           prop: "",
@@ -56,7 +56,7 @@ export default {
             var items = [
               { label: "修改", func: { func: "update", uuid: param.row.uuid } },
               { label: "删除", func: { func: "del", uuid: param.row.uuid } }
-            ]
+            ];
             const dropDownData = {
               label: "操作",
               items: items
@@ -68,33 +68,34 @@ export default {
               },
               on: {
                 update: this.update,
-                del: this.del,
+                del: this.del
               }
             });
           }
         }
-      ],
-    }
+      ]
+    };
   },
-  mounted(){
+  mounted() {
     this.queryUserListPost(this.pageNum);
   },
   methods: {
     //查询所有公告
-    queryUserListPost(pageNum, name){
+    queryUserListPost(pageNum, name) {
       let params = {
         pageSize: this.pageSize,
         pageNum: pageNum,
         title: name,
         type: 1,
         communityId: sessionStorage.getItem("communityId"),
-      }
+        flag: 1
+      };
       query(params).then(data => {
-        if(data.data.code==200){
-          this.dataArray = data.data.data.list
-          this.total = data.data.data.total
+        if (data.data.code == 200) {
+          this.dataArray = data.data.data.list;
+          this.total = data.data.data.total;
         }
-      })
+      });
     },
     //搜索
     onSubmit() {
@@ -102,50 +103,58 @@ export default {
     },
     //新增
     onClickAdd() {
-      this.$router.push({path: '/home/sqContern/noticeAdd', query: { type: 1 } })
+      this.$router.push({
+        path: "/home/sqContern/noticeAdd",
+        query: { type: 1 }
+      });
     },
     //修改
     update(obj) {
-      this.$router.push({path: '/home/sqContern/noticeAdd', query: { uuid: obj, type: 2 } })
+      this.$router.push({
+        path: "/home/sqContern/noticeAdd",
+        query: { uuid: obj, type: 2 }
+      });
     },
     //删除
     del(obj) {
-      this.$confirm('是否删除该条记录?', '温馨提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        update({uuid: obj, flag: 2}).then(data => {
-          if(data.data.code==200){
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-              duration: '500',
-              onClose: function(){
-                window.location.reload();
-              }
-            });
-          }
+      this.$confirm("是否删除该条记录?", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          update({ uuid: obj, flag: 2 }).then(data => {
+            if (data.data.code == 200) {
+              this.$message({
+                message: "删除成功",
+                type: "success",
+                duration: "500",
+                onClose: function() {
+                  window.location.reload();
+                }
+              });
+            }
+          });
         })
-      }).catch(() => {
-
-      });
-    },
+        .catch(() => {});
+    }
   }
-}
+};
 </script>
 
 <style lang="stylus">
-  .__notice {
-    background #ffffff;
-    padding 15px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
-    border-radius: 4px;
-    .formBox {
-      border-bottom 1px solid #eee
-    }
-    .btnBox {
-      margin 10px 0;
-    }
+.__notice {
+  background: #ffffff;
+  padding: 15px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+
+  .formBox {
+    border-bottom: 1px solid #eee;
   }
+
+  .btnBox {
+    margin: 10px 0;
+  }
+}
 </style>

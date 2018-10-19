@@ -2,33 +2,56 @@
   <div class="__complaintManage">
     <div class="formBox">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="名称：">
-          <el-input v-model="formInline.name" placeholder="请输入圈子名称"></el-input>
+        <el-form-item label="状态：">
+          <el-select v-model="formInline.status" placeholder="请选择状态">
+            <el-option label="已回复" value="2"></el-option>
+            <el-option label="未回复" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
+    <div class="btnBox">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增建议投诉</el-button>
+    </div>
     <div class="tableList">
       <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
     </div>
+
+    <el-dialog
+      title="回复内容"
+      :visible.sync="dialogVisible"
+      :modal="false"
+      width="30%">
+      <span>{{comment}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
   import MyDropDown from '@/components/common/MyDropDown'
   import table from '@/components/common/table'
-  import { query, del } from "@/api/complaint/index";
+  import {query, del} from "@/api/complaint/index";
+
   export default {
     components: {
       vtable: table
     },
-    data(){
+    data() {
       const _this = this;
       return {
+        comment: '',
+        dialogVisible: false,
         formInline: {
           name: '',
+          status: ''
         },
         pageSize: 10,
         pageNum: 1,
@@ -36,71 +59,52 @@
         dataArray: [],
         columns: [
           {
-            prop: "headPic",
-            label: "圈子图标",
-            render: function (createElement) {
-              if (this.row.headPic) {
-                return createElement('img', {
-                  domProps: {
-                    src: this.row.headPic,
-                    className: "circleImg"
-                  }
-                })
+            prop: "content",
+            label: "投诉内容",
+          },
+          {
+            prop: "createName",
+            label: "投诉人姓名",
+          },
+          {
+            prop: "phone",
+            label: "投诉人电话",
+          },
+          {
+            prop: "createTime",
+            label: "创建时间",
+          },
+          {
+            prop: "status",
+            label: "状态",
+            render: (h, param) => {
+              var html = ''
+              if (param.row.status == 1) {
+                html = '未回复'
+              } else {
+                html = '已回复'
               }
-            }
-          },
-          {
-            prop: "name",
-            label: "圈子名称",
-          },
-          {
-            prop: "description",
-            label: "圈子描述",
-          },
-          {
-            prop: "updateTime",
-            label: "更新时间",
-          },
-          {
-            prop: "weight",
-            label: "权重",
-            render: function (createElement) {
-              return createElement('a', {
-                domProps: {
-                  href: "javascript:void(0);",
-                  innerHTML: this.row.weight,
-                },
-                on: {
-                  click: function () {
-                    _this.$prompt('请输入邮箱', '提示', {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-                      inputErrorMessage: '邮箱格式不正确'
-                    }).then(({ value }) => {
-                      _this.$message({
-                        type: 'success',
-                        message: '你的邮箱是: ' + value
-                      });
-                    }).catch(() => {
-                      _this.$message({
-                        type: 'info',
-                        message: '取消输入'
-                      });
-                    });
-                  }
-                }
-              })
+              return h('span', html);
             }
           },
           {
             prop: "",
             label: "操作",
             render: (h, param) => {
-              var items = [
-                { label: "修改", func: { func: "update", uuid: param.row.uuid } },
-                { label: "删除", func: { func: "del", uuid: param.row.uuid } }
-              ]
+              var items;
+              if (param.row.status == 1) {
+                // 未回复
+                items = [
+                  {label: "回复", func: {func: "update", uuid: param.row.uuid, status: param.row.status}},
+                  {label: "删除", func: {func: "del", uuid: param.row.uuid}}
+                ]
+              } else {
+                // 已回复
+                items = [
+                  {label: "查看回复", func: {func: "chf", uuid: param.row.uuid, status: param.row.status}},
+                  {label: "删除", func: {func: "del", uuid: param.row.uuid}}
+                ]
+              }
               const dropDownData = {
                 label: "操作",
                 items: items
@@ -113,6 +117,7 @@
                 on: {
                   update: this.update,
                   del: this.del,
+                  chf: this.chf
                 }
               });
             }
@@ -120,37 +125,20 @@
         ],
       }
     },
-    mounted(){
+    mounted() {
       this.queryUserListPost(this.pageNum);
     },
     methods: {
-      open3() {
-        this.$prompt('请输入邮箱', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: '邮箱格式不正确'
-        }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '你的邮箱是: ' + value
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          });
-        });
-      },
       //查询所有公告
-      queryUserListPost(pageNum, name){
+      queryUserListPost(pageNum, status) {
         let params = {
           pageSize: this.pageSize,
           pageNum: pageNum,
-          name: name,
+          flag: 1,
+          status: status
         }
-        query(params).then(data => {
-          if(data.data.code==200){
+        this.$api.postAndJson('/backen/complaint/queryAll', params).then(data => {
+          if (data.data.code == 200) {
             this.dataArray = data.data.data.list
             this.total = data.data.data.total
           }
@@ -158,11 +146,36 @@
       },
       //搜索
       onSubmit() {
-        this.queryUserListPost(this.pageNum, this.formInline.name);
+        this.queryUserListPost(this.pageNum, this.formInline.status);
       },
       //修改
-      update(obj) {
-        this.$router.push({path: '/home/sqCircle/circleManageAdd', query: { uuid: obj, type: 2 } })
+      update(obj, status) {
+        this.$prompt('请输入回复内容', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /\S/,
+          inputErrorMessage: '请输入回复内容'
+        }).then(({value}) => {
+          this.$api.postAndJson('/backen/complaintComment/add', {
+            complaintUuid: obj,
+            content: value
+          }).then(res => {
+            //this.comment = res.data.data.list[0].content
+            setTimeout(() => {
+              location.reload();
+            },500)
+          })
+        }).catch(() => {
+
+        });
+      },
+      chf(obj) {
+        this.dialogVisible = true;
+        this.$api.postAndJson('/backen/complaintComment/queryAll', {
+          complaintUuid: obj
+        }).then(res => {
+          this.comment = res.data.data.list[0].content;
+        })
       },
       //删除
       del(obj) {
@@ -171,13 +184,13 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          del({uuid: obj}).then(data => {
-            if(data.data.code==200){
+          this.$api.postAndJson('/backen/complaint/update',{uuid: obj, flag: 2}).then(data => {
+            if (data.data.code == 200) {
               this.$message({
                 message: '删除成功',
                 type: 'success',
                 duration: '500',
-                onClose: function(){
+                onClose: function () {
                   window.location.reload();
                 }
               });
@@ -187,6 +200,9 @@
 
         });
       },
+      onClickAdd() {
+        this.$router.push({path: '/complaintManageAdd'})
+      }
     }
   }
 </script>
@@ -195,8 +211,11 @@
   .__complaintManage {
     background #ffffff;
     padding 15px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     border-radius: 4px;
+    .el-popper {
+      z-index: 2019 !important;
+    }
     .formBox {
       border-bottom 1px solid #eee
     }

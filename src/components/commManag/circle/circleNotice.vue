@@ -39,7 +39,7 @@
         columns: [
           {
             prop: "title",
-            label: "活动名称",
+            label: "公告名称",
           },
           {
             prop: "createTime",
@@ -102,11 +102,11 @@
       },
       //新增
       onClickAdd() {
-        this.$router.push({path: '/home/sqContern/noticeAdd', query: { type: 1 } })
+        this.$router.push({path: '/home/sqCircle/circleNoticeAdd', query: { type: 1 } })
       },
       //修改
       update(obj) {
-        this.$router.push({path: '/home/sqContern/noticeAdd', query: { uuid: obj, type: 2 } })
+        this.$router.push({path: '/home/sqCircle/circleNoticeAdd', query: { uuid: obj, type: 2 } })
       },
       //删除
       del(obj) {

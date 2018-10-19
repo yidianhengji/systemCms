@@ -14,6 +14,7 @@ module.exports = {
             '/backen/': {
                 //target: 'http://localhost:8090/',
                 target: 'http://localhost:8090/',
+                //target: 'https://www.xxsghp.cn/',
                //target: 'http://120.79.177.219:8090/',
                 changeOrigin: true
             },

@@ -14,6 +14,10 @@
             <el-input v-model="ruleForm.truename" placeholder="请输入真实姓名"></el-input>
           </el-form-item>
 
+           <el-form-item label="身份证号码" prop="idCard" class="form-control">
+            <el-input v-model="ruleForm.idCard" placeholder="请输入身份证号码"></el-input>
+          </el-form-item>
+
           <el-form-item label="头像">
             <upload ref="upload" :upload=upload2></upload>
           </el-form-item>
@@ -44,7 +48,7 @@
 
   export default {
     components: {
-      upload
+      upload,
     },
     data() {
       return {
@@ -52,7 +56,8 @@
         ruleForm: {
           mobile: "",
           description: "",
-          sex: '1'
+          sex: '1',
+          idCard
         },
         rules: {
           mobile: [
@@ -66,6 +71,9 @@
           sex: [
             { required: true, message: '请选择性别', trigger: 'change' }
           ],
+          idCard: [
+            { required: true, message: '请输入身份证号码', trigger: 'blur' }
+          ]
         }
       };
     },
@@ -83,6 +91,7 @@
             this.ruleForm.truename = data.data.data.truename;
             this.ruleForm.sex = ''+data.data.data.sex+'';
             this.ruleForm.description = data.data.data.description
+            this.ruleForm.idCard = data.data.data.idCard;
             var headPic = '';
             if(data.data.data.headPic==''){
               headPic = 'static/upload/upload-120-120.png'
@@ -113,7 +122,8 @@
                 identityFlag: 0,
                 communityId: JSON.parse(sessionStorage.getItem("userData")).communityId,
                 headPic: headPic,
-                sysType: JSON.parse(sessionStorage.getItem("userData")).sysType
+                sysType: JSON.parse(sessionStorage.getItem("userData")).sysType,
+                idCard: this.ruleForm.idCard
               };
               add(params).then(data => {
                 var _this = this;
@@ -141,7 +151,8 @@
                 sex: this.ruleForm.sex,
                 truename: this.ruleForm.truename,
                 description: this.ruleForm.description,
-                headPic: headPic
+                headPic: headPic,
+                idCard: this.ruleForm.idCard
               };
               update(params).then(data => {
                 var _this = this;

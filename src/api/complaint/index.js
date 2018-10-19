@@ -37,3 +37,11 @@ export function queryOne(params) {
     })
   })
 }
+
+export function del(params) {
+  return new Promise((resolve, reject) => {
+    axiosToken.post(backen + 'complaint/del', params).then(data => {
+      resolve(data)
+    })
+  })
+}

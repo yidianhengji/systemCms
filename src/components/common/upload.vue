@@ -64,7 +64,7 @@ export default {
                             if(this.dataListdouble.length>=this.upload.leng){
                                 alert("最多添加"+this.upload.leng+"个");
                             }else{
-                                 uploadFile(from).then(data => {
+                                 uploadFile(file.files[i]).then(data => {
                                      if(data.data.code==200){
                                          this.dataListdouble.push(data.data.data)
                                      }

@@ -23,17 +23,6 @@
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-
-          <!--<el-submenu v-for="(item,index) in sidebarMenu" :key="index" :index="''+(index+1)">
-			  <template slot="title">
-				  <span>{{item.name}}</span>
-			  </template>
-			  <el-menu-item-group v-if="item.powers">
-				  <el-menu-item v-for="(itemList,indexList) in item.powers" :key="indexList" :index="''+itemList.frontPath">
-					  {{itemList.meunName}}
-				  </el-menu-item>
-			  </el-menu-item-group>
-		  </el-submenu>-->
         </el-menu>
       </el-col>
     </el-row>
@@ -53,6 +42,13 @@
         openeds: ['1'],
         sidebarMenu: [],
         sidebarMenu2: [{
+          "name": "权限管理",
+          "powers": [{
+            "meunName": "菜单管理",
+            "frontPath": "/meun"
+          }]
+        }],
+        /*sidebarMenu2: [{
           "name": "内容管理",
           "powers": [{
             "meunName": "公告管理",
@@ -63,6 +59,12 @@
           }, {
             "meunName": "任务管理",
             "frontPath": "/home/sqContern/task"
+          },{
+            "meunName": "文章管理",
+            "frontPath": "/article"
+          },{
+            "meunName": "分类管理",
+            "frontPath": "/classify"
           }]
         }, {
           "name": "业务管理",
@@ -80,13 +82,16 @@
             "frontPath": "/home/sqCircle/circleManage"
           }, {
             "meunName": "帖子管理",
-            "frontPath": "/home/sqCircle/postManage"
+            "frontPath": "/postManage"
           }, {
             "meunName": "圈子公告",
             "frontPath": "/home/sqCircle/circleNotice"
           }, {
             "meunName": "评论管理",
             "frontPath": "/home/sqCircle/circleComment"
+          },{
+            "meunName": "商家管理",
+            "frontPath": "/shangjia"
           }]
         },{
           "name": "投诉管理",
@@ -112,7 +117,7 @@
             "meunName": "权限组",
             "frontPath": "/home/sqPower/powerPowerGroup"
           }]
-        }]
+        }]*/
       }
     },
     methods: {
@@ -127,7 +132,7 @@
         var userData = JSON.parse(sessionStorage.getItem("userData"));
         queryAll({uuid: userData.roleId}).then(data => {
           if (data.data.code == 200) {
-            this.sidebarMenu = data.data.data
+            this.sidebarMenu2 = data.data.data
           }
         })
       }
@@ -140,8 +145,8 @@
       }
       this.queryAllPost();
       /*
-	  * 总后台
-	  */
+	    * 总后台
+	    */
       //任务
       if (this.$route.path == '/home/zhtContern/taskAdd') {
         this.defaultActive = '/home/zhtContern/task'
@@ -159,12 +164,9 @@
         this.defaultActive = '/home/zhtGoods/goodsList'
       }
       /*
-	  * 社区
-	  */
+	    * 社区
+	    */
       //任务
-      if (this.$route.path == '/home/sqContern/taskAdd') {
-        this.defaultActive = '/home/sqContern/task'
-      }
       //活动
       if (this.$route.path == '/home/sqContern/taskAdd') {
         this.defaultActive = '/home/sqContern/task'
@@ -173,9 +175,21 @@
       if (this.$route.path == '/home/sqCommunity/personnelAdd') {
         this.defaultActive = '/home/sqCommunity/personnel'
       }
-      //志愿者
-      if (this.$route.path == '/home/sqCommunity/volunteerAdd') {
-        this.defaultActive = '/home/sqCommunity/volunteer'
+      //建议投诉
+      if (this.$route.path == '/complaintManageAdd') {
+        this.defaultActive = '/home/sqComplaint/complaintManage'
+      }
+      //公告
+      if (this.$route.path == '/home/sqContern/noticeAdd') {
+        this.defaultActive = '/home/sqContern/notice'
+      }
+      //文章
+      if (this.$route.path == '/articleAdd') {
+        this.defaultActive = '/article'
+      }
+      //分类
+      if (this.$route.path == '/classifyAdd') {
+        this.defaultActive = '/classify'
       }
     },
   }

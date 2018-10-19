@@ -20,7 +20,7 @@
      * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
     // window.UEDITOR_HOME_URL = "/vue2-management-platform/static/UE/"  // vue2-management-platform是为gh-pages添加，本地开发写"/static/UE/"足以
-    window.UEDITOR_HOME_URL = "http://localhost/systemCms/static/UE/"
+    window.UEDITOR_HOME_URL = "/weDream/weCMS/static/UE/"
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
 
     /**

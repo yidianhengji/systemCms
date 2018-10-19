@@ -2,7 +2,8 @@
   <div class="__articleAdd">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>发布公告</span>
+        <span v-if="$route.query.type==1">新增公告</span>
+        <span v-else>修改公告</span>
       </div>
       <div class="addFromListBox">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -16,7 +17,6 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import UE from "@/components/common/ue";
+  import UE from "src/components/common/ue";
   import { add, update, queryOne  } from "@/api/notice/index";
   export default {
     components: {UE},
@@ -42,16 +42,18 @@
         },
         rules: {
           name: [
-            {required: true, message: "请输入文章内容", trigger: "blur"},
+            {required: true, message: "请输入公告名称", trigger: "blur"},
             {max: 64, message: "名称不能大于64位", trigger: "blur"}
           ],
         }
       };
     },
-    mounted(){
-      if (this.$route.query.type == 2) {
-        this.queryOneList();
-      }
+    created(){
+      this.$nextTick(() => {
+        if (this.$route.query.type == 2) {
+          this.queryOneList();
+        }
+      })
     },
     methods: {
       submitForm(formName) {
