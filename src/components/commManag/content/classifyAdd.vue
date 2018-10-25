@@ -101,7 +101,7 @@
             name: s.name,
           }
 
-          this.type = s.type + '';
+          this.type = s.type
           this.ruleForm.weight = s.weight
           this.$refs.tree2.setCheckedKeys([s.upId]);
           if(s.pic){

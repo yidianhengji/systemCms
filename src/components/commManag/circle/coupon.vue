@@ -83,7 +83,8 @@
       this.$api.postAndJson('/backen/coupon/queryAll', {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        flag: 1
+        flag: 1,
+        merchantId: ''
       }).then(res => {
         this.dataArray = res.data.data.list
         this.total = res.data.data.total
@@ -102,7 +103,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$api.postAndToken('/backen/coupon/update', {
+          this.$api.postAndJson('/backen/coupon/update', {
             uuid: uuid,
             flag: 2
           }).then(res=>{

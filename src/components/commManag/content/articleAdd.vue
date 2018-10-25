@@ -75,7 +75,14 @@
     components: {UE},
     data() {
       return {
-        datas: datas,
+        datas: [
+          {'key': "网格 ","value": 1},
+          {'key': "活动风采 ","value": 2},
+          {'key': "业务办理 ","value": 3},
+          {'key': "社区风采 ","value": 4},
+          {'key': "党建 ","value": 5},
+          {'key': "商家分类","value": 6},
+        ],
         upload2: {"id": "test2"},
         defaultProps: {
           children: 'list',
@@ -114,7 +121,7 @@
             let s = res.data.data;
             this.ruleForm.title = s.title;
             this.defaultMsg = s.content;
-            this.type = s.type + '';
+            this.type = s.type
             this.contentType = s.contentType + '';
             this.description = s.description;
             this.$refs.tree2.setCheckedKeys([s.classify]);
@@ -193,6 +200,7 @@
           type: val
         }).then(res => {
           this.classify = res.data.data.list;
+          this.i = 0;
         })
       }
     }

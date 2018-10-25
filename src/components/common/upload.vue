@@ -8,7 +8,7 @@
             </ul>
             <div class="__uoloadFile120">
                 <input type="file" :id=upload.id :multiple=upload.multiple @change="thisFile(upload.id)">
-                <img src="/static/upload/upload-120-120.png" alt="">
+                <img src="static/upload/upload-120-120.png" alt="">
             </div>
         </div>
 

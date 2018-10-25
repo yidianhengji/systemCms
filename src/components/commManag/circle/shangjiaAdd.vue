@@ -144,7 +144,7 @@
               weight: this.ruleForm.weight,
               label: this.ruleForm.label.join(','),
               flag: 1,
-              pic: JSON.stringify(this.$refs.upload.dataListsingle),
+              pic: this.$refs.upload.dataListsingle === 'static/upload/upload-120-120.png' ? '' : this.$refs.upload.dataListsingle,
               classify: this.value5.join(',')
             }).then(res => {
               this.$router.go(-1);

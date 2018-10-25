@@ -7,7 +7,7 @@
       </div>
       <div class="addFromListBox">
         <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="文章标题" prop="name" class="form-control">
+          <el-form-item label="文章标题" prop="title" class="form-control">
             <el-input v-model="ruleForm.title" placeholder="请输入文章标题"></el-input>
           </el-form-item>
 
@@ -86,7 +86,7 @@
           content: '',
         },
         rules: {
-          name: [{required: true, message: '必填'}],
+          title: [{required: true, message: '必填'}],
         },
         type: '',
         classify: [],

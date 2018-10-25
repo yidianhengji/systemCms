@@ -102,6 +102,16 @@
         this.$router.push({path: '/couponAdd', query: { uuid:  uuid}})
       },
       onSubmit() {
+        this.$api.postAndJson('/backen/merchant/queryAll', {
+          pageSize: this.pageSize,
+          pageNum: this.pageNum,
+          flag: 1,
+          name: this.formInline.name
+        }).then(res => {
+          this.dataArray = res.data.data.list
+          this.total = res.data.data.total
+        })
+
       },
       onClickAdd() {
         this.$router.push({path: '/shangjiaAdd'})

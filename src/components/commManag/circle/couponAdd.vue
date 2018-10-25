@@ -84,10 +84,13 @@
             const end = new Date(time[1]);
             params.startTime = start.getFullYear()+'-'+(start.getMonth()+1) + '-' + start.getDate()+' 00:00:00'
             params.endTime = end.getFullYear()+'-'+(end.getMonth()+1) + '-' + end.getDate()+' 00:00:00'
+            params.community_id = sessionStorage.getItem('communityId')
           }
           params.merchantId = this.$route.query.uuid
           this.$api.postAndJson('/backen/coupon/add', params).then(res=> {
-
+            if(res.data.code == 200) {
+              this.$router.go(-1)
+            }
           })
         })
       }
