@@ -123,6 +123,7 @@
           if (data.data.code == 200) {
             this.ruleForm.name = data.data.data.title;
             this.defaultMsg = data.data.data.content;
+            this.ruleForm.circleId = data.data.data.circleId;
           }
         })
       },

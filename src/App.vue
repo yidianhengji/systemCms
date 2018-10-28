@@ -8,6 +8,8 @@
 import axiosToken from '@/util/axiosToken'
 import axiosTokenGet from '@/util/axiosTokenGet'
 import mutipartAxios from '@/util/mutipartAxios'
+import api from 'src/util/api'
+
 export default {
 	data(){
 		return {
@@ -39,6 +41,41 @@ export default {
 		}
 	},
 	created() {
+    api.ajax.axiosJson.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config;
+    });
+
+
+    api.ajax.axiosTokenL.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config;
+    });
+
+    api.ajax.axiosTokenNo.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config;
+    });
+
+    axiosToken.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config
+    })
+
+    axiosTokenGet.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config
+    })
 		//普通校验
 		axiosToken.interceptors.response.use((respone) => {
 			var _this = this;

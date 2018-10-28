@@ -40,8 +40,6 @@ const ajax = {
   axiosTokenNo: axios.create(optionsForNoToken),
 };
 
-/* TODO 响应拦截  给出提示 */
-
 /**
  * GET  带token  表单
  */
@@ -97,4 +95,5 @@ export default {
   getAndToken,
   postAndToken,
   postAndJson,
+  ajax,
 };

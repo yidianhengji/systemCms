@@ -77,6 +77,7 @@ export default {
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
                                 sessionStorage.setItem("systemType", '2');
                                 sessionStorage.setItem("communityId", response.data.data.communityId);
+                                sessionStorage.setItem('access-token', response.data.data.token);
                                 this.$router.push({ path: '/home/sqSurvey' });
                             }, 1000);
                         }

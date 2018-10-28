@@ -34,7 +34,7 @@
               :show-checkbox="true"
               :check-strictly="true"
               :check-on-click-node="true"
-              @check-change="handleClick"
+              @check-change="orCheckChange"
               ref="tree2">
             </el-tree>
           </el-form-item>
@@ -76,12 +76,12 @@
     data() {
       return {
         datas: [
-          {'key': "网格 ","value": 1},
-          {'key': "活动风采 ","value": 2},
-          {'key': "业务办理 ","value": 3},
-          {'key': "社区风采 ","value": 4},
-          {'key': "党建 ","value": 5},
-          {'key': "商家分类","value": 6},
+          {'key': "网格 ", "value": 1},
+          {'key': "活动风采 ", "value": 2},
+          {'key': "业务办理 ", "value": 3},
+          {'key': "社区风采 ", "value": 4},
+          {'key': "党建 ", "value": 5},
+          {'key': "商家分类", "value": 6},
         ],
         upload2: {"id": "test2"},
         defaultProps: {
@@ -99,20 +99,16 @@
           content: '',
         },
         rules: {
-          title: [{required: true, message: '必填',trigger: 'blur' }],
+          title: [{required: true, message: '必填', trigger: 'blur'}],
         },
         type: '',
         classify: [],
-        i: 0,
         description: '',
         contentType: ""
       }
     },
     created() {
       this.$nextTick(() => {
-        if (this.$refs.tree2.getCheckedNodes().length === 0) {
-          this.i++
-        }
         let uuid = this.$route.query.uuid;
         if (uuid) {
           this.$api.postAndJson('/backen/articles/queryOne', {
@@ -120,14 +116,13 @@
           }).then(res => {
             let s = res.data.data;
             this.ruleForm.title = s.title;
+
             this.defaultMsg = s.content;
+
             this.type = s.type
             this.contentType = s.contentType + '';
             this.description = s.description;
             this.$refs.tree2.setCheckedKeys([s.classify]);
-            if (s.pic) {
-              this.$refs.upload.dataListsingle = s.pic;
-            }
           })
         }
       })
@@ -179,18 +174,13 @@
           }
         });
       },
-      handleClick(data, checked, node) {
-        this.i++;
-        console.log(this.i);
-        if (this.i % 2 === 1) {
-          if (checked && this.$refs.tree2.getCheckedNodes().length > 1) {
-            this.$refs.tree2.setCheckedKeys([]);
-            this.$refs.tree2.setCheckedKeys([data.uuid]);
-            //交叉点击节点
-          } else {
-            this.$refs.tree2.setCheckedKeys([]);
-            //点击已经选中的节点，置空
-          }
+      orCheckChange(data, checked, indeterminte) {
+        // 如果已选择了选项 并且处于checked状态，不能选择新的
+        if (this.$refs.tree2.getCheckedNodes().length === 1 && checked) {
+          this.$refs.tree2.setChecked(data, true);
+        } else if (this.$refs.tree2.getCheckedNodes().length > 1 && checked) {
+          this.$refs.tree2.setCheckedKeys([])
+          this.$refs.tree2.setChecked(data, true);
         }
       }
     },
@@ -200,7 +190,6 @@
           type: val
         }).then(res => {
           this.classify = res.data.data.list;
-          this.i = 0;
         })
       }
     }
@@ -208,40 +197,40 @@
 </script>
 
 <style lang="stylus">
-.__article_add__ {
-  .addFromListBox {
-    width 960px;
-    .form-control {
-      width 60%;
-    }
-    .el-textarea {
-      textarea {
-        height 90px;
+  .__article_add__ {
+    .addFromListBox {
+      width 960px;
+      .form-control {
+        width 60%;
+      }
+      .el-textarea {
+        textarea {
+          height 90px;
+        }
       }
     }
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
+    }
   }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
-}
 </style>

@@ -80,18 +80,19 @@
       }
     },
     created() {
-      this.$api.postAndJson('/backen/coupon/queryAll', {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        flag: 1,
-        merchantId: ''
-      }).then(res => {
-        this.dataArray = res.data.data.list
-        this.total = res.data.data.total
-      })
+      this.queryUserListPost(this.pageNum)
     },
     methods: {
-      queryUserListPost() {
+      queryUserListPost(pageNum) {
+        this.$api.postAndJson('/backen/coupon/queryAll', {
+          pageSize: this.pageSize,
+          pageNum: pageNum,
+          flag: 1,
+          merchantId: ''
+        }).then(res => {
+          this.dataArray = res.data.data.list
+          this.total = res.data.data.total
+        })
       },
       onClickAdd() {
         this.$router.push({path: '/couponAdd'})

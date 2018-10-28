@@ -79,19 +79,21 @@
         let This = this;
         this.$refs[formName].validate(valid => {
           if (valid) {
-            let path = '';
-            if(this.$route.query.uuid) {
-              path = '/backen/post/update';
-            }else{
-              path = '/backen/post/add';
-            }
-            this.$api.postAndJson(path, {
+            let prams = {
               title: this.ruleForm.title,
               content: this.ruleForm.content,
               circleId: this.ruleForm.circleId,
               status: 2,
               picture: JSON.stringify(this.$refs.upload.dataListdouble)
-            }).then(res=>{
+            }
+            let path = '';
+            if(this.$route.query.uuid) {
+              path = '/backen/post/update';
+              prams.uuid = this.$route.query.uuid;
+            }else{
+              path = '/backen/post/add';
+            }
+            this.$api.postAndJson(path,prams ).then(res=>{
               this.$router.go(-1)
             })
           }

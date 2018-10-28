@@ -16,12 +16,14 @@ export default {
 		config: { type: Object },
 		id: { type: String },
 	},
-	mounted() {
-		const _this = this;
-		this.editor = UE.getEditor(this.id, this.config);
-		this.editor.addListener("ready", function() {
-			_this.editor.setContent(_this.defaultMsg);
-		});
+	created() {
+	  this.$nextTick(() => {
+      const _this = this;
+      this.editor = UE.getEditor(this.id, this.config);
+      this.editor.addListener("ready", function() {
+        _this.editor.setContent(_this.defaultMsg);
+      });
+    })
 	},
 	methods: {
 		getUEContent() {
@@ -31,6 +33,11 @@ export default {
 			return this.editor.getContentTxt()
 		}
 	},
+  watch: {
+    defaultMsg(val) {
+      this.editor.setContent(val);
+    }
+  },
 	destroyed() {
 		this.editor.destroy();
 	}

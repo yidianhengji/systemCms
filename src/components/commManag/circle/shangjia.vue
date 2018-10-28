@@ -88,14 +88,7 @@
       }
     },
     created() {
-      this.$api.postAndJson('/backen/merchant/queryAll', {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        flag: 1
-      }).then(res => {
-        this.dataArray = res.data.data.list
-        this.total = res.data.data.total
-      })
+      this.queryUserListPost(this.pageNum)
     },
     methods: {
       add(uuid) {
@@ -116,8 +109,15 @@
       onClickAdd() {
         this.$router.push({path: '/shangjiaAdd'})
       },
-      queryUserListPost() {
-
+      queryUserListPost(pageNum) {
+        this.$api.postAndJson('/backen/merchant/queryAll', {
+          pageSize: this.pageSize,
+          pageNum: pageNum,
+          flag: 1
+        }).then(res => {
+          this.dataArray = res.data.data.list
+          this.total = res.data.data.total
+        })
       },
       getArticle() {
       },

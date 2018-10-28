@@ -23,7 +23,7 @@
               :check-strictly="true"
               :default-checked-keys="classify1"
               :check-on-click-node="true"
-              @check-change="handleClick"
+              @check-change="orCheckChange"
               ref="tree2">
             </el-tree>
           </el-form-item>
@@ -154,18 +154,13 @@
           }
         })
       },
-      handleClick(data, checked, node) {
-        this.i++;
-        console.log(this.i);
-        if (this.i % 2 === 1) {
-          if (checked && this.$refs.tree2.getCheckedNodes().length > 1) {
-            this.$refs.tree2.setCheckedKeys([]);
-            this.$refs.tree2.setCheckedKeys([data.uuid]);
-            //交叉点击节点
-          } else {
-            this.$refs.tree2.setCheckedKeys([]);
-            //点击已经选中的节点，置空
-          }
+      orCheckChange(data, checked, indeterminte) {
+        // 如果已选择了选项 并且处于checked状态，不能选择新的
+        if (this.$refs.tree2.getCheckedNodes().length === 1 && checked) {
+          this.$refs.tree2.setChecked(data, true);
+        } else if (this.$refs.tree2.getCheckedNodes().length > 1 && checked) {
+          this.$refs.tree2.setCheckedKeys([])
+          this.$refs.tree2.setChecked(data, true);
         }
       }
     },

@@ -127,14 +127,7 @@
       }
     },
     created() {
-      this.$api.postAndJson('/backen/post/query', {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum,
-        flag: 1
-      }).then(res => {
-        this.dataArray = res.data.data.list
-        this.total = res.data.data.total
-      })
+      this.queryUserListPost(this.pageNum)
     },
     methods: {
       cancelrecommend(uuid) {
@@ -203,7 +196,15 @@
       onClickAdd() {
         this.$router.push({path: '/postAdd'})
       },
-      queryUserListPost() {
+      queryUserListPost(pageNum) {
+        this.$api.postAndJson('/backen/post/query', {
+          pageSize: this.pageSize,
+          pageNum: pageNum,
+          flag: 1
+        }).then(res => {
+          this.dataArray = res.data.data.list
+          this.total = res.data.data.total
+        })
       },
       getArticle() {
       },
