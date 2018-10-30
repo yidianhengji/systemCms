@@ -72,3 +72,9 @@ html, body {
 body .el-table th.gutter{
   display: table-cell!important;
 }
+
+.tableNoData {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

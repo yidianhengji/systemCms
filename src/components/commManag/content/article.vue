@@ -44,11 +44,26 @@
         columns: [
           {
             prop: "title",
-            label: "标题"
+            label: "标题",
+            render: function (createElement) {
+              return createElement('a', {
+                domProps: {
+                  innerHTML: this.row.title,
+                  title: this.row.title,
+                  className: 'tableNoData',
+                  target: '_blank',
+                  href: 'https://www.xxsghp.cn/weDream/detail/app1.html?uuid='+this.row.uuid+'',
+                }
+              })
+            }
           },
           {
             prop: 'className',
             label: '所属分类'
+          },
+          {
+            prop: "createName",
+            label: "发布人"
           },
           {
             prop: "createTime",
