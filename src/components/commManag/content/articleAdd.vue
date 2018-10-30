@@ -104,7 +104,8 @@
         type: '',
         classify: [],
         description: '',
-        contentType: ""
+        contentType: "",
+        success: false,
       }
     },
     created() {
@@ -147,7 +148,6 @@
             }
             this.dataListImg = result
 
-
             let p = {
               title: this.ruleForm.title,
               content: this.$refs.ue.getUEContent(),
@@ -157,6 +157,11 @@
               contentType: this.contentType,
               pic: result.join(',')
             }
+
+            if(p.classify == '0') {
+              return alert('请选择分类');
+            }
+
             let path = ''
             let uuid = this.$route.query.uuid;
             if (uuid) {

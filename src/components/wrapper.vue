@@ -15,7 +15,7 @@
     </div>
     <div class="sidebarMain">
       <div class="breadcrumb-nav" v-if="$route.path!='/home/survey'">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb separatorarticleAdd-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/home/survey' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item>{{$route.name}}</el-breadcrumb-item>
         </el-breadcrumb>
