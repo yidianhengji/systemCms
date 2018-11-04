@@ -57,7 +57,7 @@
           mobile: "",
           description: "",
           sex: '1',
-          idCard
+          idCard: '',
         },
         rules: {
           mobile: [

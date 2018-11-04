@@ -12,12 +12,12 @@
                         <el-option label="女" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="所属社区：">
-                    <el-select v-model="formInline.communityId" placeholder="请选择所属社区">
-                        <el-option label="全部" value=""></el-option>
-                        <el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>
-                    </el-select>
-                </el-form-item>
+                <!--<el-form-item label="所属社区：">-->
+                    <!--<el-select v-model="formInline.communityId" placeholder="请选择所属社区">-->
+                        <!--<el-option label="全部" value=""></el-option>-->
+                        <!--<el-option v-for="(item, index) in communityQueryDataList" :key="index" :label="item.name" :value="item.uuid"></el-option>-->
+                    <!--</el-select>-->
+                <!--</el-form-item>-->
                 <el-form-item label="是否实名：">
                     <el-select v-model="formInline.isRealName" placeholder="请选择是否实名">
                         <el-option label="全部" value=""></el-option>
@@ -90,54 +90,12 @@ export default {
                     },
                 },
                 {
-                    prop: "communityName",
-                    label: "所属社区"
-                },
-                {
                     prop: "mobile",
                     label: "手机号码",
                 },
                 {
                     prop: "idCard",
                     label: "身份证号",
-                },
-                {
-                    prop: "integral",
-                    label: "现有积分",
-                    render: function (createElement) {
-                      if($this.$isEmpty(this.row.integral)) {
-                        return createElement('span', {
-                          domProps: {
-                            innerHTML: '0分',
-                          }
-                        })
-                      }else{
-                        return createElement('span', {
-                          domProps: {
-                            innerHTML: this.row.integral +'分',
-                          }
-                        })
-                      }
-                    }
-                },
-                {
-                    prop: "role",
-                    label: "身份",
-                    render: function(createElement) {
-                        if(this.row.role==1){
-                            return createElement('span', {
-                                domProps: {
-                                    innerHTML: '居民',
-                                }
-                            })
-                        }else if(this.row.role==2){
-                            return createElement('span', {
-                                domProps: {
-                                    innerHTML: '志愿者',
-                                }
-                            })
-                        }
-                    },
                 },
                 {
                     prop: "isRealName",

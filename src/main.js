@@ -24,6 +24,8 @@ Vue.prototype.$isEmpty = function(str) {
 
 Vue.prototype.$api = api;
 
+Vue.prototype.$dpath = "https://www.xxsghp.cn/weDream/detail/app1.html";
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

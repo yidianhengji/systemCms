@@ -76,6 +76,14 @@ export default {
       }
       return config
     })
+
+    mutipartAxios.interceptors.request.use((config) => {
+      if (sessionStorage.getItem('access-token')) {
+        config.headers["access-token"] = sessionStorage.getItem('access-token'); //eslint-disable-line
+      }
+      return config
+    })
+
 		//普通校验
 		axiosToken.interceptors.response.use((respone) => {
 			var _this = this;

@@ -57,6 +57,10 @@ import circleComment from '@/components/commManag/circle/circleComment'; //评�
 //建议投诉
 import complaintManage from '@/components/commManag/complaint/complaintManage'; //圈子管理
 
+import partyRemember from 'src/components/commManag/partyRemember'
+import pictures from 'src/components/pictures'
+import picturesAdd from 'src/components/picturesAdd'
+
 import postAdd from 'src/components/commManag/circle/postAdd'
 import article from 'src/components/commManag/content/article'
 import articleAdd from 'src/components/commManag/content/articleAdd'
@@ -161,7 +165,10 @@ const router = new Router({
         {path: '/dangjian/class', name: '党建分类', component: dangjianClass},
         {path: '/dangjianClassAdd', name: '新增党建分类', component: dangjianClassAdd},
         {path: '/grid/class', name: '网格化分类', component: gridClass},
-        {path: '/gridClassAdd', name: '新增网格化分类', component: gridClassAdd}
+        {path: '/gridClassAdd', name: '新增网格化分类', component: gridClassAdd},
+        {path: '/partyRemember', name: '党建管理', component: partyRemember},
+        {path: '/pictures', name: '轮播图管理', component: pictures},
+        {path: '/picturesAdd', name: '新增轮播图', component: picturesAdd}
       ]
     },
   ]

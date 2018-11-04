@@ -77,6 +77,7 @@ export default {
                                 sessionStorage.setItem("userData", JSON.stringify(response.data.data));
                                 sessionStorage.setItem("communityId", response.data.data.communityId);
                                 sessionStorage.setItem("systemType", '1');
+                              sessionStorage.setItem('access-token', response.data.data.token);
                                 this.$router.push({ path: '/home/zhtSurvey' });
                             }, 1000);
                         }

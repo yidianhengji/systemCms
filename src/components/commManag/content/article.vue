@@ -1,7 +1,7 @@
 <template>
   <div class="__article__">
     <div class="formBox">
-      <el-form class="demo-form-inline">
+      <el-form class="demo-form-inline" :inline="true">
         <el-form-item label="状态：">
           <el-select v-model="classify" placeholder="请选择状态">
             <el-option label="网格" value="1"></el-option>
@@ -11,6 +11,9 @@
             <el-option label="党建" value="5"></el-option>
             <el-option label="商家分类" value="6"></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="标题名称：">
+          <el-input v-model="title" placeholder="请输入标题名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
@@ -36,6 +39,7 @@
     },
     data() {
       return {
+        title: '',
         classify: '',
         pageSize: 10,
         pageNum: 1,
@@ -70,8 +74,15 @@
             label: "创建时间"
           },
           {
-            prop: "updateTime",
-            label: "更新时间"
+            prop: "status",
+            label: "状态",
+            render: (h,param) => {
+              if(param.row.status == 1) {
+                return h('span', '推荐')
+              }else{
+                return h('span', '正常')
+              }
+            }
           },
           {
             prop: "",
@@ -79,8 +90,13 @@
             render: (h, param) => {
               var items = [
                 {label: "修改", func: {func: "update", uuid: param.row.uuid}},
-                {label: "删除", func: {func: "del", uuid: param.row.uuid}}
+                {label: "删除", func: {func: "del", uuid: param.row.uuid}},
               ];
+              if(param.row.status != 1) {
+                items.push({label: "推荐", func: {func: "recommend", uuid: param.row.uuid}},)
+              } else{
+                items.push({label: "取消推荐", func: {func: "crecommend", uuid: param.row.uuid}},)
+              }
               const dropDownData = {
                 label: "操作",
                 items: items
@@ -92,7 +108,9 @@
                 },
                 on: {
                   update: this.update,
-                  del: this.del
+                  del: this.del,
+                  recommend: this.recommend,
+                  crecommend: this.crecommend
                 }
               });
             }
@@ -109,7 +127,8 @@
           type: this.classify,
           pageSize: this.pageSize,
           pageNum: 1,
-          flag: 1
+          flag: 1,
+          title: this.title,
         }).then(res=> {
           if (res.data.code == 200) {
             this.dataArray = res.data.data.list;
@@ -160,6 +179,52 @@
       update(uuid) {
         this.$router.push({path: '/articleAdd', query: {uuid: uuid}})
       },
+      recommend(uuid) {
+        this.$confirm("是否推荐该条文章?", "温馨提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$api.postAndJson('/backen/articles/update', {uuid: uuid, flag: 1, status: 1}).then(data => {
+              if (data.data.code == 200) {
+                this.$message({
+                  message: "成功",
+                  type: "success",
+                  duration: "500",
+                  onClose: function () {
+                    window.location.reload();
+                  }
+                });
+              }
+            });
+          })
+          .catch(() => {
+          });
+      },
+      crecommend(uuid) {
+        this.$confirm("是否取消推荐该文章?", "温馨提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$api.postAndJson('/backen/articles/update', {uuid: uuid, flag: 1, status: 0}).then(data => {
+              if (data.data.code == 200) {
+                this.$message({
+                  message: "成功",
+                  type: "success",
+                  duration: "500",
+                  onClose: function () {
+                    window.location.reload();
+                  }
+                });
+              }
+            });
+          })
+          .catch(() => {
+          });
+      }
     }
   };
 </script>

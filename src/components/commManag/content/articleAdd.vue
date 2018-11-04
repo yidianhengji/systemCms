@@ -49,6 +49,11 @@
               <el-option label="音频" value="6"></el-option>
             </el-select>
           </el-form-item>
+
+          <el-form-item label="权重" prop="weight" class="form-control">
+            <el-input v-model="weight" placeholder="请输入权重" type="number"></el-input>
+          </el-form-item>
+
           <el-form-item label="描述">
             <el-input
               type="textarea"
@@ -105,6 +110,7 @@
         classify: [],
         description: '',
         contentType: "",
+        weight: 0,
         success: false,
       }
     },
@@ -124,6 +130,7 @@
             this.contentType = s.contentType + '';
             this.description = s.description;
             this.$refs.tree2.setCheckedKeys([s.classify]);
+            this.weight = s.weight;
           })
         }
       })
@@ -155,7 +162,9 @@
               type: this.type,
               description: this.description || aaa,
               contentType: this.contentType,
-              pic: result.join(',')
+              pic: result.join(','),
+              communityId: sessionStorage.getItem('communityId'),
+              weight: this.weight
             }
 
             if(p.classify == '0') {
