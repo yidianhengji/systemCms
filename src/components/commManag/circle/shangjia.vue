@@ -113,7 +113,8 @@
         this.$api.postAndJson('/backen/merchant/queryAll', {
           pageSize: this.pageSize,
           pageNum: pageNum,
-          flag: 1
+          flag: 1,
+          communityId: sessionStorage.getItem('communityId')
         }).then(res => {
           this.dataArray = res.data.data.list
           this.total = res.data.data.total

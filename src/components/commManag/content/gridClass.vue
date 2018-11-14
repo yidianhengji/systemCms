@@ -48,7 +48,7 @@
       }
     },
     created() {
-      this.$api.postAndJson('/backen/classification/queryAll', {flag: 1, type: 1}).then(res => {
+      this.$api.postAndJson('/backen/classification/queryAll', {flag: 1, type: 1, communityId: sessionStorage.getItem('communityId')}).then(res => {
         this.tree = res.data.data.list;
 
         this.bj(this.tree)

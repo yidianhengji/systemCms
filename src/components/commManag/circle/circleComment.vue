@@ -86,6 +86,7 @@
         this.$api.postAndJson('/backen/circlePostComment/queryAll', {
           pageSize: this.pageSize,
           pageNum: pageNum,
+          communityId: sessionStorage.getItem('communityId')
         }).then(data=>{
           if(data.data.code==200){
             this.dataArray = data.data.data.list

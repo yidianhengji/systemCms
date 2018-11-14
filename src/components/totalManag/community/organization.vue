@@ -20,123 +20,129 @@
 </template>
 
 <script>
-import MyDropDown from '@/components/common/MyDropDown';
-import table from '@/components/common/table';
+import MyDropDown from "@/components/common/MyDropDown";
+import table from "@/components/common/table";
 import { communityQuery } from "api/community/index";
 export default {
-    components: {
-        vtable: table
-    },
-    data(){
-      let $this = this;
-        return {
-            formInline: {
-                name: '',
-            },
-            pageSize: 10,
-            pageNum: 1,
-            total: 0,
-            dataArray: [],
-            columns: [
-                {
-                    prop: "name",
-                    label: "任务名称",
-                },
-                {
-                    prop: "leaderName",
-                    label: "社区负责人",
-                },
-                {
-                    prop: "leaderMobile",
-                    label: "负责人电话",
-                },
-                {
-                    prop: "totalIntegral",
-                    label: "社区总积分",
-                  render: function (createElement) {
-                    if($this.$isEmpty(this.row.totalIntegral)) {
-                      return createElement('span', {
-                        domProps: {
-                          innerHTML: '0分',
-                        }
-                      })
-                    }else{
-                      return createElement('span', {
-                        domProps: {
-                          innerHTML: this.row.totalIntegral +'分',
-                        }
-                      })
-                    }
-                  }
-                },
-                {
-                    prop: "integral",
-                    label: "剩余积分",
-                  render: function (createElement) {
-                    if($this.$isEmpty(this.row.integral)) {
-                      return createElement('span', {
-                        domProps: {
-                          innerHTML: '0分',
-                        }
-                      })
-                    }else{
-                      return createElement('span', {
-                        domProps: {
-                          innerHTML: this.row.integral +'分',
-                        }
-                      })
-                    }
-                  }
-                },
-                {
-                    prop: "createTime",
-                    label: "创建时间",
-                    width: ""
-                },
-            ],
+  components: {
+    vtable: table
+  },
+  data() {
+    let $this = this;
+    return {
+      formInline: {
+        name: ""
+      },
+      pageSize: 10,
+      pageNum: 1,
+      total: 0,
+      dataArray: [],
+      columns: [
+        {
+          prop: "name",
+          label: "社区名称"
+        },
+        {
+          prop: "leaderName",
+          label: "社区负责人"
+        },
+        {
+          prop: "leaderMobile",
+          label: "负责人电话"
+        },
+        {
+          prop: "createTime",
+          label: "创建时间",
+          width: ""
+        },
+        {
+          prop: "",
+          label: "操作",
+          render: (h, prams) => {
+            const items = [
+              {
+                label: "修改名称",
+                func: { func: "update", uuid: param.row.uuid }
+              }
+            ];
+            return h(MyDropDown, {
+              props: {
+                dropDownData: dropDownData
+              },
+              on: {
+                update: this.update
+              }
+            });
+          }
         }
+      ]
+    };
+  },
+  mounted() {
+    this.queryUserListPost(this.pageNum);
+  },
+  methods: {
+    //查询所有社区
+    queryUserListPost(pageNum, name) {
+      let params = {
+        pageSize: this.pageSize,
+        pageNum: pageNum,
+        name: name
+      };
+      communityQuery(params).then(data => {
+        if (data.data.code == 200) {
+          this.dataArray = data.data.data.list;
+          this.total = data.data.data.total;
+        }
+      });
     },
-    mounted(){
-        this.queryUserListPost(this.pageNum);
+    //搜索
+    onSubmit() {
+      this.queryUserListPost(this.pageNum, this.formInline.name);
     },
-    methods: {
-        //查询所有社区
-        queryUserListPost(pageNum, name){
-            let params = {
-                pageSize: this.pageSize,
-                pageNum: pageNum,
-                name: name
-            }
-            communityQuery(params).then(data => {
-                if(data.data.code==200){
-                    this.dataArray = data.data.data.list
-                    this.total = data.data.data.total
-                }
+    //新增
+    onClickAdd() {
+      this.$router.push({ path: "/home/zhtCommunity/organizationAdd" });
+    },
+    update(uuid) {
+      this.$prompt("请输入新的名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputPattern: /\S/,
+        inputErrorMessage: "请输入新的名称"
+      })
+        .then(({ value }) => {
+          this.$api
+            .postAndJson("/backen/community/update", {
+              uuid: uuid,
+              name: value
             })
-        },
-        //搜索
-        onSubmit() {
-            this.queryUserListPost(this.pageNum, this.formInline.name);
-        },
-        //新增
-        onClickAdd() {
-            this.$router.push({path: '/home/zhtCommunity/organizationAdd'})
-        },
+            .then(res => {
+              //this.comment = res.data.data.list[0].content
+              setTimeout(() => {
+                location.reload();
+              }, 500);
+            });
+        })
+        .catch(() => {});
     }
-}
+  }
+};
 </script>
 
 <style lang="stylus">
 .__organization {
-    background #ffffff;
-    padding 15px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+    background: #ffffff;
+    padding: 15px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     border-radius: 4px;
+
     .formBox {
-        border-bottom 1px solid #eee
+        border-bottom: 1px solid #eee;
     }
+
     .btnBox {
-        margin 10px 0;
+        margin: 10px 0;
     }
 }
 </style>

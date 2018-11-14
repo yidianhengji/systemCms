@@ -79,7 +79,8 @@
             pageSize: this.pageSize,
             pageNum: pageNum,
             flag: 1,
-            type: 5
+            type: 5,
+            communityId: sessionStorage.getItem('communityId')
           })
           .then(data => {
             if (data.data.code == 200) {

@@ -90,7 +90,8 @@
           pageSize: this.pageSize,
           pageNum: pageNum,
           title: title,
-          flag: 1
+          flag: 1,
+          communityId: sessionStorage.getItem('communityId')
         }
         this.$api.postAndJson('/backen/pictures/queryAll', params).then(data => {
           if (data.data.code == 200) {

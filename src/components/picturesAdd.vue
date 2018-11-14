@@ -75,7 +75,8 @@
               title: this.ruleForm.title,
               weight: this.ruleForm.weight,
               url: headPic,
-              fUrl: this.ruleForm.fUrl
+              fUrl: this.ruleForm.fUrl,
+              communityId: sessionStorage.getItem('communityId')
             }
 
             var u = '';

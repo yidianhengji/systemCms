@@ -9,9 +9,6 @@
                     <el-form-item label="社区名称" prop="name" class="form-control">
                         <el-input v-model="ruleForm.name" placeholder="请输入社区名称"></el-input>
                     </el-form-item>
-                    <el-form-item label="总积分" prop="totalIntegral" class="form-control">
-                        <el-input v-model="ruleForm.totalIntegral" placeholder="请输入总积分"></el-input>
-                    </el-form-item>
 					<el-form-item label="社区负责人" prop="communityLeader" class="form-control">
                         <el-input v-model="ruleForm.communityLeader" placeholder="请输入社区负责人"></el-input>
                     </el-form-item>

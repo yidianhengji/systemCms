@@ -14,7 +14,7 @@
       </el-form>
     </div>
     <div class="btnBox">
-      <el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增建议投诉</el-button>
+      <!--<el-button type="primary" icon="el-icon-circle-plus-outline" @click="onClickAdd">新增建议投诉</el-button>-->
     </div>
     <div class="tableList">
       <vtable :dataArray="dataArray" :columns="columns" :total="total" @getArticle="queryUserListPost"></vtable>
@@ -135,7 +135,8 @@
           pageSize: this.pageSize,
           pageNum: pageNum,
           flag: 1,
-          status: status
+          status: status,
+          communityId: sessionStorage.getItem('communityId')
         }
         this.$api.postAndJson('/backen/complaint/queryAll', params).then(data => {
           if (data.data.code == 200) {
