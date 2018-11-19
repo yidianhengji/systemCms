@@ -22,7 +22,7 @@
 <script>
 import MyDropDown from "@/components/common/MyDropDown";
 import table from "@/components/common/table";
-import { communityQuery } from "api/community/index";
+import { communityQuery, communityUpdate } from "api/community/index";
 export default {
   components: {
     vtable: table
@@ -58,19 +58,23 @@ export default {
         {
           prop: "",
           label: "操作",
-          render: (h, prams) => {
-            const items = [
-              {
-                label: "修改名称",
-                func: { func: "update", uuid: param.row.uuid }
-              }
-            ];
+          render: (h, param) => {
+            var items = [
+              { label: "修改", func: { func: "update", uuid: param.row.uuid } },
+              //{ label: "删除", func: { func: "del", uuid: param.row.uuid } },
+            ]
+            const dropDownData = {
+              label: "操作",
+              items: items
+            };
+            // 触发MyDropDown的update和del事件
             return h(MyDropDown, {
               props: {
                 dropDownData: dropDownData
               },
               on: {
-                update: this.update
+                update: this.update,
+                //del: this.del,
               }
             });
           }
@@ -109,7 +113,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         inputPattern: /\S/,
-        inputErrorMessage: "请输入新的名称"
+        inputErrorMessage: "请输入新的名称",
       })
         .then(({ value }) => {
           this.$api
@@ -125,6 +129,28 @@ export default {
             });
         })
         .catch(() => {});
+    },
+    del(uuid){
+      this.$confirm('是否删除该条记录?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        communityUpdate({uuid: uuid, status: 2}).then(data => {
+          if(data.data.code==200){
+            this.$message({
+              message: '删除成功',
+              type: 'success',
+              duration: '500',
+              onClose: function(){
+                window.location.reload();
+              }
+            });
+          }
+        })
+      }).catch(() => {
+
+      });
     }
   }
 };

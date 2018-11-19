@@ -65,6 +65,10 @@ export default {
                     label: "姓名",
                 },
                 {
+                  prop: "nickname",
+                  label: "昵称",
+                },
+                {
                     prop: "sex",
                     label: "性别",
                     render: function(createElement) {

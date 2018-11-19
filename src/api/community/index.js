@@ -22,3 +22,13 @@ export function communityQuery(params) {
         })
     })
 }
+
+
+/*修改社区*/
+export function communityUpdate(params) {
+  return new Promise((resolve, reject) => {
+    axiosToken.post(backen + 'community/update', params).then(data => {
+      resolve(data)
+    })
+  })
+}

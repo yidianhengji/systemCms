@@ -13,16 +13,17 @@ module.exports = {
         proxyTable: {
             '/backen/': {
                 //target: 'http://localhost:8090/',
-                target: 'http://localhost:8090/',
-                //target: 'https://www.xxsghp.cn/',
+                //target: 'http://localhost:8090/',
+                target: 'https://www.xxsghp.cn/',
                //target: 'http://120.79.177.219:8090/',
                 changeOrigin: true
             },
         },
 
         // Various Dev Server settings
-        host: 'localhost', // can be overwritten by process.env.HOST
-        port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+        host: 'localhost'
+      , // can be overwritten by process.env.HOST
+        port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
         autoOpenBrowser: false,
         errorOverlay: true,
         notifyOnErrors: true,

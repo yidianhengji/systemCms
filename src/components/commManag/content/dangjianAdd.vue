@@ -153,6 +153,7 @@
               type: 5, // 1网格 5党建
               description: this.description || aaa,
               contentType: this.contentType,
+              communityId: sessionStorage.getItem("communityId"),
               pic: result.join(',')
             }
             let path = ''
