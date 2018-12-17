@@ -57,7 +57,9 @@
       };
     },
     created() {
-      this.$api.postAndJson('/backen/circle/query', {}).then(res=>{
+      this.$api.postAndJson('/backen/circle/query', {
+        orgid: sessionStorage.getItem("communityId"),
+      }).then(res=>{
         this.circle_list = res.data.data.list;
 
         if(this.$route.query.uuid) {

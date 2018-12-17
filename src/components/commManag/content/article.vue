@@ -129,6 +129,7 @@
           pageNum: 1,
           flag: 1,
           title: this.title,
+          communityId: sessionStorage.getItem('communityId')
         }).then(res=> {
           if (res.data.code == 200) {
             this.dataArray = res.data.data.list;

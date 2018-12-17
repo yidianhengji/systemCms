@@ -195,7 +195,8 @@
           pageSize: this.pageSize,
           pageNum: pageNum,
           name: name,
-          flag: flag
+          flag: flag,
+          communityId: sessionStorage.getItem('communityId')
         }
         activityQuery(params).then(data => {
           if (data.data.code == 200) {
